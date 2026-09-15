@@ -34,49 +34,28 @@ SITEMAP = """<?xml version="1.0"?>
 <url><loc>https://applemac.pk/product/macbook-air-m4-ignored</loc></url></urlset>"""
 
 
-def test_coverage_gaps_reports_iphone_slugs_no_category_yielded():
-    gaps = cli.coverage_gaps(SITEMAP, {"apple-iphone-17-pro-max-2tb"})
-    assert gaps == ["apple-iphone-99-unseen"]
-
-
-def test_coverage_gaps_ignores_non_matching_products():
-    gaps = cli.coverage_gaps(SITEMAP, set())
-    assert "macbook-air-m4-ignored" not in gaps
-
-
-def test_coverage_gaps_is_empty_when_everything_collected():
+def test_coverage_gaps():
+    assert cli.coverage_gaps(SITEMAP, {"apple-iphone-17-pro-max-2tb"}) == ["apple-iphone-99-unseen"]
+    assert "macbook-air-m4-ignored" not in cli.coverage_gaps(SITEMAP, set())
     assert cli.coverage_gaps(SITEMAP, {"apple-iphone-17-pro-max-2tb",
                                        "apple-iphone-99-unseen"}) == []
 
-
-def test_coverage_gaps_excludes_accessories_containing_iphone():
-    sitemap = """<?xml version="1.0"?>
-    <urlset><url><loc>https://applemac.pk/product/apple-18w-usb-c-iphone-charger</loc></url>
-    <url><loc>https://applemac.pk/product/apple-iphone-11-4gb-ram-128gb-storage</loc></url></urlset>"""
-    gaps = cli.coverage_gaps(sitemap, set())
-    assert "apple-18w-usb-c-iphone-charger" not in gaps
-    assert "apple-iphone-11-4gb-ram-128gb-storage" in gaps
-
-
-def test_coverage_gaps_includes_iphone_air_handsets():
-    sitemap = """<?xml version="1.0"?>
-    <urlset><url><loc>https://applemac.pk/product/apple-iphone-air-256gb</loc></url></urlset>"""
-    assert cli.coverage_gaps(sitemap, set()) == ["apple-iphone-air-256gb"]
-
-
-def test_coverage_gaps_excludes_accessories_under_a_numbered_iphone_line():
+    # Accessories that merely mention "iphone" must not be treated as handsets,
+    # while numbered and Air iPhone lines (and cased accessories under them) are.
     sitemap = """<?xml version="1.0"?>
     <urlset>
     <url><loc>https://applemac.pk/product/apple-18w-usb-c-iphone-charger</loc></url>
     <url><loc>https://applemac.pk/product/iphone-16-case-clear</loc></url>
     <url><loc>https://applemac.pk/product/apple-iphone-17-pro-max-2tb</loc></url>
     <url><loc>https://applemac.pk/product/apple-iphone-air-256gb</loc></url>
+    <url><loc>https://applemac.pk/product/apple-iphone-11-4gb-ram-128gb-storage</loc></url>
     </urlset>"""
     gaps = cli.coverage_gaps(sitemap, set())
     assert "apple-18w-usb-c-iphone-charger" not in gaps
     assert "iphone-16-case-clear" not in gaps
     assert "apple-iphone-17-pro-max-2tb" in gaps
     assert "apple-iphone-air-256gb" in gaps
+    assert "apple-iphone-11-4gb-ram-128gb-storage" in gaps
 
 
 SE_LEAK_HTML = """
@@ -91,14 +70,12 @@ SE_LEAK_HTML = """
 """
 
 
-def test_collect_excludes_products_matching_exclude_slug_patterns():
+def test_collect_exclude_patterns_dedup_and_empty_category():
     fetcher = StubFetcher({"iphone": SE_LEAK_HTML})
     products, notes = cli.collect(fetcher, store.Database(), {"iphone": "iphone"})
     assert {p.slug for p in products} == {"iphone-17-128gb"}
     assert any("excluded by slug pattern" in n for n in notes)
 
-
-def test_collect_dedupes_slugs_across_categories():
     html = fixture("iphone-17-pro-max.html")
     fetcher = StubFetcher({"iphone-17-pro-max": html, "iphone": html})
     products, _ = cli.collect(
@@ -107,8 +84,6 @@ def test_collect_dedupes_slugs_across_categories():
     assert len(products) == 4          # not 8
     assert len({p.slug for p in products}) == 4
 
-
-def test_collect_allows_empty_category_never_seen_before():
     fetcher = StubFetcher({})
     products, notes = cli.collect(fetcher, store.Database(),
                                   {"iphone-16-series": "iphone"})
@@ -138,6 +113,9 @@ def test_collect_aborts_on_large_count_drop():
 
 
 def test_failed_run_writes_nothing(tmp_path):
+    """The write-nothing guarantee: this is the single most important test
+    in the suite. If any output step runs before everything has been
+    successfully collected, this must fail."""
     db = store.Database()
     db.record_run("r0", [make_product("a")], "2026-09-01T00:00:00",
                   "2026-09-01T00:01:00", 277.5, 0.55, "")
@@ -157,28 +135,6 @@ def test_failed_run_writes_nothing(tmp_path):
     assert (tmp_path / "history.csv").read_text() == before
 
 
-def test_successful_run_appends_history_and_writes_outputs(tmp_path):
-    fetcher = StubFetcher({"macbook-pro-14": fixture("macbook-pro-14.html")})
-    web = tmp_path / "web"
-    meta = cli.run(fetcher=fetcher, data_dir=tmp_path, web_dir=web)
-
-    assert meta["product_count"] == 58
-    assert (tmp_path / "history.csv").exists()
-    assert (web / "data" / "latest.json").exists()
-    assert (web / "downloads" / "applemac-prices.xlsx").exists()
-    assert (web / "downloads" / "prices.db").exists()
-
-
-def test_two_runs_accumulate_history(tmp_path):
-    fetcher = StubFetcher({"macbook-pro-14": fixture("macbook-pro-14.html")})
-    web = tmp_path / "web"
-    cli.run(fetcher=fetcher, data_dir=tmp_path, web_dir=web)
-    cli.run(fetcher=fetcher, data_dir=tmp_path, web_dir=web)
-    db = store.load(tmp_path)
-    assert len(db.runs) == 2
-    assert len(db.history) == 116
-
-
 def _make_product(slug, category_slug):
     return Product(
         slug=slug, url=f"https://applemac.pk/product/{slug}", name=slug.upper(),
@@ -190,6 +146,9 @@ def _make_product(slug, category_slug):
 
 
 def test_partial_collect_success_then_later_abort_writes_nothing(tmp_path):
+    """The single most important partial-success variant: the first category
+    succeeds this run; a later category aborts. History must remain
+    byte-identical — nothing collected so far may reach disk."""
     # macbook-pro-14 (first in config.CATEGORIES) will succeed this run;
     # macbook-pro-16 (second) was previously populated and comes back empty,
     # so collect() aborts partway through. Nothing collected so far may reach
@@ -237,17 +196,28 @@ def test_post_save_failure_preserves_history_and_message(tmp_path, monkeypatch, 
     assert "history.csv is intact" in stderr
 
 
-def test_first_ever_run_has_no_fabricated_vs_history(tmp_path):
-    """A first-ever run must not compare a product's price to its own snapshot."""
+def test_successful_run_writes_outputs_accumulates_history_and_has_no_fabricated_vs_history(tmp_path):
     import json
 
     fetcher = StubFetcher({"macbook-pro-14": fixture("macbook-pro-14.html")})
     web = tmp_path / "web"
-    cli.run(fetcher=fetcher, data_dir=tmp_path, web_dir=web)
+    meta = cli.run(fetcher=fetcher, data_dir=tmp_path, web_dir=web)
 
+    assert meta["product_count"] == 58
+    assert (tmp_path / "history.csv").exists()
+    assert (web / "data" / "latest.json").exists()
+    assert (web / "downloads" / "applemac-prices.xlsx").exists()
+    assert (web / "downloads" / "prices.db").exists()
+
+    # A first-ever run must not compare a product's price to its own snapshot.
     latest = json.loads((web / "data" / "latest.json").read_text(encoding="utf-8"))
     for row in latest["products"]:
         assert row["scores"]["vs_history"] is None
+
+    cli.run(fetcher=fetcher, data_dir=tmp_path, web_dir=web)
+    db = store.load(tmp_path)
+    assert len(db.runs) == 2
+    assert len(db.history) == 116
 
 
 def test_immediate_successive_runs_get_different_run_ids(tmp_path):

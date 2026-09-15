@@ -28,21 +28,26 @@ def get(url):
         return response.status, response.read().decode("utf-8")
 
 
-def test_serves_dashboard_at_root(live_server):
+def post(url, data=b""):
+    req = urllib.request.Request(url, data=data, method="POST")
+    with urllib.request.urlopen(req, timeout=5) as response:
+        return response.status, response.read().decode("utf-8")
+
+
+def test_serves_dashboard_api_and_404s(live_server):
     status, body = get(f"{live_server}/")
-    assert status == 200
-    assert "dashboard" in body
+    assert status == 200 and "dashboard" in body
 
-
-def test_api_latest_returns_json(live_server):
     status, body = get(f"{live_server}/api/latest")
     assert status == 200
     assert json.loads(body)["meta"]["run_id"] == "r1"
 
-
-def test_unknown_path_is_404(live_server):
     with pytest.raises(urllib.error.HTTPError) as exc:
         get(f"{live_server}/nope.txt")
+    assert exc.value.code == 404
+
+    with pytest.raises(urllib.error.HTTPError) as exc:
+        post(f"{live_server}/nope")
     assert exc.value.code == 404
 
 
@@ -50,12 +55,6 @@ def test_directory_traversal_is_blocked(live_server):
     with pytest.raises(urllib.error.HTTPError) as exc:
         get(f"{live_server}/../../etc/passwd")
     assert exc.value.code in (400, 403, 404)
-
-
-def post(url, data=b""):
-    req = urllib.request.Request(url, data=data, method="POST")
-    with urllib.request.urlopen(req, timeout=5) as response:
-        return response.status, response.read().decode("utf-8")
 
 
 def test_refresh_generic_failure_reports_history_not_saved(live_server, monkeypatch):
@@ -84,9 +83,3 @@ def test_refresh_run_outputs_failed_reports_history_saved(live_server, monkeypat
     payload = json.loads(exc.value.read().decode("utf-8"))
     assert payload["history_saved"] is True
     assert "price history was saved" in payload["error"]
-
-
-def test_post_unknown_path_is_404(live_server):
-    with pytest.raises(urllib.error.HTTPError) as exc:
-        post(f"{live_server}/nope")
-    assert exc.value.code == 404

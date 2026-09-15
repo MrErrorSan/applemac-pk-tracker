@@ -1,3 +1,5 @@
+import pytest
+
 from scraper import config
 from scraper.normalize import (
     Product, clean, normalize, parse_capacity, parse_cores,
@@ -10,18 +12,15 @@ def fixture(name):
     return (config.FIXTURE_DIR / name).read_text(encoding="utf-8")
 
 
-def test_clean_maps_placeholder_to_none():
+def test_clean_and_parsing_helpers():
+    # clean()
     assert clean("•") is None
     assert clean("") is None
     assert clean(None) is None
     assert clean("  Silver  ") == "Silver"
+    assert clean("6.9‑inch") == "6.9-inch"   # non-breaking hyphen normalised
 
-
-def test_clean_normalises_non_breaking_hyphen():
-    assert clean("6.9‑inch") == "6.9-inch"
-
-
-def test_parse_capacity():
+    # parse_capacity()
     assert parse_capacity("1TB") == 1024
     assert parse_capacity("512GB") == 512
     assert parse_capacity("8TB") == 8192
@@ -29,72 +28,69 @@ def test_parse_capacity():
     assert parse_capacity("•") is None
     assert parse_capacity("banana") is None
 
-
-def test_parse_cores_handles_both_site_formats():
+    # parse_cores()
     assert parse_cores("10 Core CPU") == 10
     assert parse_cores("5‑core GPU") == 5
     assert parse_cores("6‑core CPU with 2 performance and 4 efficiency cores") == 6
     assert parse_cores("•") is None
 
-
-def test_parse_screen_size_handles_both_site_formats():
+    # parse_screen_size()
     assert parse_screen_size("14 Inches") == 14.0
     assert parse_screen_size("6.9‑inch") == 6.9
     assert parse_screen_size("•") is None
 
-
-def test_parse_price_handles_double_space_and_commas():
+    # parse_price()
     assert parse_price("PKR 772,000") == 772000
     assert parse_price("PKR  930,000") == 930000
     assert parse_price(None) is None
-
-
-def test_parse_price_rejects_negative_and_decimal_amounts():
-    """Stripping non-digits must not launder a negative or fractional
-    amount into a plausible positive integer."""
+    # Stripping non-digits must not launder a negative or fractional
+    # amount into a plausible positive integer.
     assert parse_price("-500") is None
     assert parse_price("930.50") is None
     assert parse_price("PKR -1,000") is None
     assert parse_price("PKR") is None
 
-
-def test_slugify():
+    # slugify()
     assert slugify("M4 Pro") == "m4_pro"
     assert slugify("6.9-inch") == "6_9_inch"
 
 
-def test_normalize_macbook_uses_data_ssd_for_storage():
-    raw = parse_category(fixture("macbook-pro-14.html"), "macbook-pro-14")[0]
-    product = normalize(raw, "macbook_pro")
-    assert product.price == 772000
-    assert product.old_price == 772000
-    assert product.ram_gb == 32
-    assert product.storage_gb == 1024
-    assert product.chip == "M5"
-    assert product.cpu_cores == 10
-    assert product.gpu_cores == 10
-    assert product.screen_size == 14.0
-    assert product.color == "Silver"
-    assert product.family == "macbook_pro"
+@pytest.mark.parametrize("fixture_name, category_slug, family, expected", [
+    ("macbook-pro-14.html", "macbook-pro-14", "macbook_pro", dict(
+        price=772000, old_price=772000, ram_gb=32, storage_gb=1024,
+        chip="M5", cpu_cores=10, gpu_cores=10, screen_size=14.0,
+        color="Silver", family="macbook_pro",
+    )),
+    ("iphone-17-pro-max.html", "iphone-17-pro-max", "iphone", dict(
+        price=892999, old_price=930000, storage_gb=2048,  # from data-storage, not data-ssd
+        ram_gb=12, chip="A19 Pro", screen_size=6.9,
+        color="Silver, Cosmic Orange, Deep Blue",
+    )),
+], ids=["macbook_uses_data_ssd_for_storage", "iphone_uses_data_storage_for_storage"])
+def test_normalize_family_specific_fields(fixture_name, category_slug, family, expected):
+    raw = parse_category(fixture(fixture_name), category_slug)[0]
+    product = normalize(raw, family)
+    for field, value in expected.items():
+        assert getattr(product, field) == value, field
 
 
-def test_normalize_iphone_uses_data_storage_for_storage():
-    raw = parse_category(fixture("iphone-17-pro-max.html"), "iphone-17-pro-max")[0]
-    product = normalize(raw, "iphone")
-    assert product.price == 892999
-    assert product.old_price == 930000
-    assert product.storage_gb == 2048        # from data-storage, not data-ssd
-    assert product.ram_gb == 12
-    assert product.chip == "A19 Pro"
-    assert product.screen_size == 6.9
-    assert product.color == "Silver, Cosmic Orange, Deep Blue"
-
-
-def test_model_group_and_config_key_are_stable():
+def test_model_group_config_key_and_fixture_normalization():
     raw = parse_category(fixture("macbook-pro-14.html"), "macbook-pro-14")[0]
     product = normalize(raw, "macbook_pro")
     assert product.model_group == "macbook_pro_scr14_0_chipm5"
     assert product.config_key == "macbook_pro_scr14_0_chipm5_ram32_ssd1024"
+
+    products = [
+        normalize(r, "macbook_pro")
+        for r in parse_category(fixture("macbook-pro-14.html"), "macbook-pro-14")
+    ]
+    keys = {p.config_key for p in products if p}
+    assert len(keys) < len(products), "some configs should collide for peer comparison"
+
+    for name, fam in (("macbook-pro-14.html", "macbook_pro"),
+                       ("iphone-17-pro-max.html", "iphone")):
+        for raw in parse_category(fixture(name), name.replace(".html", "")):
+            assert isinstance(normalize(raw, fam), Product)
 
 
 def test_config_key_prevents_collision_when_ram_or_storage_missing():
@@ -114,39 +110,13 @@ def test_config_key_prevents_collision_when_ram_or_storage_missing():
         f"config_key collision: ram_only={product_ram_only.config_key}, storage_only={product_storage_only.config_key}"
 
 
-def test_products_with_same_config_share_a_config_key():
-    products = [
-        normalize(r, "macbook_pro")
-        for r in parse_category(fixture("macbook-pro-14.html"), "macbook-pro-14")
-    ]
-    keys = {p.config_key for p in products if p}
-    assert len(keys) < len(products), "some configs should collide for peer comparison"
-
-
-def test_normalize_returns_none_without_a_price():
+@pytest.mark.parametrize("price_attr, new_price_text, description", [
+    (None, None, "no price at all"),
+    ("-500", None, "negative price"),
+    ("0", None, 'data-price="0" marks an unannounced / made-to-order listing, not a free item'),
+])
+def test_normalize_returns_none_for_invalid_price(price_attr, new_price_text, description):
     raw = parse_category(fixture("macbook-pro-14.html"), "macbook-pro-14")[0]
-    priceless = type(raw)(**{**raw.__dict__, "price_attr": None,
-                             "new_price_text": None})
-    assert normalize(priceless, "macbook_pro") is None
-
-
-def test_normalize_returns_none_for_negative_price():
-    raw = parse_category(fixture("macbook-pro-14.html"), "macbook-pro-14")[0]
-    negative = type(raw)(**{**raw.__dict__, "price_attr": "-500",
-                            "new_price_text": None})
-    assert normalize(negative, "macbook_pro") is None
-
-
-def test_normalize_returns_none_for_zero_price():
-    """data-price="0" marks an unannounced / made-to-order listing, not a free item."""
-    raw = parse_category(fixture("macbook-pro-14.html"), "macbook-pro-14")[0]
-    unpriced = type(raw)(**{**raw.__dict__, "price_attr": "0",
-                            "new_price_text": None})
-    assert normalize(unpriced, "macbook_pro") is None
-
-
-def test_every_fixture_product_normalizes():
-    for name, family in (("macbook-pro-14.html", "macbook_pro"),
-                         ("iphone-17-pro-max.html", "iphone")):
-        for raw in parse_category(fixture(name), name.replace(".html", "")):
-            assert isinstance(normalize(raw, family), Product)
+    invalid = type(raw)(**{**raw.__dict__, "price_attr": price_attr,
+                            "new_price_text": new_price_text})
+    assert normalize(invalid, "macbook_pro") is None, description

@@ -64,6 +64,21 @@ def test_coverage_gaps_includes_iphone_air_handsets():
     assert cli.coverage_gaps(sitemap, set()) == ["apple-iphone-air-256gb"]
 
 
+def test_coverage_gaps_excludes_accessories_under_a_numbered_iphone_line():
+    sitemap = """<?xml version="1.0"?>
+    <urlset>
+    <url><loc>https://applemac.pk/product/apple-18w-usb-c-iphone-charger</loc></url>
+    <url><loc>https://applemac.pk/product/iphone-16-case-clear</loc></url>
+    <url><loc>https://applemac.pk/product/apple-iphone-17-pro-max-2tb</loc></url>
+    <url><loc>https://applemac.pk/product/apple-iphone-air-256gb</loc></url>
+    </urlset>"""
+    gaps = cli.coverage_gaps(sitemap, set())
+    assert "apple-18w-usb-c-iphone-charger" not in gaps
+    assert "iphone-16-case-clear" not in gaps
+    assert "apple-iphone-17-pro-max-2tb" in gaps
+    assert "apple-iphone-air-256gb" in gaps
+
+
 SE_LEAK_HTML = """
 <div id="main_categoryinner">
   <div class="pdt" data-price="119999" data-ram="3" data-storage="64">

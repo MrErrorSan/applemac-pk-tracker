@@ -71,9 +71,18 @@ def parse_screen_size(text):
 
 
 def parse_price(text):
-    """'PKR  930,000' -> 930000."""
+    """'PKR  930,000' -> 930000.
+
+    Rejects anything that is not a plain positive integer amount once the
+    "PKR"/whitespace/comma formatting is set aside — a leading minus sign
+    or a decimal point means the source text was not a whole positive
+    price, and stripping non-digits would otherwise silently launder
+    "-500" into 500.
+    """
     text = clean(text)
     if text is None:
+        return None
+    if re.search(r"-|\.", text):
         return None
     digits = re.sub(r"[^\d]", "", text)
     return int(digits) if digits else None

@@ -84,6 +84,13 @@ def collect(fetcher, db, categories, previous_counts=None, drop_threshold=None):
     return list(by_slug.values()), notes
 
 
+ACCESSORY_SLUG_WORDS = (
+    "case", "cover", "charger", "cable", "adapter", "protector", "glass",
+    "holder", "stand", "magsafe", "strap", "skin", "film", "pouch", "lens",
+    "band",
+)
+
+
 def coverage_gaps(sitemap_xml, collected_slugs, pattern=r"iphone-(?:\d|air)"):
     """Sitemap product slugs matching `pattern` that no category yielded.
 
@@ -91,15 +98,25 @@ def coverage_gaps(sitemap_xml, collected_slugs, pattern=r"iphone-(?:\d|air)"):
     default requires an `iphone-<digit>` or `iphone-air` shape so it catches
     handset slugs (e.g. "apple-iphone-17-pro-max-2tb") without also matching
     every accessory that merely contains the word "iphone" (e.g.
-    "apple-18w-usb-c-iphone-charger").
+    "apple-18w-usb-c-iphone-charger"). The handset shape alone still admits
+    accessories sold under a numbered iPhone line (e.g. "iphone-16-case-clear"),
+    so slugs containing an accessory word are excluded after the pattern match.
 
     Reports only. A gap means a category is missing from config, not that the
     run is wrong, so this never aborts.
     """
     found = re.findall(r"<loc>[^<]*?/product/([^<]+)</loc>", sitemap_xml)
-    return sorted({slug.rstrip("/") for slug in found
-                   if re.search(pattern, slug, re.IGNORECASE)
-                   and slug.rstrip("/") not in collected_slugs})
+    gaps = set()
+    for slug in found:
+        slug = slug.rstrip("/")
+        if not re.search(pattern, slug, re.IGNORECASE):
+            continue
+        if any(word in slug.lower() for word in ACCESSORY_SLUG_WORDS):
+            continue
+        if slug in collected_slugs:
+            continue
+        gaps.add(slug)
+    return sorted(gaps)
 
 
 def run(fetcher=None, data_dir=None, web_dir=None, force=False):

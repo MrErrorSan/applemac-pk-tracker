@@ -47,6 +47,14 @@ def test_parse_price_handles_double_space_and_commas():
     assert parse_price("PKR 772,000") == 772000
     assert parse_price("PKR  930,000") == 930000
     assert parse_price(None) is None
+
+
+def test_parse_price_rejects_negative_and_decimal_amounts():
+    """Stripping non-digits must not launder a negative or fractional
+    amount into a plausible positive integer."""
+    assert parse_price("-500") is None
+    assert parse_price("930.50") is None
+    assert parse_price("PKR -1,000") is None
     assert parse_price("PKR") is None
 
 
@@ -120,6 +128,13 @@ def test_normalize_returns_none_without_a_price():
     priceless = type(raw)(**{**raw.__dict__, "price_attr": None,
                              "new_price_text": None})
     assert normalize(priceless, "macbook_pro") is None
+
+
+def test_normalize_returns_none_for_negative_price():
+    raw = parse_category(fixture("macbook-pro-14.html"), "macbook-pro-14")[0]
+    negative = type(raw)(**{**raw.__dict__, "price_attr": "-500",
+                            "new_price_text": None})
+    assert normalize(negative, "macbook_pro") is None
 
 
 def test_normalize_returns_none_for_zero_price():

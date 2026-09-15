@@ -85,8 +85,25 @@ def test_normalize_iphone_uses_data_storage_for_storage():
 def test_model_group_and_config_key_are_stable():
     raw = parse_category(fixture("macbook-pro-14.html"), "macbook-pro-14")[0]
     product = normalize(raw, "macbook_pro")
-    assert product.model_group == "macbook_pro_14_0_m5"
-    assert product.config_key == "macbook_pro_14_0_m5_32_1024"
+    assert product.model_group == "macbook_pro_scr14_0_chipm5"
+    assert product.config_key == "macbook_pro_scr14_0_chipm5_ram32_ssd1024"
+
+
+def test_config_key_prevents_collision_when_ram_or_storage_missing():
+    """Ensure config_key is unambiguous even when RAM or storage is missing."""
+    raw = parse_category(fixture("macbook-pro-14.html"), "macbook-pro-14")[0]
+
+    # Product with RAM but no storage
+    ram_only = type(raw)(**{**raw.__dict__, "attrs": {**raw.attrs, "data-ssd": None, "data-storage": None}})
+    product_ram_only = normalize(ram_only, "macbook_pro")
+
+    # Product with storage but no RAM
+    storage_only = type(raw)(**{**raw.__dict__, "attrs": {**raw.attrs, "data-ram": None}})
+    product_storage_only = normalize(storage_only, "macbook_pro")
+
+    # Keys must be different to prevent ambiguity
+    assert product_ram_only.config_key != product_storage_only.config_key, \
+        f"config_key collision: ram_only={product_ram_only.config_key}, storage_only={product_storage_only.config_key}"
 
 
 def test_products_with_same_config_share_a_config_key():

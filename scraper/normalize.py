@@ -104,15 +104,13 @@ def normalize(raw, family):
     screen_size = parse_screen_size(attrs.get("data-screensize"))
     ram_gb = parse_capacity(attrs.get("data-ram"))
 
-    model_group = "_".join(
-        part for part in (family, slugify(screen_size) if screen_size else None,
-                          slugify(chip) if chip else None) if part
-    )
-    config_key = "_".join(
-        part for part in (model_group,
-                          str(ram_gb) if ram_gb else None,
-                          str(storage_gb) if storage_gb else None) if part
-    )
+    screen_str = slugify(screen_size) if screen_size else "na"
+    chip_str = slugify(chip) if chip else "na"
+    ram_str = str(ram_gb) if ram_gb else "na"
+    storage_str = str(storage_gb) if storage_gb else "na"
+
+    model_group = f"{family}_scr{screen_str}_chip{chip_str}"
+    config_key = f"{model_group}_ram{ram_str}_ssd{storage_str}"
 
     return Product(
         slug=raw.slug,

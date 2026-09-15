@@ -30,6 +30,11 @@ regenerated every run. Full history lives in git.
 `Est. Apple Landed` is an estimate (US MSRP x live FX x duty %), not an
 official or actual landed cost. Listed price does not guarantee stock.
 
+A blank `Est. Apple Landed` means no verified Apple price exists yet for
+that exact configuration in `data/apple_msrp.json` — it is not a signal
+that the item is a bargain. Run
+`uv run python -m scraper.cli msrp-gaps` to list which configs are missing.
+
 ## License
 
 MIT. See `LICENSE`.

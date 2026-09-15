@@ -14,10 +14,14 @@ dependencies = [
     "openpyxl>=3.1",
 ]
 
-[project.optional-dependencies]
-dev = [
-    "pytest>=8.0",
-]
+# Dependency groups (PEP 735) for dev tools.
+# pytest is in a dependency-group (not optional-dependencies) because `uv sync`
+# installs dependency-groups by default, which is required for CI to have pytest
+# available. If moved to optional-dependencies, `uv sync` would skip it unless
+# --extra or --all-extras is passed, and the CI test gate would fail silently
+# (pytest would not be found on a clean ubuntu-latest runner).
+[dependency-groups]
+dev = ["pytest>=8.0"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["scraper"]

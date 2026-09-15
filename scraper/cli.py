@@ -11,11 +11,22 @@ from .parse import parse_category
 
 
 class RunAborted(Exception):
-    """A sanity check failed; nothing is written."""
+    """A sanity check failed before anything was written. Nothing was written."""
+
+
+class RunOutputsFailed(Exception):
+    """The price history was already saved; a later output step then failed."""
+
+    def __init__(self, step, original):
+        self.step = step
+        self.original = original
+        super().__init__(
+            f"{step} failed after the price history was saved: {original}"
+        )
 
 
 def _now():
-    return dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
+    return dt.datetime.now(dt.timezone.utc).isoformat(timespec="microseconds")
 
 
 def collect(fetcher, db, categories, previous_counts=None, drop_threshold=None):
@@ -79,13 +90,24 @@ def coverage_gaps(sitemap_xml, collected_slugs, pattern="iphone"):
 
 def run(fetcher=None, data_dir=None, web_dir=None, force=False):
     started_at = _now()
-    run_id = started_at.replace(":", "").replace("-", "")
+    run_id = started_at.replace(":", "").replace("-", "").replace(".", "")
 
     data_dir = data_dir or config.DATA_DIR
     web_dir = web_dir or config.WEB_DIR
     fetcher = fetcher or Fetcher(cache_dir=config.BUILD_DIR / "cache" / run_id)
 
     db = store.load(data_dir)
+
+    # Sub-second precision makes a collision unlikely, not impossible (clock
+    # resolution varies by platform) — so guard explicitly against reusing an
+    # id already present in the loaded history.
+    existing_run_ids = {r.run_id for r in db.runs}
+    if run_id in existing_run_ids:
+        suffix = 1
+        while f"{run_id}-{suffix}" in existing_run_ids:
+            suffix += 1
+        run_id = f"{run_id}-{suffix}"
+
     products, notes = collect(fetcher, db, config.CATEGORIES,
                               drop_threshold=1.0 if force else None)
 
@@ -118,7 +140,14 @@ def run(fetcher=None, data_dir=None, web_dir=None, force=False):
                   config.DUTY_PERCENT, "; ".join(notes))
     store.save(db, data_dir)
 
-    scores = score.score_all(products, db, benchmarks)
+    # From here on, data/history.csv already holds this run. A failure below
+    # must be reported as such — never as "nothing was written" — because the
+    # canonical record is safe even if these derived outputs are not.
+    try:
+        scores = score.score_all(products, db, benchmarks)
+    except Exception as error:  # noqa: BLE001 - reclassified as post-save below
+        raise RunOutputsFailed("score.score_all", error) from error
+
     meta = {
         "run_id": run_id,
         "generated_at": started_at,
@@ -131,11 +160,27 @@ def run(fetcher=None, data_dir=None, web_dir=None, force=False):
         "benchmarks": benchmarks,
     }
 
-    excel.build_workbook(products, scores, db, meta,
-                         web_dir / "downloads" / "applemac-prices.xlsx")
-    store.build_sqlite(db, web_dir / "downloads" / "prices.db")
-    report.write_latest(products, scores, db, meta, web_dir / "data" / "latest.json")
-    report.write_history(db, web_dir / "data" / "history.json")
+    try:
+        excel.build_workbook(products, scores, db, meta,
+                             web_dir / "downloads" / "applemac-prices.xlsx")
+    except Exception as error:  # noqa: BLE001 - reclassified as post-save below
+        raise RunOutputsFailed("excel.build_workbook", error) from error
+
+    try:
+        store.build_sqlite(db, web_dir / "downloads" / "prices.db")
+    except Exception as error:  # noqa: BLE001 - reclassified as post-save below
+        raise RunOutputsFailed("store.build_sqlite", error) from error
+
+    try:
+        report.write_latest(products, scores, db, meta, web_dir / "data" / "latest.json")
+    except Exception as error:  # noqa: BLE001 - reclassified as post-save below
+        raise RunOutputsFailed("report.write_latest", error) from error
+
+    try:
+        report.write_history(db, web_dir / "data" / "history.json")
+    except Exception as error:  # noqa: BLE001 - reclassified as post-save below
+        raise RunOutputsFailed("report.write_history", error) from error
+
     return meta
 
 
@@ -173,6 +218,14 @@ def main(argv=None):
     if args.command == "run":
         try:
             meta = run(force=args.force)
+        except RunOutputsFailed as error:
+            print(f"RUN PARTIALLY FAILED: {error.step} failed: {error.original}",
+                 file=sys.stderr)
+            print("The price history WAS updated and saved: data/history.csv is "
+                 "intact and correct.", file=sys.stderr)
+            print("web/ outputs may be stale or missing; re-running will "
+                 "regenerate them.", file=sys.stderr)
+            return 1
         except Exception as error:  # noqa: BLE001 - top level reports and exits
             print(f"RUN FAILED: {error}", file=sys.stderr)
             print("Nothing was written; previous data is intact.", file=sys.stderr)

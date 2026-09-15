@@ -1,6 +1,7 @@
 import pytest
 
 from scraper import cli, config, store
+from scraper.normalize import Product
 from tests.test_store import make_product
 
 
@@ -127,3 +128,69 @@ def test_two_runs_accumulate_history(tmp_path):
     db = store.load(tmp_path)
     assert len(db.runs) == 2
     assert len(db.history) == 116
+
+
+def _make_product(slug, category_slug):
+    return Product(
+        slug=slug, url=f"https://applemac.pk/product/{slug}", name=slug.upper(),
+        family="macbook_pro", category_slug=category_slug, image_url=None,
+        price=100000, old_price=None, ram_gb=8, storage_gb=256, chip="M4",
+        cpu_cores=10, gpu_cores=10, screen_size=14.0, color="Silver",
+        model_group="grp", config_key="grp_8_256",
+    )
+
+
+def test_partial_collect_success_then_later_abort_writes_nothing(tmp_path):
+    # macbook-pro-14 (first in config.CATEGORIES) will succeed this run;
+    # macbook-pro-16 (second) was previously populated and comes back empty,
+    # so collect() aborts partway through. Nothing collected so far may reach
+    # disk — the whole point of gathering everything before writing anything.
+    db = store.Database()
+    db.record_run("r0", [_make_product("a", "macbook-pro-14"),
+                        _make_product("b", "macbook-pro-16")],
+                  "2026-09-01T00:00:00", "2026-09-01T00:01:00", 277.5, 0.55, "")
+    store.save(db, tmp_path)
+    before = (tmp_path / "history.csv").read_text()
+
+    fetcher = StubFetcher({"macbook-pro-14": fixture("macbook-pro-14.html")})
+    with pytest.raises(cli.RunAborted):
+        cli.run(fetcher=fetcher, data_dir=tmp_path, web_dir=tmp_path / "web")
+
+    assert (tmp_path / "history.csv").read_text() == before
+
+
+def test_post_save_failure_preserves_history_and_message(tmp_path, monkeypatch, capsys):
+    fetcher = StubFetcher({"macbook-pro-14": fixture("macbook-pro-14.html")})
+    web = tmp_path / "web"
+
+    def boom(*args, **kwargs):
+        raise RuntimeError("workbook exploded")
+
+    monkeypatch.setattr(cli.excel, "build_workbook", boom)
+
+    with pytest.raises(cli.RunOutputsFailed) as exc:
+        cli.run(fetcher=fetcher, data_dir=tmp_path, web_dir=web)
+
+    # The price history was already saved before excel.build_workbook ran.
+    db = store.load(tmp_path)
+    assert len(db.runs) == 1
+    assert len(db.history) == 58
+
+    # main()'s message for this failure must not claim nothing was written.
+    captured_error = exc.value
+    monkeypatch.setattr(cli, "run",
+                        lambda force=False: (_ for _ in ()).throw(captured_error))
+    code = cli.main(["run"])
+    stderr = capsys.readouterr().err
+
+    assert code == 1
+    assert "Nothing was written" not in stderr
+    assert "history.csv is intact" in stderr
+
+
+def test_immediate_successive_runs_get_different_run_ids(tmp_path):
+    fetcher = StubFetcher({"macbook-pro-14": fixture("macbook-pro-14.html")})
+    web = tmp_path / "web"
+    meta1 = cli.run(fetcher=fetcher, data_dir=tmp_path, web_dir=web)
+    meta2 = cli.run(fetcher=fetcher, data_dir=tmp_path, web_dir=web)
+    assert meta1["run_id"] != meta2["run_id"]

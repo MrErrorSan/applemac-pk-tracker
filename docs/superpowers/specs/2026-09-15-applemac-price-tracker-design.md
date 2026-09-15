@@ -15,14 +15,17 @@ The tool answers three questions:
 2. How has each price moved since previous runs?
 3. Which listing is the best value right now, and why?
 
-Output is an Excel workbook plus a local web dashboard. Everything runs on one
-machine, offline except for the scrape itself.
+Output is an Excel workbook plus a web dashboard. The scrape runs unattended on
+a daily schedule in GitHub Actions and publishes to GitHub Pages, so history
+accumulates without the operator needing to remember anything. The identical
+code also runs locally on demand.
 
 ## Non-goals
 
 - No purchasing, cart interaction, or account access.
 - No other retailers. Single-site tool.
-- No hosting. The dashboard is local only.
+- No server to administer. Hosting is GitHub Pages serving static files.
+- No paid infrastructure. The whole system stays inside free tiers.
 - No Apple Watch, iPad, Mac desktop, or accessory categories.
 
 ## Site reconnaissance (verified 2026-09-15)
@@ -85,8 +88,12 @@ requests per run, lighter than a person browsing the catalogue.
 
 ```
 applemac.pk/
-├─ run.bat                    one-click entry point
+├─ run.bat                    one-click local entry point
 ├─ requirements.txt
+├─ LICENSE                    MIT
+├─ .github/workflows/
+│   ├─ scrape.yml             daily cron + manual dispatch + Pages deploy
+│   └─ keepalive.yml          monthly no-op commit (see Deployment)
 ├─ scraper/
 │   ├─ config.py              categories, weights, FX and duty settings
 │   ├─ fetch.py               HTTP: rate limiting, retry, response caching
@@ -98,15 +105,19 @@ applemac.pk/
 │   ├─ excel.py               workbook builder
 │   ├─ server.py              local HTTP server and dashboard API
 │   └─ cli.py                 entry point, orchestration
-├─ data/
-│   ├─ prices.db              SQLite price history
+├─ data/                    committed to git — the canonical record
+│   ├─ history.csv            append-only price snapshots
+│   ├─ products.csv           identity + specs
 │   ├─ apple_msrp.json        curated reference, operator-editable
-│   ├─ fx_cache.json          last known USD→PKR rate
-│   └─ latest.json            dashboard snapshot
-├─ web/dashboard.html
-├─ output/
-│   ├─ applemac-prices-latest.xlsx
-│   └─ archive/applemac-prices-YYYY-MM-DD.xlsx
+│   └─ fx_cache.json          last known USD→PKR rate
+├─ web/                     published to GitHub Pages
+│   ├─ index.html             dashboard
+│   ├─ data/latest.json       current snapshot with scores
+│   ├─ data/history.json      per-product series for sparklines
+│   └─ downloads/
+│       ├─ applemac-prices.xlsx
+│       └─ prices.db          generated SQLite, for offline analysis
+├─ build/                   gitignored scratch (raw HTML cache)
 ├─ tests/
 │   └─ fixtures/              saved category HTML
 └─ docs/
@@ -132,8 +143,8 @@ Categories whose slug contains `-old` or `-used` are excluded by configuration.
 
 Rate-limited GET with retry on transient failures (3 attempts, exponential
 backoff). Raises `FetchError` on permanent failure. Caches raw HTML per run
-under `data/cache/<run_id>/` so parsing can be re-run and debugged without
-re-hitting the site.
+under `build/cache/<run_id>/` (gitignored) so parsing can be re-run and
+debugged without re-hitting the site.
 
 ### `parse.py`
 `parse_category(html, slug) -> list[RawProduct]`
@@ -159,7 +170,27 @@ Unparseable specs become `None` rather than raising. The product still tracks;
 it simply scores `None` on spec-dependent signals.
 
 ### `store.py`
-SQLite, three tables:
+
+**Canonical storage is CSV in git, not the SQLite file.** Two committed files:
+
+- `data/products.csv` — one row per slug: identity and specs, updated in place.
+- `data/history.csv` — append-only, one row per product per run:
+  `run_id, slug, price, old_price, seen_at`.
+
+Text was chosen over a binary `.db` deliberately. A committed SQLite file
+rewrites wholly on every run, so a year of daily commits bloats the repository
+and yields diffs no human can read. Append-only CSV diffs show exactly which
+prices moved, stay reviewable in ten years, and keep clone size small.
+
+`data/runs.csv` records per-run metadata: `run_id, started_at, finished_at,
+status, fx_rate, duty_percent, product_count, notes`.
+
+SQLite is still used — built fresh in memory (or at
+`web/downloads/prices.db`) from the CSVs at the start of each run, which makes
+history queries easy to express and gives the operator a real database to
+download. It is a derived artifact; deleting it loses nothing.
+
+Schema of the derived database:
 
 ```sql
 runs      (run_id PK, started_at, finished_at, status,
@@ -174,6 +205,10 @@ snapshots (id PK, run_id FK, slug FK, price, old_price, seen_at)
 
 Snapshots are append-only; nothing is overwritten. `products` rows update in
 place when specs or names change, with `last_seen` refreshed each run.
+
+Load and save are the boundary: `load() -> Database` reads the CSVs, and
+`save(db)` writes them back atomically (temp file then rename) so an interrupted
+run cannot leave a truncated history.
 
 Query helpers: `price_history(slug)`, `previous_run()`, `median_price(slug, days)`,
 `changes_since(run_id)`.
@@ -249,13 +284,22 @@ Two support sheets:
 - **Price Changes** — every product whose price moved since the previous run,
   with direction, absolute delta and percent, sorted by largest drop first.
 
-Writes `output/applemac-prices-latest.xlsx` and a dated archive copy.
+Writes `web/downloads/applemac-prices.xlsx`, published with the dashboard and
+downloadable from it. Dated archive copies are not kept as files — git history
+already holds every prior version of the underlying CSVs, and any past
+workbook can be regenerated from them.
 
-### `server.py` and `web/dashboard.html`
-`run.bat` starts `python -m scraper.cli serve`, which binds `127.0.0.1` on a free
-port and opens the browser.
+### `server.py` and `web/index.html`
 
-Endpoints:
+The dashboard is **one HTML file that works in two modes**, detected at load time
+by whether `/api/latest` responds:
+
+**Static mode (GitHub Pages).** Fetches `data/latest.json` and
+`data/history.json` as plain files. Everything renders: deal cards, sortable
+table, sparklines, weight sliders. Fully functional, read-only.
+
+**Live mode (local `run.bat`).** `python -m scraper.cli serve` binds `127.0.0.1`
+on a free port and opens the browser, adding a working **Refresh Prices** button.
 
 | Route | Purpose |
 |---|---|
@@ -265,10 +309,67 @@ Endpoints:
 | `GET /api/history/<slug>` | price series for sparklines |
 | `POST /api/open-excel` | open the workbook in the default handler |
 
-The dashboard shows last-run time, a **Refresh Prices** button with live
-progress, top-deal cards, a sortable and filterable table, per-product price
-sparklines, and sliders for the scoring weights that re-rank client-side
-without re-scraping. Bound to localhost only.
+Scoring-weight sliders re-rank client-side in both modes, with no re-scrape.
+The server binds localhost only and is never exposed.
+
+**Why the hosted dashboard has no refresh button.** Triggering a workflow from a
+static page requires an API token in client-side JavaScript, where anyone can
+read it. The hosted page instead links to the repository's *Run workflow*
+button — one click, works from a phone, no credential exposed.
+
+## Deployment and automation
+
+One platform: GitHub. No other account or service is required.
+
+```
+.github/workflows/scrape.yml   (cron: daily + workflow_dispatch)
+   ├─ checkout, install deps
+   ├─ python -m scraper.cli run
+   ├─ commit data/*.csv and web/ if anything changed
+   └─ deploy web/ to GitHub Pages
+```
+
+**Repository is public**, which gives unlimited Actions minutes and free Pages
+hosting. The operator accepted that the collected price history and dashboard
+are publicly visible. The data itself is public retail pricing; what becomes
+visible is the *analysis* — which listings are judged good value.
+
+**Schedule: daily.** Verified against the free limits, the job is roughly 2
+minutes and ~14 outbound requests, far inside every quota.
+
+**Manual runs** via `workflow_dispatch` — a *Run workflow* button in the Actions
+tab, usable from any device.
+
+### The 60-day inactivity rule
+
+In a public repository, scheduled workflows are disabled automatically after 60
+days with no repository activity, and **only new commits reset that timer** —
+tags, issues and merged PRs do not. Daily runs commit price data, so the
+schedule sustains itself.
+
+Reports persist, however, of workflows being disabled despite automated commits,
+since commits made with `GITHUB_TOKEN` are not consistently treated as activity.
+The mitigation is cheap, so it is included rather than gambled on:
+`keepalive.yml` runs monthly and makes a trivial commit. GitHub also emails
+before disabling, and re-enabling is one click.
+
+### Backup
+
+Every run is a commit, so `git clone` retrieves the complete history *and every
+prior version of it* — strictly better than a periodic database export, and it
+needs no discipline from the operator. The generated `prices.db` and `.xlsx`
+are also downloadable directly from the dashboard.
+
+### Local use is unchanged
+
+`run.bat` still performs a full local scrape, writes the same CSVs and workbook,
+and serves the live dashboard. The same `scraper.cli` entry point runs in CI and
+locally — no CI-only code path exists, so what is tested locally is what runs
+unattended.
+
+## License
+
+MIT, in `LICENSE` at the repository root.
 
 ## Failure handling
 
@@ -286,7 +387,14 @@ every later comparison inherits. The run is therefore transactional.
 | Unparseable spec field | Continue, field is `None`, product still tracked |
 
 Snapshots are written only after every category parses successfully. A failed
-run leaves `prices.db` exactly as it was.
+run leaves `data/history.csv` exactly as it was.
+
+**In CI this matters more than locally.** An aborted run must exit non-zero,
+commit nothing, and leave the previous dashboard published — a visibly stale
+dashboard is far better than a silently wrong one. The failure surfaces as a
+red run in the Actions tab and an email from GitHub. The dashboard also displays
+its data's age prominently, so a stale page announces itself rather than looking
+current.
 
 ## Testing
 
@@ -318,7 +426,13 @@ These are stated so the output is not over-trusted:
 4. **MSRP data is manual.** New Apple configurations score `None` on `vs_apple`
    until added to `apple_msrp.json`. Gaps are surfaced, never hidden.
 5. **Markup changes will break parsing.** This is expected and detected loudly
-   rather than absorbed silently.
+   rather than absorbed silently. Unattended running raises the stakes: a break
+   means the schedule stops collecting until fixed, so failures must be noisy.
+6. **Scheduled runs can be delayed** during periods of heavy GitHub Actions
+   load, and heavily queued jobs may occasionally be dropped. At a daily
+   cadence an occasional missed or late run is immaterial.
+7. **The repository is public.** The price history and the deal analysis are
+   visible to anyone, including the retailer being tracked.
 
 ## Appendix: configured categories
 
@@ -341,10 +455,13 @@ To track another line, add its slug here — no code change.
 ## Build order
 
 1. `fetch` + `parse` + `normalize` → products on stdout
-2. `store` → history persists across runs
+2. `store` → history persists across runs as CSV
 3. `excel` → usable workbook (**first genuinely useful milestone**)
 4. `benchmark` + `score` → deal ranking
-5. `server` + dashboard + `run.bat` → one-click operation
+5. `server` + dashboard + `run.bat` → one-click local operation
+6. `.github/workflows/` + Pages → unattended daily runs, hosted dashboard
 
 Each stage leaves a working tool. Stopping after stage 3 still yields a sorted
-price sheet.
+price sheet. Stage 6 is what closes the data-gap problem, but it is deliberately
+last: automating a scraper that has not been validated against real data would
+just accumulate wrong history unattended.

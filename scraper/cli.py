@@ -63,8 +63,13 @@ def collect(fetcher, db, categories, previous_counts=None, drop_threshold=None):
                 )
 
         dropped = 0
+        excluded = 0
         for raw in raw_products:
             if raw.slug in by_slug:      # leaf categories overlap the catch-all
+                continue
+            slug_lower = raw.slug.lower()
+            if any(pattern in slug_lower for pattern in config.EXCLUDE_SLUG_PATTERNS):
+                excluded += 1
                 continue
             product = normalize(raw, family)
             if product is None:
@@ -73,19 +78,28 @@ def collect(fetcher, db, categories, previous_counts=None, drop_threshold=None):
             by_slug[raw.slug] = product
         if dropped:
             notes.append(f"{category_slug}: {dropped} rows had no usable price")
+        if excluded:
+            notes.append(f"{category_slug}: {excluded} rows excluded by slug pattern")
 
     return list(by_slug.values()), notes
 
 
-def coverage_gaps(sitemap_xml, collected_slugs, pattern="iphone"):
+def coverage_gaps(sitemap_xml, collected_slugs, pattern=r"iphone-(?:\d|air)"):
     """Sitemap product slugs matching `pattern` that no category yielded.
+
+    `pattern` is a regex (case-insensitive), matched with `re.search` — the
+    default requires an `iphone-<digit>` or `iphone-air` shape so it catches
+    handset slugs (e.g. "apple-iphone-17-pro-max-2tb") without also matching
+    every accessory that merely contains the word "iphone" (e.g.
+    "apple-18w-usb-c-iphone-charger").
 
     Reports only. A gap means a category is missing from config, not that the
     run is wrong, so this never aborts.
     """
     found = re.findall(r"<loc>[^<]*?/product/([^<]+)</loc>", sitemap_xml)
     return sorted({slug.rstrip("/") for slug in found
-                   if pattern in slug and slug.rstrip("/") not in collected_slugs})
+                   if re.search(pattern, slug, re.IGNORECASE)
+                   and slug.rstrip("/") not in collected_slugs})
 
 
 def run(fetcher=None, data_dir=None, web_dir=None, force=False):
@@ -144,7 +158,10 @@ def run(fetcher=None, data_dir=None, web_dir=None, force=False):
     # must be reported as such — never as "nothing was written" — because the
     # canonical record is safe even if these derived outputs are not.
     try:
-        scores = score.score_all(products, db, benchmarks)
+        # Exclude this run's own just-saved snapshots from vs_history's
+        # median — otherwise a first-ever run compares today's price
+        # against itself and fabricates vs_history == 0.0 for everything.
+        scores = score.score_all(products, db, benchmarks, exclude_run_id=run_id)
     except Exception as error:  # noqa: BLE001 - reclassified as post-save below
         raise RunOutputsFailed("score.score_all", error) from error
 

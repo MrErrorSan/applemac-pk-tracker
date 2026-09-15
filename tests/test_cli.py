@@ -49,6 +49,40 @@ def test_coverage_gaps_is_empty_when_everything_collected():
                                        "apple-iphone-99-unseen"}) == []
 
 
+def test_coverage_gaps_excludes_accessories_containing_iphone():
+    sitemap = """<?xml version="1.0"?>
+    <urlset><url><loc>https://applemac.pk/product/apple-18w-usb-c-iphone-charger</loc></url>
+    <url><loc>https://applemac.pk/product/apple-iphone-11-4gb-ram-128gb-storage</loc></url></urlset>"""
+    gaps = cli.coverage_gaps(sitemap, set())
+    assert "apple-18w-usb-c-iphone-charger" not in gaps
+    assert "apple-iphone-11-4gb-ram-128gb-storage" in gaps
+
+
+def test_coverage_gaps_includes_iphone_air_handsets():
+    sitemap = """<?xml version="1.0"?>
+    <urlset><url><loc>https://applemac.pk/product/apple-iphone-air-256gb</loc></url></urlset>"""
+    assert cli.coverage_gaps(sitemap, set()) == ["apple-iphone-air-256gb"]
+
+
+SE_LEAK_HTML = """
+<div id="main_categoryinner">
+  <div class="pdt" data-price="119999" data-ram="3" data-storage="64">
+    <a href="/product/iphone-se-2020-64gb"><h3 class="product-title-name">iPhone SE (2020)</h3></a>
+  </div>
+  <div class="pdt" data-price="250000" data-ram="6" data-storage="128">
+    <a href="/product/iphone-17-128gb"><h3 class="product-title-name">iPhone 17</h3></a>
+  </div>
+</div>
+"""
+
+
+def test_collect_excludes_products_matching_exclude_slug_patterns():
+    fetcher = StubFetcher({"iphone": SE_LEAK_HTML})
+    products, notes = cli.collect(fetcher, store.Database(), {"iphone": "iphone"})
+    assert {p.slug for p in products} == {"iphone-17-128gb"}
+    assert any("excluded by slug pattern" in n for n in notes)
+
+
 def test_collect_dedupes_slugs_across_categories():
     html = fixture("iphone-17-pro-max.html")
     fetcher = StubFetcher({"iphone-17-pro-max": html, "iphone": html})
@@ -186,6 +220,19 @@ def test_post_save_failure_preserves_history_and_message(tmp_path, monkeypatch, 
     assert code == 1
     assert "Nothing was written" not in stderr
     assert "history.csv is intact" in stderr
+
+
+def test_first_ever_run_has_no_fabricated_vs_history(tmp_path):
+    """A first-ever run must not compare a product's price to its own snapshot."""
+    import json
+
+    fetcher = StubFetcher({"macbook-pro-14": fixture("macbook-pro-14.html")})
+    web = tmp_path / "web"
+    cli.run(fetcher=fetcher, data_dir=tmp_path, web_dir=web)
+
+    latest = json.loads((web / "data" / "latest.json").read_text(encoding="utf-8"))
+    for row in latest["products"]:
+        assert row["scores"]["vs_history"] is None
 
 
 def test_immediate_successive_runs_get_different_run_ids(tmp_path):

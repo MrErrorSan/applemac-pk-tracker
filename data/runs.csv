@@ -1,0 +1,2 @@
+run_id,started_at,finished_at,status,fx_rate,duty_percent,product_count,notes
+20260915T150339+0000,2026-09-15T15:03:39+00:00,2026-09-15T15:04:19+00:00,ok,277.757506,0.55,192,"macbook-air-13: 1 rows had no usable price; iphone-16: empty; iphone-16-plus: empty; iphone-16-pro: empty; iphone-16-pro-max: empty; iphone-16e: empty; 291 iPhone products in the sitemap matched no configured category (e.g. apple-18w-usb-c-iphone-charger, apple-20w-usb-c-iphone-charger, apple-iphone-11-4gb-ram-128gb-storage)"

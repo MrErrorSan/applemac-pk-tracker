@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>applemac.pk Price Tracker</title>
+<style>
+:root { --bg:#f6f6f7; --fg:#1d1d1f; --muted:#6e6e73; --card:#fff;
+        --line:#e3e3e6; --good:#1a7f37; --bad:#c0392b; --accent:#0071e3; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#161617; --fg:#f5f5f7; --muted:#9a9a9e; --card:#1f1f21;
+          --line:#303033; --good:#3fb950; --bad:#f85149; --accent:#2997ff; }
+}
+* { box-sizing:border-box; }
+body { margin:0; padding:24px 16px; background:var(--bg); color:var(--fg);
+       font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+.wrap { max-width:1400px; margin:0 auto; }
+h1 { font-size:22px; margin:0 0 4px; }
+.sub { color:var(--muted); margin-bottom:20px; }
+.stale { background:#c0392b; color:#fff; padding:8px 12px; border-radius:8px;
+         margin-bottom:16px; }
+.bar { display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+       margin-bottom:18px; }
+button, select, input[type=search] { font:inherit; padding:7px 12px;
+  border:1px solid var(--line); border-radius:8px; background:var(--card);
+  color:var(--fg); }
+button.primary { background:var(--accent); color:#fff; border-color:transparent;
+  cursor:pointer; }
+button.primary:disabled { opacity:.5; cursor:default; }
+.cards { display:grid; gap:12px; margin-bottom:24px;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); }
+.card { background:var(--card); border:1px solid var(--line); border-radius:12px;
+        padding:14px; }
+.card .name { font-weight:600; margin-bottom:6px; }
+.card .price { font-size:19px; font-weight:700; }
+.score { display:inline-block; padding:2px 8px; border-radius:99px;
+         background:var(--good); color:#fff; font-size:12px; font-weight:600; }
+.tablewrap { overflow-x:auto; background:var(--card);
+             border:1px solid var(--line); border-radius:12px; }
+table { border-collapse:collapse; width:100%; min-width:900px; }
+th, td { padding:8px 10px; text-align:left; border-bottom:1px solid var(--line);
+         white-space:nowrap; }
+th { cursor:pointer; user-select:none; font-size:12px; color:var(--muted);
+     position:sticky; top:0; background:var(--card); }
+td.num, th.num { text-align:right; }
+.down { color:var(--good); } .up { color:var(--bad); }
+a { color:var(--accent); text-decoration:none; }
+.muted { color:var(--muted); }
+#log { white-space:pre-wrap; font-family:ui-monospace,monospace; font-size:12px;
+       color:var(--muted); margin-top:8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>applemac.pk Price Tracker</h1>
+  <div class="sub" id="subtitle">Loading…</div>
+  <div id="staleWarning"></div>
+
+  <div class="bar">
+    <button class="primary" id="refresh" hidden>Refresh Prices</button>
+    <select id="family">
+      <option value="">All families</option>
+      <option value="macbook_pro">MacBook Pro</option>
+      <option value="macbook_air">MacBook Air</option>
+      <option value="iphone">iPhone</option>
+    </select>
+    <input type="search" id="search" placeholder="Filter by name…">
+    <a id="xlsx" href="downloads/applemac-prices.xlsx">Excel</a>
+    <a id="db" href="downloads/prices.db">Database</a>
+  </div>
+  <div id="log"></div>
+
+  <h2 style="font-size:16px;">Top deals</h2>
+  <div class="cards" id="cards"></div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr id="head"></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+const COLUMNS = [
+  {key:"name",     label:"Product",          type:"text"},
+  {key:"price",    label:"Price",            type:"money"},
+  {key:"delta",    label:"Δ Last Run",       type:"delta"},
+  {key:"benchmark",label:"Est. Apple Landed",type:"money"},
+  {key:"chip",     label:"Chip",             type:"text"},
+  {key:"ram_gb",   label:"RAM",              type:"num"},
+  {key:"storage_gb",label:"Storage",         type:"num"},
+  {key:"deal",     label:"Deal Score",       type:"num"},
+];
+
+let state = {products:[], meta:{}, sort:"deal", dir:-1, live:false};
+
+const pkr = n => n == null ? "—" : "PKR " + n.toLocaleString("en-US");
+
+async function boot() {
+  let payload = null;
+  try {
+    const live = await fetch("api/latest", {cache:"no-store"});
+    if (live.ok) { payload = await live.json(); state.live = true; }
+  } catch (e) { /* static mode */ }
+  if (!payload) {
+    try {
+      payload = await (await fetch("data/latest.json", {cache:"no-store"})).json();
+    } catch (e) {
+      document.getElementById("subtitle").textContent =
+        "No data yet. Run the scraper to populate the dashboard.";
+      return;
+    }
+  }
+  state.products = payload.products || [];
+  state.meta = payload.meta || {};
+  document.getElementById("refresh").hidden = !state.live;
+  render();
+}
+
+function ageWarning(generatedAt) {
+  if (!generatedAt) return "";
+  const days = (Date.now() - new Date(generatedAt)) / 86400000;
+  if (days < 3) return "";
+  return `<div class="stale">Data is ${Math.floor(days)} days old —
+          the last scheduled run may have failed.</div>`;
+}
+
+function render() {
+  const m = state.meta;
+  document.getElementById("subtitle").innerHTML =
+    `${state.products.length} products · updated ${m.generated_at || "—"}
+     · USD→PKR ${m.fx_rate ?? "—"}${m.fx_stale ? " (stale)" : ""}
+     · duty ${m.duty_percent != null ? Math.round(m.duty_percent*100) + "%" : "—"}
+     <span class="muted">· “Est. Apple Landed” is an estimate, not an official price</span>`;
+  document.getElementById("staleWarning").innerHTML = ageWarning(m.generated_at);
+
+  const head = document.getElementById("head");
+  head.innerHTML = COLUMNS.map(c =>
+    `<th class="${c.type === "text" ? "" : "num"}" data-key="${c.key}">${c.label}</th>`
+  ).join("");
+  head.querySelectorAll("th").forEach(th => th.onclick = () => {
+    const key = th.dataset.key;
+    state.dir = state.sort === key ? -state.dir : -1;
+    state.sort = key;
+    renderRows();
+  });
+
+  const ranked = [...state.products]
+    .sort((a,b) => b.scores.deal_score - a.scores.deal_score).slice(0,6);
+  document.getElementById("cards").innerHTML = ranked.map(p => `
+    <div class="card">
+      <div class="name"><a href="${p.url}" target="_blank" rel="noopener">${p.name}</a></div>
+      <div class="price">${pkr(p.price)}</div>
+      <div class="muted" style="margin:6px 0;">
+        ${p.benchmark ? "Est. Apple Landed " + pkr(p.benchmark) : "No Apple benchmark"}
+      </div>
+      <span class="score">Deal ${p.scores.deal_score}</span>
+      <span class="muted"> · ${p.scores.confidence}/5 signals</span>
+    </div>`).join("");
+
+  renderRows();
+}
+
+function renderRows() {
+  const family = document.getElementById("family").value;
+  const term = document.getElementById("search").value.toLowerCase();
+  const value = (p, key) => key === "deal" ? p.scores.deal_score : p[key];
+
+  const rows = state.products
+    .filter(p => !family || p.family === family)
+    .filter(p => !term || p.name.toLowerCase().includes(term))
+    .sort((a,b) => {
+      const x = value(a, state.sort), y = value(b, state.sort);
+      if (x == null) return 1;
+      if (y == null) return -1;
+      return (x > y ? 1 : x < y ? -1 : 0) * state.dir;
+    });
+
+  document.getElementById("rows").innerHTML = rows.map(p => `<tr>${
+    COLUMNS.map(c => {
+      const v = value(p, c.key);
+      if (c.type === "money") return `<td class="num">${pkr(v)}</td>`;
+      if (c.type === "delta") {
+        if (v == null || v === 0) return `<td class="num muted">—</td>`;
+        return `<td class="num ${v < 0 ? "down" : "up"}">
+                ${v < 0 ? "▼" : "▲"} ${pkr(Math.abs(v))}</td>`;
+      }
+      if (c.key === "name")
+        return `<td><a href="${p.url}" target="_blank" rel="noopener">${p.name}</a></td>`;
+      return `<td class="${c.type === "num" ? "num" : ""}">${v ?? "—"}</td>`;
+    }).join("")
+  }</tr>`).join("");
+}
+
+document.getElementById("family").onchange = renderRows;
+document.getElementById("search").oninput = renderRows;
+document.getElementById("refresh").onclick = async () => {
+  const button = document.getElementById("refresh");
+  const log = document.getElementById("log");
+  button.disabled = true;
+  button.textContent = "Scraping… (about 30s)";
+  log.textContent = "";
+  try {
+    const response = await fetch("api/refresh", {method:"POST"});
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error || "run failed");
+    log.textContent = `Done: ${result.product_count} products.`;
+    await boot();
+  } catch (error) {
+    log.textContent = "FAILED: " + error.message +
+      "\nPrevious data is intact.";
+  } finally {
+    button.disabled = false;
+    button.textContent = "Refresh Prices";
+  }
+};
+
+boot();
+</script>
+</body>
+</html>

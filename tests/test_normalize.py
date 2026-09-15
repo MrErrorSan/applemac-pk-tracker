@@ -122,6 +122,14 @@ def test_normalize_returns_none_without_a_price():
     assert normalize(priceless, "macbook_pro") is None
 
 
+def test_normalize_returns_none_for_zero_price():
+    """data-price="0" marks an unannounced / made-to-order listing, not a free item."""
+    raw = parse_category(fixture("macbook-pro-14.html"), "macbook-pro-14")[0]
+    unpriced = type(raw)(**{**raw.__dict__, "price_attr": "0",
+                            "new_price_text": None})
+    assert normalize(unpriced, "macbook_pro") is None
+
+
 def test_every_fixture_product_normalizes():
     for name, family in (("macbook-pro-14.html", "macbook_pro"),
                          ("iphone-17-pro-max.html", "iphone")):

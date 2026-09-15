@@ -38,6 +38,28 @@ def test_vs_history_rewards_a_drop():
     assert scores["a"].vs_history == 20.0
 
 
+def test_vs_history_is_none_on_a_first_ever_run():
+    """The current run's own just-recorded snapshot must not be its own history."""
+    db = store.Database()
+    db.record_run("r1", [make_product("a", price=100000)], "2026-09-01T00:00:00",
+                  "2026-09-01T00:01:00", 277.5, 0.55, "")
+    product = make_product("a", price=100000)
+    scores = score.score_all([product], db, {}, exclude_run_id="r1")
+    assert scores["a"].vs_history is None
+    assert scores["a"].confidence == 0
+
+
+def test_vs_history_uses_prior_history_when_current_run_excluded():
+    db = store.Database()
+    db.record_run("r1", [make_product("a", price=100000)], "2026-09-01T00:00:00",
+                  "2026-09-01T00:01:00", 277.5, 0.55, "")
+    db.record_run("r2", [make_product("a", price=80000)], "2026-09-02T00:00:00",
+                  "2026-09-02T00:01:00", 277.5, 0.55, "")
+    product = make_product("a", price=80000)
+    scores = score.score_all([product], db, {}, exclude_run_id="r2")
+    assert scores["a"].vs_history == 20.0
+
+
 def test_vs_peers_ranks_cheapest_highest():
     products = [make_product("a", price=100000, config_key="k"),
                 make_product("b", price=200000, config_key="k"),
@@ -129,6 +151,32 @@ def test_spec_value_does_not_penalize_higher_ram():
     # b has 50% more RAM for 28% more price, roughly proportionate
     # Should not be penalized compared to a
     assert scores["b"].spec_value >= scores["a"].spec_value
+
+
+def test_rank_within_group_ignores_non_positive_values():
+    """A zero (or negative) value must not compress the real members' range."""
+    ranker = score._rank_within_group([0, 100, 200, 300])
+    assert ranker is not None
+    # Real members should span the full 0-100 band based on 100..300 only,
+    # not be flattened toward 0 because a zero set `lowest`.
+    assert ranker(100) == 100.0
+    assert ranker(300) == 0.0
+    assert ranker(200) == 50.0
+
+
+def test_rank_within_group_returns_none_when_only_one_usable_value():
+    assert score._rank_within_group([0, 100]) is None
+    assert score._rank_within_group([0, 0]) is None
+
+
+def test_vs_peers_not_flattened_by_a_zero_priced_peer():
+    """A zero-priced listing in the same config_key must not collapse vs_peers."""
+    products = [make_product("a", price=0, config_key="k"),
+                make_product("b", price=100000, config_key="k"),
+                make_product("c", price=300000, config_key="k")]
+    scores = score.score_all(products, store.Database(), {})
+    assert scores["b"].vs_peers == 100.0
+    assert scores["c"].vs_peers == 0.0
 
 
 def test_spec_value_is_none_for_lone_product_in_model_group():

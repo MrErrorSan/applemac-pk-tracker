@@ -26,16 +26,24 @@ def percent_below(price, reference):
 
 
 def _rank_within_group(values):
-    """Map value -> 0-100 where the lowest value scores 100."""
-    if len(values) < 2:
+    """Map value -> 0-100 where the lowest value scores 100.
+
+    Non-positive values are never real signal (a zero price, a zero spec
+    ratio) and must not be allowed to set `lowest` — that would flatten
+    every genuine value in the group toward 0. Defensive: normalize()
+    already keeps zero prices out, but this guard holds even if one slips
+    through another path.
+    """
+    usable = [v for v in values if v is not None and v > 0]
+    if len(usable) < 2:
         return None
-    lowest, highest = min(values), max(values)
+    lowest, highest = min(usable), max(usable)
     if highest == lowest:
         return None
     return lambda v: (highest - v) / (highest - lowest) * 100
 
 
-def score_all(products, db, benchmarks, weights=None, now=None):
+def score_all(products, db, benchmarks, weights=None, now=None, exclude_run_id=None):
     weights = weights or config.WEIGHTS
 
     peers = defaultdict(list)
@@ -53,7 +61,8 @@ def score_all(products, db, benchmarks, weights=None, now=None):
     for product in products:
         vs_apple = percent_below(product.price, benchmarks.get(product.slug))
 
-        median = db.median_price(product.slug, config.HISTORY_WINDOW_DAYS, now=now)
+        median = db.median_price(product.slug, config.HISTORY_WINDOW_DAYS,
+                                 now=now, exclude_run_id=exclude_run_id)
         vs_history = percent_below(product.price, median)
 
         ranker = peer_rankers.get(product.config_key)

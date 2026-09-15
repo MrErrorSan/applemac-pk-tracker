@@ -79,11 +79,13 @@ class Database:
     def snapshots_for_run(self, run_id):
         return {s.slug: s for s in self.history if s.run_id == run_id}
 
-    def median_price(self, slug, days, now=None):
+    def median_price(self, slug, days, now=None, exclude_run_id=None):
         now = now or dt.datetime.now(dt.timezone.utc)
         cutoff = now - dt.timedelta(days=days)
         prices = []
         for snapshot in self.price_history(slug):
+            if exclude_run_id is not None and snapshot.run_id == exclude_run_id:
+                continue
             try:
                 seen = dt.datetime.fromisoformat(snapshot.seen_at)
             except ValueError:

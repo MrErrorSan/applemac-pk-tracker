@@ -89,7 +89,11 @@ def normalize(raw, family):
         price = parse_price(raw.price_attr)
     if price is None:
         price = parse_price(raw.new_price_text)
-    if price is None:
+    if price is None or price <= 0:
+        # A non-positive price means the site has no real price to show
+        # (data-price="0" marks unannounced / made-to-order listings). That
+        # is the same "no usable price" case as a price that failed to
+        # parse at all — never a real PKR 0 deal.
         return None
 
     old_price = parse_price(raw.old_price_text)

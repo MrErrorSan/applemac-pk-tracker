@@ -85,6 +85,40 @@ def test_median_price_none_without_history():
     assert store.Database().median_price("nope", days=90) is None
 
 
+def test_median_price_over_several_in_window_prices():
+    db = store.Database()
+    now = dt.datetime(2026, 9, 15, tzinfo=dt.timezone.utc)
+    days_ago = [1, 2, 3, 4, 5]
+    prices = [100000, 110000, 90000, 105000, 95000]
+    for i, (age, price) in enumerate(zip(days_ago, prices)):
+        seen = (now - dt.timedelta(days=age)).isoformat()
+        db.record_run(f"run{i}", [make_product(price=price)], seen, seen,
+                      277.5, 0.55, "")
+    assert db.median_price("a", days=90, now=now) == 100000
+
+
+def test_median_price_excludes_given_run_id():
+    """A run comparing its own just-saved snapshot to itself would fabricate a 0."""
+    db = store.Database()
+    now = dt.datetime(2026, 9, 15, tzinfo=dt.timezone.utc)
+    started = now.isoformat()
+    db.record_run("today", [make_product(price=100000)], started, started,
+                  277.5, 0.55, "")
+    assert db.median_price("a", days=90, now=now, exclude_run_id="today") is None
+
+
+def test_median_price_excludes_only_the_named_run():
+    db = store.Database()
+    now = dt.datetime(2026, 9, 15, tzinfo=dt.timezone.utc)
+    prior = (now - dt.timedelta(days=5)).isoformat()
+    today = now.isoformat()
+    db.record_run("prior", [make_product(price=150000)], prior, prior,
+                  277.5, 0.55, "")
+    db.record_run("today", [make_product(price=100000)], today, today,
+                  277.5, 0.55, "")
+    assert db.median_price("a", days=90, now=now, exclude_run_id="today") == 150000
+
+
 def test_save_is_atomic_leaving_no_temp_files(tmp_path):
     db = store.Database()
     db.record_run("run1", [make_product()], "2026-09-01T00:00:00",

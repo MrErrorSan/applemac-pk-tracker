@@ -97,6 +97,17 @@ let state = {products:[], meta:{}, sort:"deal", dir:-1, live:false};
 
 const pkr = n => n == null ? "—" : "PKR " + n.toLocaleString("en-US");
 
+const ESCAPE_MAP = {"&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"};
+const esc = s => s == null ? "" : String(s).replace(/[&<>"']/g, c => ESCAPE_MAP[c]);
+const safeHref = url => (typeof url === "string" && url.startsWith("https://applemac.pk/"))
+  ? esc(url) : null;
+const link = (url, label) => {
+  const href = safeHref(url);
+  return href
+    ? `<a href="${href}" target="_blank" rel="noopener">${esc(label)}</a>`
+    : esc(label);
+};
+
 async function boot() {
   let payload = null;
   try {
@@ -150,7 +161,7 @@ function render() {
     .sort((a,b) => b.scores.deal_score - a.scores.deal_score).slice(0,6);
   document.getElementById("cards").innerHTML = ranked.map(p => `
     <div class="card">
-      <div class="name"><a href="${p.url}" target="_blank" rel="noopener">${p.name}</a></div>
+      <div class="name">${link(p.url, p.name)}</div>
       <div class="price">${pkr(p.price)}</div>
       <div class="muted" style="margin:6px 0;">
         ${p.benchmark ? "Est. Apple Landed " + pkr(p.benchmark) : "No Apple benchmark"}
@@ -187,8 +198,8 @@ function renderRows() {
                 ${v < 0 ? "▼" : "▲"} ${pkr(Math.abs(v))}</td>`;
       }
       if (c.key === "name")
-        return `<td><a href="${p.url}" target="_blank" rel="noopener">${p.name}</a></td>`;
-      return `<td class="${c.type === "num" ? "num" : ""}">${v ?? "—"}</td>`;
+        return `<td>${link(p.url, p.name)}</td>`;
+      return `<td class="${c.type === "num" ? "num" : ""}">${esc(v ?? "—")}</td>`;
     }).join("")
   }</tr>`).join("");
 }
@@ -204,12 +215,19 @@ document.getElementById("refresh").onclick = async () => {
   try {
     const response = await fetch("api/refresh", {method:"POST"});
     const result = await response.json();
-    if (!response.ok) throw new Error(result.error || "run failed");
+    if (!response.ok) {
+      const error = new Error(result.error || "run failed");
+      error.historySaved = !!result.history_saved;
+      throw error;
+    }
     log.textContent = `Done: ${result.product_count} products.`;
     await boot();
   } catch (error) {
-    log.textContent = "FAILED: " + error.message +
-      "\nPrevious data is intact.";
+    const followUp = error.historySaved
+      ? "\nThe price history WAS updated and saved. The workbook/JSON " +
+        "outputs may be stale until the next successful run."
+      : "\nPrevious data is intact.";
+    log.textContent = "FAILED: " + error.message + followUp;
   } finally {
     button.disabled = false;
     button.textContent = "Refresh Prices";

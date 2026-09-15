@@ -6,7 +6,7 @@ from http.server import HTTPServer
 
 import pytest
 
-from scraper import server
+from scraper import cli, server
 
 
 @pytest.fixture
@@ -50,3 +50,43 @@ def test_directory_traversal_is_blocked(live_server):
     with pytest.raises(urllib.error.HTTPError) as exc:
         get(f"{live_server}/../../etc/passwd")
     assert exc.value.code in (400, 403, 404)
+
+
+def post(url, data=b""):
+    req = urllib.request.Request(url, data=data, method="POST")
+    with urllib.request.urlopen(req, timeout=5) as response:
+        return response.status, response.read().decode("utf-8")
+
+
+def test_refresh_generic_failure_reports_history_not_saved(live_server, monkeypatch):
+    def boom(web_dir=None):
+        raise RuntimeError("network is down")
+
+    monkeypatch.setattr(cli, "run", boom)
+
+    with pytest.raises(urllib.error.HTTPError) as exc:
+        post(f"{live_server}/api/refresh")
+    assert exc.value.code == 500
+    payload = json.loads(exc.value.read().decode("utf-8"))
+    assert payload["history_saved"] is False
+    assert "network is down" in payload["error"]
+
+
+def test_refresh_run_outputs_failed_reports_history_saved(live_server, monkeypatch):
+    def boom(web_dir=None):
+        raise cli.RunOutputsFailed("report.write_latest", ValueError("disk full"))
+
+    monkeypatch.setattr(cli, "run", boom)
+
+    with pytest.raises(urllib.error.HTTPError) as exc:
+        post(f"{live_server}/api/refresh")
+    assert exc.value.code == 500
+    payload = json.loads(exc.value.read().decode("utf-8"))
+    assert payload["history_saved"] is True
+    assert "price history was saved" in payload["error"]
+
+
+def test_post_unknown_path_is_404(live_server):
+    with pytest.raises(urllib.error.HTTPError) as exc:
+        post(f"{live_server}/nope")
+    assert exc.value.code == 404

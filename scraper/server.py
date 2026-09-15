@@ -62,11 +62,19 @@ def make_handler(web_dir):
         def do_POST(self):
             if self.path != "/api/refresh":
                 return self._send(404, '{"error":"not found"}')
-            from .cli import run
+            from .cli import RunOutputsFailed, run
             try:
                 meta = run(web_dir=web_dir)
+            except RunOutputsFailed as error:
+                return self._send(500, json.dumps({
+                    "error": str(error),
+                    "history_saved": True,
+                }))
             except Exception as error:  # noqa: BLE001 - reported to the browser
-                return self._send(500, json.dumps({"error": str(error)}))
+                return self._send(500, json.dumps({
+                    "error": str(error),
+                    "history_saved": False,
+                }))
             return self._send(200, json.dumps({
                 "ok": True,
                 "product_count": meta["product_count"],

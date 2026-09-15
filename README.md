@@ -1,9 +1,12 @@
 # applemac.pk Price Tracker
 
+**Live dashboard:** https://<your-username>.github.io/<repo>/
+
 Tracks MacBook Pro 14"/16", MacBook Air 13"/15" and current iPhone prices
 from applemac.pk. Produces a ranked Excel workbook and a dashboard.
 
-Runs daily via GitHub Actions; results publish to GitHub Pages.
+Scrapes daily at 03:17 UTC (08:17 PKT). To run on demand, use
+**Actions → Scrape prices → Run workflow** — works from a phone.
 
 ## Local use
 

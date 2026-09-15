@@ -21,19 +21,28 @@ def get_fx_rate(fetcher, cache_path):
     try:
         payload = fetcher.fetch_fx(FX_URL)
         rate = float(payload["rates"]["PKR"])
+    except Exception:  # noqa: BLE001 - fetch failed, fall back to cache
+        try:
+            cached = json.loads(cache_path.read_text(encoding="utf-8"))
+            rate = float(cached["rate"])
+            return rate, True
+        except (FileNotFoundError, json.JSONDecodeError, KeyError, ValueError, TypeError) as e:
+            raise BenchmarkError(
+                f"USD->PKR rate unavailable and cached rate is unusable ({cache_path})"
+            ) from e
+
+    # Fetch succeeded; attempt to cache the live rate, but don't let cache failure
+    # downgrade a successful live fetch.
+    try:
         cache_path.parent.mkdir(parents=True, exist_ok=True)
         cache_path.write_text(json.dumps({
             "rate": rate,
             "fetched_at": dt.datetime.now(dt.timezone.utc).isoformat(),
         }), encoding="utf-8")
-        return rate, False
-    except Exception:  # noqa: BLE001 - any failure falls back to cache
-        if cache_path.exists():
-            cached = json.loads(cache_path.read_text(encoding="utf-8"))
-            return float(cached["rate"]), True
-        raise BenchmarkError(
-            "USD->PKR rate unavailable and no cached rate exists"
-        )
+    except Exception:  # noqa: BLE001 - cache write failed, but we have the live rate
+        pass
+
+    return rate, False
 
 
 def landed_pkr(usd, fx_rate, duty_percent):
@@ -42,7 +51,7 @@ def landed_pkr(usd, fx_rate, duty_percent):
 
 def benchmark_for(product, msrp, fx_rate, duty_percent):
     usd = msrp.get(product.config_key)
-    if usd is None or not isinstance(usd, (int, float)):
+    if usd is None or isinstance(usd, bool) or not isinstance(usd, (int, float)) or usd <= 0:
         return None
     return landed_pkr(usd, fx_rate, duty_percent)
 

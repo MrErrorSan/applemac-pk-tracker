@@ -1,0 +1,27 @@
+name: Keepalive
+
+# Public repositories disable scheduled workflows after 60 days without
+# repository activity, and only commits reset that timer. Daily scrape
+# commits normally suffice, but commits made with GITHUB_TOKEN are not
+# always counted. This monthly commit is the cheap insurance.
+
+on:
+  schedule:
+    - cron: "0 6 1 * *"   # 1st of each month
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          date -u +"%Y-%m-%dT%H:%M:%SZ" > .keepalive
+          git add .keepalive
+          git commit -m "chore: keepalive" || exit 0
+          git push

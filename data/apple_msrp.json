@@ -1,0 +1,8 @@
+{
+  "_meta": {
+    "source": "Apple US online store",
+    "currency": "USD",
+    "checked": "",
+    "note": "Keys are config_key values produced by normalize.py. Run 'python -m scraper.cli msrp-gaps' after a scrape to list the exact keys to add. Verify every price against apple.com before entering it."
+  }
+}

@@ -87,8 +87,10 @@ def score_all(products, db, benchmarks, weights=None, now=None):
 
 
 def _spec_ratio(product):
-    """PKR per GB of RAM+storage. Lower is better value."""
-    capacity = (product.ram_gb or 0) + (product.storage_gb or 0)
-    if capacity <= 0:
+    """PKR per weighted GB (RAM weighted 64x vs storage). Lower is better value."""
+    ram_gb = product.ram_gb or 0
+    storage_gb = product.storage_gb or 0
+    weighted_capacity = ram_gb * config.SPEC_RAM_WEIGHT + storage_gb
+    if weighted_capacity <= 0:
         return None
-    return product.price / capacity
+    return product.price / weighted_capacity

@@ -43,6 +43,11 @@ WEIGHTS = {
     "site_discount": 0.10,
 }
 
+# Apple charges roughly $25/GB for RAM upgrades (+16GB for $400) and about
+# $0.39/GB for storage (+1024GB for $400) — a ratio near 64. Used to make
+# "price per GB" comparable across configs. Tunable, like DUTY_PERCENT.
+SPEC_RAM_WEIGHT = 64
+
 DUTY_PERCENT = 0.55  # tune until Est. Apple Landed matches observed reality
 HISTORY_WINDOW_DAYS = 90
 COUNT_DROP_ABORT_THRESHOLD = 0.20  # abort if a category shrinks >20%

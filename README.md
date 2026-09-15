@@ -10,11 +10,11 @@ Scrapes daily at 03:17 UTC (08:17 PKT). To run on demand, use
 
 ## Local use
 
-    pip install -r requirements.txt
-    python -m scraper.cli run      # scrape, update history, rebuild outputs
-    python -m scraper.cli serve    # dashboard at http://127.0.0.1:8000
+    uv sync
+    uv run python -m scraper.cli run      # scrape, update history, rebuild outputs
+    uv run python -m scraper.cli serve    # dashboard at http://127.0.0.1:8000
 
-Windows: double-click `run.bat`.
+Or on Windows, just double-click `run.bat`.
 
 ## Data
 

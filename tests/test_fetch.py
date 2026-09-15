@@ -39,19 +39,25 @@ def test_fetch_category_builds_correct_url():
     assert session.calls == ["https://applemac.pk/category/macbook-pro-14"]
 
 
-def test_fetch_retries_then_succeeds():
+def test_fetch_retries_then_succeeds(monkeypatch):
+    sleeps = []
+    monkeypatch.setattr("scraper.fetch.time.sleep", lambda s: sleeps.append(s))
     session = FakeSession([RuntimeError("boom"), FakeResponse("<html>ok</html>")])
     fetcher = Fetcher(session=session, delay=0)
     assert fetcher.fetch_category("iphone-17") == "<html>ok</html>"
     assert len(session.calls) == 2
+    assert sleeps == [1], f"Expected backoff of [1], got {sleeps}"
 
 
-def test_fetch_raises_after_max_retries():
+def test_fetch_raises_after_max_retries(monkeypatch):
+    sleeps = []
+    monkeypatch.setattr("scraper.fetch.time.sleep", lambda s: sleeps.append(s))
     session = FakeSession([RuntimeError("boom")] * 5)
     fetcher = Fetcher(session=session, delay=0)
     with pytest.raises(FetchError) as exc:
         fetcher.fetch_category("iphone-17")
     assert "iphone-17" in str(exc.value)
+    assert sleeps == [1, 2, 4], f"Expected backoff sequence [1, 2, 4], got {sleeps}"
 
 
 def test_caches_html_when_cache_dir_given(tmp_path):

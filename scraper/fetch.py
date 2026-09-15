@@ -33,12 +33,12 @@ class Fetcher:
             try:
                 response = self.session.get(url, timeout=config.REQUEST_TIMEOUT)
                 response.raise_for_status()
+                self._last_request_at = time.monotonic()
                 return response
             except Exception as error:  # noqa: BLE001 - retry any transport error
                 last_error = error
-                time.sleep(2 ** attempt)
-            finally:
                 self._last_request_at = time.monotonic()
+                time.sleep(2 ** attempt)
         raise FetchError(f"{url} failed after {config.MAX_RETRIES} attempts: {last_error}")
 
     def fetch_category(self, slug):

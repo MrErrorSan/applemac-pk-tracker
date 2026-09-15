@@ -57,3 +57,33 @@ def test_slugs_are_unique_within_a_category():
     products = parse_category(fixture("macbook-pro-14.html"), "macbook-pro-14")
     slugs = [p.slug for p in products]
     assert len(slugs) == len(set(slugs))
+
+
+def test_deduplicates_across_cards_keeping_first():
+    """Verify that cross-card deduplication keeps the first occurrence."""
+    html = '''
+    <html>
+    <body>
+    <div id="main_categoryinner">
+        <div class="pdt" data-price="100">
+            <a href="https://applemac.pk/product/test-slug">
+                <img src="https://example.com/img1.jpg" />
+            </a>
+            <h3 class="product-title-name">First Card</h3>
+            <span class="new-price">PKR 100</span>
+        </div>
+        <div class="pdt" data-price="200">
+            <a href="https://applemac.pk/product/test-slug">
+                <img src="https://example.com/img2.jpg" />
+            </a>
+            <h3 class="product-title-name">Second Card</h3>
+            <span class="new-price">PKR 200</span>
+        </div>
+    </div>
+    </body>
+    </html>
+    '''
+    products = parse_category(html, "test-category")
+    assert len(products) == 1
+    assert products[0].slug == "test-slug"
+    assert products[0].price_attr == "100"  # from first card

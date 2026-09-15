@@ -2177,10 +2177,6 @@ def collect(fetcher, db, categories, previous_counts=None, drop_threshold=None):
     return list(by_slug.values()), notes
 
 
-def by_slug_keys(products):
-    return [p.slug for p in products]
-
-
 def coverage_gaps(sitemap_xml, collected_slugs, pattern="iphone"):
     """Sitemap product slugs matching `pattern` that no category yielded.
 
@@ -2208,7 +2204,7 @@ def run(fetcher=None, data_dir=None, web_dir=None, force=False):
         raise RunAborted("no products collected from any category")
 
     try:
-        gaps = coverage_gaps(fetcher.fetch_sitemap(), set(by_slug_keys(products)))
+        gaps = coverage_gaps(fetcher.fetch_sitemap(), {p.slug for p in products})
         if gaps:
             notes.append(
                 f"{len(gaps)} iPhone products in the sitemap matched no "

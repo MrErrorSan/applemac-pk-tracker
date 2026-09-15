@@ -1,7 +1,7 @@
 """Multi-sheet workbook. Columns 1-9 are identity and price; 10+ are analysis."""
 from openpyxl import Workbook
-from openpyxl.formatting.rule import ColorScaleRule
-from openpyxl.styles import Alignment, Font
+from openpyxl.formatting.rule import CellIsRule, ColorScaleRule
+from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
 SHEETS = (
@@ -77,6 +77,17 @@ def build_workbook(products, scores, db, meta, path):
                 f"{letter}2:{letter}{sheet.max_row}",
                 ColorScaleRule(start_type="min", start_color="FFFFFF",
                                end_type="max", end_color="63BE7B"))
+
+            # Green for price drops (negative delta), red for price rises (positive delta)
+            delta_letter = get_column_letter(13)
+            green_fill = PatternFill(start_color="C6EFCE", end_color="C6EFCE", fill_type="solid")
+            red_fill = PatternFill(start_color="FFC7CE", end_color="FFC7CE", fill_type="solid")
+            sheet.conditional_formatting.add(
+                f"{delta_letter}2:{delta_letter}{sheet.max_row}",
+                CellIsRule(operator="lessThan", formula=["0"], fill=green_fill))
+            sheet.conditional_formatting.add(
+                f"{delta_letter}2:{delta_letter}{sheet.max_row}",
+                CellIsRule(operator="greaterThan", formula=["0"], fill=red_fill))
         _style_header(sheet)
 
     _build_changes(workbook, db, meta)
@@ -103,15 +114,26 @@ def _build_summary(workbook, products, scores, meta):
                   "An estimate, not an official or actual landed price."])
     sheet.append([])
 
-    sheet.append(["Top 15 deals"])
+    sheet.append(["Top 15 deals (by Deal Score)"])
     sheet[f"A{sheet.max_row}"].font = Font(bold=True)
+    sheet.append(["Confidence shows how many of the 5 signals had data. A high score from 1 signal is weaker evidence than the same score from 4."])
     sheet.append(["Name", "Family", "Price (PKR)", "Deal Score", "Confidence"])
-    ranked = sorted(products, key=lambda p: scores[p.slug].deal_score, reverse=True)
-    for product in ranked[:15]:
-        sheet.append([product.name, product.family, product.price,
-                      scores[product.slug].deal_score,
-                      scores[product.slug].confidence])
-        sheet.cell(row=sheet.max_row, column=3).number_format = "#,##0"
+
+    # Filter products with confidence >= 1, sort by deal_score DESC, then confidence DESC
+    ranked = sorted(
+        (p for p in products if scores[p.slug].confidence >= 1),
+        key=lambda p: (scores[p.slug].deal_score, scores[p.slug].confidence),
+        reverse=True
+    )
+
+    if ranked:
+        for product in ranked[:15]:
+            sheet.append([product.name, product.family, product.price,
+                          scores[product.slug].deal_score,
+                          scores[product.slug].confidence])
+            sheet.cell(row=sheet.max_row, column=3).number_format = "#,##0"
+    else:
+        sheet.append(["No products have enough data to rank yet - run again after the Apple MSRP table is populated and some price history exists."])
 
     sheet.append([])
     sheet.append([f"Configs with no Apple MSRP entry ({len(meta['missing_msrp'])})"])
@@ -132,4 +154,17 @@ def _build_changes(workbook, db, meta):
                       change.old, change.new, change.delta, round(change.pct, 2)])
         for column in (3, 4, 5):
             sheet.cell(row=sheet.max_row, column=column).number_format = "#,##0"
+
+    if sheet.max_row > 1:
+        # Green for price drops (negative change), red for price rises (positive change)
+        change_letter = get_column_letter(5)
+        green_fill = PatternFill(start_color="C6EFCE", end_color="C6EFCE", fill_type="solid")
+        red_fill = PatternFill(start_color="FFC7CE", end_color="FFC7CE", fill_type="solid")
+        sheet.conditional_formatting.add(
+            f"{change_letter}2:{change_letter}{sheet.max_row}",
+            CellIsRule(operator="lessThan", formula=["0"], fill=green_fill))
+        sheet.conditional_formatting.add(
+            f"{change_letter}2:{change_letter}{sheet.max_row}",
+            CellIsRule(operator="greaterThan", formula=["0"], fill=red_fill))
+
     _style_header(sheet)

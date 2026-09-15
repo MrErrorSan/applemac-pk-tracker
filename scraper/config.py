@@ -10,7 +10,7 @@ REQUEST_DELAY = 1.5
 REQUEST_TIMEOUT = 30
 MAX_RETRIES = 3
 
-NULL_PLACEHOLDER = "•"  # the site's "no value" marker
+NULL_PLACEHOLDER = "\u2022"  # the site's "no value" marker
 
 FAMILIES = ("macbook_pro", "macbook_air", "iphone")
 

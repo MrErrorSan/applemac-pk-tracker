@@ -19,3 +19,7 @@ def test_no_old_or_used_categories():
 
 def test_weights_sum_to_one():
     assert abs(sum(config.WEIGHTS.values()) - 1.0) < 1e-9
+
+
+def test_exclude_slug_patterns_covers_iphone_se():
+    assert any("iphone-se" in p for p in config.EXCLUDE_SLUG_PATTERNS)

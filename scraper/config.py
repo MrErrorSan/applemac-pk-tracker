@@ -34,6 +34,12 @@ CATEGORIES = {
     "iphone": "iphone",  # catch-all; contributes only slugs the leaves missed
 }
 
+# Product-level exclusion for stock that a category-level config cannot stop
+# (e.g. the "iphone" catch-all also picks up previous-generation models like
+# iPhone SE, which the spec excludes). Matched as a case-insensitive
+# substring against the product slug.
+EXCLUDE_SLUG_PATTERNS = ("iphone-se", "-refurb")
+
 # Deal-score weights. Must sum to 1.0.
 WEIGHTS = {
     "vs_apple": 0.30,

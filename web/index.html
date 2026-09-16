@@ -3,75 +3,334 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>applemac.pk Price Tracker</title>
+<title>applemac.pk price ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap">
 <style>
-:root { --bg:#f6f6f7; --fg:#1d1d1f; --muted:#6e6e73; --card:#fff;
-        --line:#e3e3e6; --good:#1a7f37; --bad:#c0392b; --accent:#0071e3; }
-@media (prefers-color-scheme: dark) {
-  :root { --bg:#161617; --fg:#f5f5f7; --muted:#9a9a9e; --card:#1f1f21;
-          --line:#303033; --good:#3fb950; --bad:#f85149; --accent:#2997ff; }
+/* ---------------------------------------------------------------- tokens */
+:root {
+  --ground:#e7ebec; --panel:#ffffff; --panel-2:#f2f5f6;
+  --ink:#12303a; --ink-soft:#4e6b74; --ink-faint:#7b939a;
+  --rule:#c6d2d6; --rule-soft:#dde5e7;
+  --green:#0b4d32; --marigold:#c98a12; --marigold-tint:#f8eed6;
+  --rust:#9c3b21;
+  --seg-bg:#eef2f3;
+  --focus:#12303a;
+  --serif:"IBM Plex Serif",Iowan Old Style,Georgia,serif;
+  --sans:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark) {
+  :root {
+    --ground:#0e1a1f; --panel:#15252b; --panel-2:#1b2f36;
+    --ink:#dfe9e9; --ink-soft:#9fb4ba; --ink-faint:#7b9198;
+    --rule:#283d45; --rule-soft:#20343b;
+    --green:#57b084; --marigold:#e0ae3c; --marigold-tint:#332918;
+    --rust:#e58a6a;
+    --seg-bg:#192b31;
+    --focus:#8fd3b4;
+  }
 }
 * { box-sizing:border-box; }
-body { margin:0; padding:24px 16px; background:var(--bg); color:var(--fg);
-       font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
-.wrap { max-width:1400px; margin:0 auto; }
-h1 { font-size:22px; margin:0 0 4px; }
-.sub { color:var(--muted); margin-bottom:20px; }
-.stale { background:#c0392b; color:#fff; padding:8px 12px; border-radius:8px;
-         margin-bottom:16px; }
-.bar { display:flex; gap:8px; flex-wrap:wrap; align-items:center;
-       margin-bottom:18px; }
-button, select, input[type=search] { font:inherit; padding:7px 12px;
-  border:1px solid var(--line); border-radius:8px; background:var(--card);
-  color:var(--fg); }
-button.primary { background:var(--accent); color:#fff; border-color:transparent;
-  cursor:pointer; }
-button.primary:disabled { opacity:.5; cursor:default; }
-.cards { display:grid; gap:12px; margin-bottom:24px;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); }
-.card { background:var(--card); border:1px solid var(--line); border-radius:12px;
-        padding:14px; }
-.card .name { font-weight:600; margin-bottom:6px; }
-.card .price { font-size:19px; font-weight:700; }
-.score { display:inline-block; padding:2px 8px; border-radius:99px;
-         background:var(--good); color:#fff; font-size:12px; font-weight:600; }
-.tablewrap { overflow-x:auto; background:var(--card);
-             border:1px solid var(--line); border-radius:12px; }
+html { -webkit-text-size-adjust:100%; }
+body {
+  margin:0; background:var(--ground); color:var(--ink);
+  font:400 15px/1.55 var(--sans);
+  font-variant-numeric:tabular-nums;
+  padding:0 20px 72px;
+}
+:focus-visible { outline:2px solid var(--focus); outline-offset:2px; border-radius:2px; }
+.page { max-width:1240px; margin:0 auto; }
+
+/* ------------------------------------------------------------- masthead */
+.masthead {
+  display:flex; flex-wrap:wrap; gap:16px 32px; align-items:baseline;
+  justify-content:space-between;
+  padding:36px 0 14px; border-bottom:2px solid var(--ink);
+}
+.wordmark { font:600 27px/1 var(--serif); letter-spacing:-.01em; margin:0; }
+.wordmark span { color:var(--ink-soft); font-weight:500; }
+.runmeta { display:flex; flex-wrap:wrap; margin:0; }
+.runmeta div { padding:0 16px; border-left:1px solid var(--rule); }
+.runmeta div:first-child { padding-left:0; border-left:0; }
+.runmeta dt { font-size:12.5px; color:var(--ink-faint); margin:0 0 1px; }
+.runmeta dd { margin:0; font-size:14px; font-weight:500; }
+.runmeta .flag { color:var(--marigold); }
+
+/* --------------------------------------------------------------- notice */
+.notice {
+  margin:18px 0 0; padding:12px 16px;
+  background:var(--marigold-tint); border-left:3px solid var(--marigold);
+  font-size:14px;
+}
+.notice b { font-weight:600; }
+
+/* ------------------------------------------------------------ explainer */
+.explainer { margin-top:16px; }
+.info summary { display:inline-flex; align-items:center; gap:8px; cursor:pointer;
+  font:500 13.5px/1 var(--sans); color:var(--ink-soft);
+  padding:7px 13px 7px 9px; border:1px solid var(--rule); border-radius:4px;
+  background:var(--panel); list-style:none; }
+.info summary::-webkit-details-marker { display:none; }
+.info summary:hover { color:var(--ink); border-color:var(--ink); }
+.info[open] summary { color:var(--ink); border-color:var(--ink); }
+.glyph { display:inline-flex; align-items:center; justify-content:center;
+  width:17px; height:17px; border-radius:50%; border:1px solid currentColor;
+  font:600 11px/1 var(--serif); font-style:italic; }
+.infobody { padding:18px 0 4px; }
+.infoh { font:600 15px/1.3 var(--sans); margin:0 0 8px; color:var(--ink); }
+.infoh + .orient + .infoh, .sigkey + .infoh { margin-top:22px; }
+.orient + .infoh { margin-top:22px; }
+.orient { max-width:76ch; margin:0 0 10px; font-size:14.5px; color:var(--ink-soft); }
+.orient b { color:var(--ink); font-weight:600; }
+.sigkey { margin-top:18px; border-top:1px solid var(--rule); }
+.sigrow { display:grid; grid-template-columns:230px minmax(0,1.25fr) minmax(0,1fr);
+  gap:4px 24px; padding:11px 0; border-bottom:1px solid var(--rule-soft);
+  font-size:13.5px; align-items:baseline; }
+.sigrow .lbl { font-weight:600; color:var(--ink); }
+.sigrow .wt { display:block; font-weight:400; color:var(--ink-faint); font-size:12.5px; }
+.sigrow .full { display:block; color:var(--ink-faint); font-size:12.5px; margin-top:2px; }
+.sigrow .gap { color:var(--ink-faint); }
+.keynote { display:flex; gap:26px; flex-wrap:wrap; margin:16px 0 0; font-size:13px;
+  color:var(--ink-soft); }
+.keynote span { display:inline-flex; align-items:center; gap:9px; }
+.keynote .meter { width:30px; height:15px; }
+.keynote .seg { flex-grow:1; }
+
+/* ----------------------------------------------------------------- hero */
+.lede { margin:34px 0 14px; display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; }
+.lede h2 { font:600 19px/1.2 var(--serif); margin:0; }
+.lede p { margin:0; color:var(--ink-soft); font-size:14px; }
+
+.cards { display:grid; gap:0; grid-template-columns:1.15fr 1fr; align-items:stretch; }
+.card { background:var(--panel); border:1px solid var(--rule); border-radius:4px; }
+.card--hero { padding:26px 28px 24px; display:flex; flex-direction:column;
+  border-radius:4px 0 0 4px; border-right:0; }
+.rank { font-size:13px; color:var(--ink-faint); margin-bottom:10px; }
+.card--hero .name { font:500 26px/1.22 var(--serif); letter-spacing:-.005em; }
+.card--hero .name a { color:inherit; text-decoration:none; }
+.card--hero .name a:hover { text-decoration:underline;
+  text-decoration-thickness:1px; text-underline-offset:5px; }
+.card--hero .price { font:600 40px/1.05 var(--serif); margin:14px 0 2px; }
+.card--hero .against { color:var(--ink-soft); font-size:14px; }
+.verdict { margin:18px 0 0; padding:0; list-style:none; }
+.verdict li { position:relative; padding-left:16px; margin-bottom:5px; font-size:14.5px; }
+.verdict li::before {
+  content:""; position:absolute; left:0; top:.62em;
+  width:7px; height:2px; background:var(--green);
+}
+.verdict li.thin::before { background:var(--ink-faint); }
+.hero-meter { margin-top:auto; padding-top:30px; }
+
+.contenders { background:var(--panel); border:1px solid var(--rule);
+  border-radius:0 4px 4px 0; padding:2px 0; }
+.card--row {
+  display:grid; grid-template-columns:1fr auto; gap:2px 18px; align-items:center;
+  padding:12px 20px; border:0; border-bottom:1px solid var(--rule-soft);
+  border-radius:0; background:transparent;
+}
+.card--row:last-child { border-bottom:0; }
+.card--row .name { font-size:14.5px; font-weight:500; line-height:1.35; }
+.card--row .name a { color:inherit; text-decoration:none; }
+.card--row .name a:hover { text-decoration:underline; }
+.card--row .price { font-size:15px; font-weight:600; text-align:right; white-space:nowrap; }
+.card--row .sub { font-size:12.5px; color:var(--ink-faint); }
+.card--row .meterwrap { justify-self:end; }
+
+/* ---------------------------------------------------------------- meter */
+.meter { display:inline-flex; align-items:flex-end; gap:2px; width:104px; height:17px; }
+.meter .seg { flex-basis:0; height:100%; position:relative;
+  background:var(--seg-bg); border-bottom:1px solid var(--rule); }
+.meter .seg i { position:absolute; left:0; right:0; bottom:0;
+  background:var(--green); }
+.meter .seg[data-state="off"] { background:transparent;
+  border:1px dashed var(--rule); }
+.meter--hero { width:100%; height:64px; gap:6px; }
+.meterlegend { display:flex; gap:5px; margin-top:9px; }
+.meterlegend div { flex-basis:0; font-size:11.5px; line-height:1.3;
+  color:var(--ink-soft); }
+.meterlegend b { display:block; font-weight:600; color:var(--ink); font-size:13px; }
+.meterlegend .none { color:var(--ink-faint); font-style:italic; font-weight:400; }
+.confline { margin-top:14px; font-size:13.5px; color:var(--ink-soft); }
+.confline b { color:var(--ink); font-weight:600; }
+
+@media (prefers-reduced-motion:no-preference) {
+  .meter--hero .seg i {
+    transform-origin:bottom;
+    animation:grow .5s cubic-bezier(.2,.7,.3,1) backwards;
+  }
+  .meter--hero .seg:nth-child(1) i { animation-delay:.05s }
+  .meter--hero .seg:nth-child(2) i { animation-delay:.12s }
+  .meter--hero .seg:nth-child(3) i { animation-delay:.19s }
+  .meter--hero .seg:nth-child(4) i { animation-delay:.26s }
+  .meter--hero .seg:nth-child(5) i { animation-delay:.33s }
+  @keyframes grow { from { transform:scaleY(0) } to { transform:scaleY(1) } }
+}
+
+/* -------------------------------------------------------------- toolbar */
+.toolbar {
+  display:flex; flex-wrap:wrap; gap:10px 14px; align-items:center;
+  margin:38px 0 0; padding-bottom:14px; border-bottom:1px solid var(--rule);
+}
+.segmented { display:inline-flex; border:1px solid var(--rule); border-radius:4px;
+  overflow:hidden; background:var(--panel); }
+.segmented button {
+  font:500 14px/1 var(--sans); padding:9px 14px; border:0; cursor:pointer;
+  background:transparent; color:var(--ink-soft);
+  border-left:1px solid var(--rule);
+}
+.segmented button:first-child { border-left:0; }
+.segmented button[aria-pressed="true"] { background:var(--ink); color:var(--ground); }
+input[type=search] {
+  font:400 14px/1 var(--sans); padding:9px 12px; flex:1 1 170px; max-width:260px;
+  border:1px solid var(--rule); border-radius:4px;
+  background:var(--panel); color:var(--ink);
+}
+.check { display:inline-flex; align-items:center; gap:7px; font-size:14px;
+  color:var(--ink-soft); cursor:pointer; }
+.check input { accent-color:var(--green); width:15px; height:15px; }
+.spacer { flex:1 1 auto; }
+.grab { font:500 14px/1 var(--sans); padding:9px 13px; border:1px solid var(--rule);
+  border-radius:4px; background:var(--panel); color:var(--ink);
+  text-decoration:none; cursor:pointer; }
+.grab:hover { border-color:var(--ink); }
+button.primary {
+  font:600 14px/1 var(--sans); padding:10px 16px; border:1px solid var(--green);
+  border-radius:4px; background:var(--green); color:#fff; cursor:pointer;
+}
+button.primary:disabled { opacity:.55; cursor:progress; }
+@media (prefers-color-scheme:dark) { button.primary { color:#08201a; } }
+.status { width:100%; font-size:13.5px; color:var(--ink-soft); }
+.status.err { color:var(--rust); }
+
+/* ---------------------------------------------------------------- table */
+.tallies { display:flex; justify-content:space-between; align-items:baseline;
+  gap:16px; flex-wrap:wrap; margin:16px 0 10px; font-size:13.5px;
+  color:var(--ink-soft); }
+.tablewrap { overflow-x:auto; background:var(--panel);
+  border:1px solid var(--rule); border-radius:4px; }
 table { border-collapse:collapse; width:100%; min-width:900px; }
-th, td { padding:8px 10px; text-align:left; border-bottom:1px solid var(--line);
-         white-space:nowrap; }
-th { cursor:pointer; user-select:none; font-size:12px; color:var(--muted);
-     position:sticky; top:0; background:var(--card); }
+th, td { padding:9px 14px; text-align:left; white-space:nowrap; }
+thead th {
+  position:sticky; top:0; z-index:2; background:var(--panel);
+  font:500 12.5px/1.4 var(--sans); color:var(--ink-soft);
+  border-bottom:1px solid var(--ink); user-select:none;
+}
+thead th[data-key] { cursor:pointer; }
+thead th[data-key]:hover { color:var(--ink); }
+thead th .arrow { color:var(--ink); }
+tbody tr { border-bottom:1px solid var(--rule-soft); }
+tbody tr:last-child { border-bottom:0; }
+tbody tr.is-open { background:var(--panel-2); }
 td.num, th.num { text-align:right; }
-.down { color:var(--good); } .up { color:var(--bad); }
-a { color:var(--accent); text-decoration:none; }
-.muted { color:var(--muted); }
-#log { white-space:pre-wrap; font-family:ui-monospace,monospace; font-size:12px;
-       color:var(--muted); margin-top:8px; }
+th:first-child { width:30%; }
+td.name { white-space:normal; min-width:290px; }
+td.name a { color:inherit; text-decoration:none; }
+td.name a:hover { text-decoration:underline; }
+td .cfg { color:var(--ink-faint); font-size:12.5px; }
+.down { color:var(--green); } .up { color:var(--rust); }
+.dash { color:var(--ink-faint); }
+.dealcell { display:inline-flex; align-items:center; gap:9px; }
+.dealcell .n { font-weight:600; width:38px; text-align:right; }
+.expander { border:0; background:transparent; color:var(--ink-faint); cursor:pointer;
+  font:400 16px/1 var(--sans); padding:4px 7px; }
+.expander:hover { color:var(--ink); }
+
+/* --------------------------------------------------------------- drawer */
+tr.detail > td { padding:6px 14px 24px; background:var(--panel-2);
+  white-space:normal; }
+.detail-grid { display:grid; gap:28px; grid-template-columns:minmax(250px,1fr) 1.45fr; }
+.detail-grid h3 { font:600 14px/1.3 var(--sans); margin:0 0 10px; }
+.verdictline { margin:0 0 14px; font-size:14px; max-width:68ch; }
+.verdictline .caveat { display:block; color:var(--ink-faint); font-size:13px;
+  margin-top:3px; }
+.sigtable { width:100%; min-width:0; border-collapse:collapse; }
+.sigtable td { padding:5px 0; white-space:normal; font-size:13.5px; }
+.sigtable td:first-child { width:52%; }
+.sigtable .asks { color:var(--ink-faint); font-size:12.5px; line-height:1.4;
+  margin-top:1px; }
+.sigtable td.w { width:76px; text-align:right; color:var(--ink-faint); font-size:12.5px; }
+.sigtable td.v { width:64px; text-align:right; font-weight:600; }
+.sigtable td.v.none { font-weight:400; font-style:italic; color:var(--ink-faint); }
+.track { height:6px; background:var(--seg-bg);
+  border-bottom:1px solid var(--rule); margin-top:5px; }
+.track i { display:block; height:100%; background:var(--green); }
+.track.none { background:transparent; border:1px dashed var(--rule); }
+.facts { margin:0; display:grid; grid-template-columns:auto 1fr; gap:4px 16px;
+  font-size:13.5px; }
+.facts dt { color:var(--ink-faint); }
+.facts dd { margin:0; }
+.spark { margin-top:16px; }
+.spark svg { display:block; width:100%; height:54px; margin-top:4px; }
+.spark path { fill:none; stroke:var(--green); stroke-width:1.5; }
+.spark path.base { stroke:var(--rule); stroke-width:1; stroke-dasharray:3 3; }
+
+/* ------------------------------------------------------- empty + footer */
+.empty { padding:44px 20px; text-align:center; color:var(--ink-soft); }
+.empty p { margin:0 0 14px; }
+.foot { margin-top:34px; font-size:13.5px; color:var(--ink-soft); }
+.foot details { border-top:1px solid var(--rule); padding:12px 0; }
+.foot summary { cursor:pointer; font-weight:500; color:var(--ink); }
+.foot summary::marker { color:var(--ink-faint); }
+.foot ul { margin:10px 0 0; padding-left:18px; }
+.foot li { margin-bottom:3px; }
+.foot .note { border-top:1px solid var(--rule); padding:12px 0; margin:0;
+  max-width:78ch; }
+
+@media (max-width:860px) {
+  .cards { grid-template-columns:1fr; }
+  .card--hero { border-radius:4px 4px 0 0; border-right:1px solid var(--rule);
+    border-bottom:0; padding:22px 20px 20px; }
+  .contenders { border-radius:0 0 4px 4px; border-top:0; }
+  .card--hero .price { font-size:33px; }
+  .card--hero .name { font-size:22px; }
+  .meter--hero { height:60px; }
+  /* Five legend columns cannot hold a phrase at phone width - stack them. */
+  .meterlegend { flex-direction:column; gap:3px; margin-top:12px; }
+  .meterlegend div { display:flex; gap:10px; font-size:13px; }
+  .meterlegend b { display:inline; min-width:48px; }
+  .sigrow { grid-template-columns:1fr; padding:13px 0; }
+  .detail-grid { grid-template-columns:1fr; }
+  .masthead { padding-top:26px; }
+  .runmeta div { padding:0 18px 0 0; border-left:0; }
+}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>applemac.pk Price Tracker</h1>
-  <div class="sub" id="subtitle">Loading…</div>
-  <div id="staleWarning"></div>
+<div class="page">
 
-  <div class="bar">
-    <button class="primary" id="refresh" hidden>Refresh Prices</button>
-    <select id="family">
-      <option value="">All families</option>
-      <option value="macbook_pro">MacBook Pro</option>
-      <option value="macbook_air">MacBook Air</option>
-      <option value="iphone">iPhone</option>
-    </select>
-    <input type="search" id="search" placeholder="Filter by name…">
-    <a id="xlsx" href="downloads/applemac-prices.xlsx">Excel</a>
-    <a id="db" href="downloads/prices.db">Database</a>
+  <header class="masthead">
+    <h1 class="wordmark">applemac.pk <span>price ledger</span></h1>
+    <dl class="runmeta" id="runmeta"></dl>
+  </header>
+
+  <div id="notices"></div>
+
+  <section class="explainer" id="explainer"></section>
+
+  <div class="lede">
+    <h2>Best value on the shelf today</h2>
+    <p id="ledeNote"></p>
   </div>
-  <div id="log"></div>
-
-  <h2 style="font-size:16px;">Top deals</h2>
   <div class="cards" id="cards"></div>
+
+  <div class="toolbar">
+    <div class="segmented" role="group" aria-label="Filter by product family" id="families"></div>
+    <label class="check"><input type="checkbox" id="benchOnly">
+      With an Apple comparison</label>
+    <input type="search" id="search" placeholder="Search name, chip or colour"
+           aria-label="Search listings">
+    <span class="spacer"></span>
+    <button class="primary" id="refresh" hidden>Check prices now</button>
+    <a class="grab" id="xlsx" href="downloads/applemac-prices.xlsx" download>Excel</a>
+    <a class="grab" id="db" href="downloads/prices.db" download>SQLite</a>
+    <div class="status" id="log" role="status" aria-live="polite"></div>
+  </div>
+
+  <div class="tallies">
+    <div id="tally"></div>
+    <div>Select a column heading to sort. Select + on a row to see how it scored.</div>
+  </div>
 
   <div class="tablewrap">
     <table>
@@ -79,23 +338,81 @@ a { color:var(--accent); text-decoration:none; }
       <tbody id="rows"></tbody>
     </table>
   </div>
+  <div id="emptyState"></div>
+
+  <div class="foot" id="foot"></div>
 </div>
 
 <script>
+/* -------------------------------------------------------------- columns */
 const COLUMNS = [
-  {key:"name",     label:"Product",          type:"text"},
-  {key:"price",    label:"Price",            type:"money"},
-  {key:"delta",    label:"Δ Last Run",       type:"delta"},
-  {key:"benchmark",label:"Est. Apple Landed",type:"money"},
-  {key:"chip",     label:"Chip",             type:"text"},
-  {key:"ram_gb",   label:"RAM",              type:"num"},
-  {key:"storage_gb",label:"Storage",         type:"num"},
-  {key:"deal",     label:"Deal Score",       type:"num"},
+  {key:"name",       label:"Product",               type:"text",
+   hint:"Opens the listing on applemac.pk in a new tab."},
+  {key:"price",      label:"Price",                 type:"money",
+   hint:"What applemac.pk is asking today."},
+  {key:"delta",      label:"Change since last run", type:"delta",
+   hint:"How the price moved since the previous check. Green is a drop."},
+  {key:"benchmark",  label:"Est. Apple Landed",     type:"money",
+   hint:"This tracker's own estimate of what the same machine would cost bought "
+      + "from Apple and imported. Not an official price."},
+  {key:"chip",       label:"Chip",                  type:"text",
+   hint:"As stated by the shop."},
+  {key:"ram_gb",     label:"RAM",                   type:"gb",
+   hint:"Memory, as stated by the shop."},
+  {key:"storage_gb", label:"Storage",               type:"gb",
+   hint:"Storage, as stated by the shop."},
+  {key:"deal",       label:"Deal score",            type:"deal",
+   hint:"Weighted average of the signals that had data, out of 100. Higher is "
+      + "better. The bars show the five signals behind it."},
 ];
 
-let state = {products:[], meta:{}, sort:"deal", dir:-1, live:false};
+/* The five signals, in weight order. `weight` mirrors config.WEIGHTS and is
+   drawn as the segment's width, so the meter shows the model and not just a
+   number. A signal with no data is drawn hollow - never as a zero-height bar,
+   which would read as "worst possible" rather than "not known". */
+const SIGNALS = [
+  {key:"vs_apple", weight:30, label:"Under est. Apple landed",
+   asks:"Is it cheaper than buying the same machine from Apple and importing it?",
+   full:"100 would mean it is free next to the Apple estimate. 30% is a real saving.",
+   gap:"Apple publishes no price for this configuration, or none has been verified."},
+  {key:"vs_history", weight:25, label:"Below its 90-day median",
+   asks:"Is this listing cheaper than it has usually been over the last 90 days?",
+   full:"100 would mean free next to its own past price. Anything above 0 is a dip.",
+   gap:"This listing has not been tracked long enough to have a median."},
+  {key:"vs_peers", weight:20, label:"Against identical listings",
+   asks:"Among listings with this exact chip, memory and storage, is this the cheap one?",
+   full:"100 means nothing with the same configuration is listed cheaper. 0 means it is the dearest.",
+   gap:"Nothing else on the shelf has this exact configuration to compare against."},
+  {key:"spec_value", weight:15, label:"Memory and storage per rupee",
+   asks:"Within this model line, how much memory and storage does the money buy?",
+   full:"100 means the best capacity per rupee in its model line.",
+   gap:"The listing does not state its memory or storage."},
+  {key:"site_discount", weight:10, label:"Cut from the shop's own price",
+   asks:"Has the shop marked this down from its own previous price?",
+   full:"100 would mean marked down to nothing. A 10% cut scores 10.",
+   gap:"No previous price is shown, or it is the same as today's."},
+];
 
-const pkr = n => n == null ? "—" : "PKR " + n.toLocaleString("en-US");
+const FAMILIES = [
+  {value:"",            label:"Everything"},
+  {value:"macbook_pro", label:"MacBook Pro"},
+  {value:"macbook_air", label:"MacBook Air"},
+  {value:"iphone",      label:"iPhone"},
+];
+
+let state = {
+  products:[], meta:{}, history:null, rank:{}, scoredCount:0,
+  family:"", term:"", benchOnly:false,
+  sort:"deal", dir:-1, live:false, open:null,
+};
+
+/* --------------------------------------------------------------- format */
+const pkr = n => n == null ? null : "PKR " + n.toLocaleString("en-US");
+const money = n => n == null ? '<span class="dash">no data</span>' : pkr(n);
+const pct = v => Math.round(v) + "%";
+const score = v => typeof v === "number" ? v.toFixed(1) : v;
+const gb = n => n == null ? null
+  : (n >= 1024 && n % 1024 === 0 ? (n / 1024) + " TB" : n + " GB");
 
 const ESCAPE_MAP = {"&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"};
 const esc = s => s == null ? "" : String(s).replace(/[&<>"']/g, c => ESCAPE_MAP[c]);
@@ -108,6 +425,124 @@ const link = (url, label) => {
     : esc(label);
 };
 
+function runDate(iso) {
+  if (!iso) return "not recorded";
+  const d = new Date(iso);
+  if (isNaN(d)) return String(iso);
+  return d.toLocaleString("en-GB", {
+    day:"numeric", month:"short", year:"numeric",
+    hour:"2-digit", minute:"2-digit", timeZone:"Asia/Karachi",
+  }) + " PKT";
+}
+const daysOld = iso => iso ? (Date.now() - new Date(iso)) / 86400000 : null;
+
+/* ---------------------------------------------------------------- meter */
+function meter(scores, big) {
+  const cells = SIGNALS.map(s => {
+    const v = scores[s.key];
+    const hint = v == null
+      ? `${s.label}: no data, so it is left out of the score`
+      : `${s.label}: ${pct(v)} out of 100, counts for ${s.weight}% of the score`;
+    return v == null
+      ? `<span class="seg" data-state="off" style="flex-grow:${s.weight}" title="${
+           esc(hint)}"></span>`
+      : `<span class="seg" style="flex-grow:${s.weight}" title="${esc(hint)}"><i
+           style="height:${Math.max(2, Math.round(v))}%"></i></span>`;
+  }).join("");
+  const read = SIGNALS.map(s => `${s.label}: ` +
+      (scores[s.key] == null ? "no data" : pct(scores[s.key]))).join(". ");
+  return `<span class="meter${big ? " meter--hero" : ""}" role="img" aria-label="${
+    esc(read)}">${cells}</span>`;
+}
+
+function meterLegend(scores) {
+  return `<div class="meterlegend">${SIGNALS.map(s => {
+    const v = scores[s.key];
+    return `<div style="flex-grow:${s.weight}">${
+      v == null ? '<b class="none">none</b>' : "<b>" + pct(v) + "</b>"
+    }${esc(s.label)}</div>`;
+  }).join("")}</div>`;
+}
+
+/* ------------------------------------------------------------ explainer */
+/* Everything here is on demand. A reader who already knows how the score
+   works should not have to scroll past an explanation of it every visit. */
+function renderExplainer() {
+  const swatch = seg => `<span class="meter">${seg}</span>`;
+  document.getElementById("explainer").innerHTML = `
+    <details class="info">
+      <summary><span class="glyph" aria-hidden="true">i</span>How to read this page</summary>
+      <div class="infobody">
+        <h3 class="infoh">What a deal score of 54 actually means</h3>
+        <p class="orient">It does <b>not</b> mean 54% off. The score blends five
+          different signals, some of them percentages (how far under Apple's
+          estimated landed price) and some of them rankings (whether it is the
+          cheapest of the identical listings), so the result is an index, not a
+          discount. Use it to line listings up against each other: on the
+          evidence, 58 is a better buy than 40. To see money saved, compare the
+          price against Est. Apple Landed. Open any row with + and it will tell
+          you where that listing ranks today.</p>
+        <h3 class="infoh">How the five signals work</h3>
+        <p class="orient">Every listing is scored out of 100 on five separate
+          signals, and <b>higher is always better</b>: 100 means nothing on the
+          shelf beats this listing on that measure, 0 means it has no advantage
+          there. The five bars on each row are those signals. Each bar's
+          <b>width</b> is how much it counts toward the final score, and its
+          <b>height</b> is what it scored.</p>
+        <p class="orient">A <b>hollow dashed bar means that signal had no
+          data</b>. It is left out of the score entirely rather than counted as
+          zero, which is why a listing can say “3 of 5 signals”. The deal score
+          is the weighted average of whichever signals did have data, again out
+          of 100, higher being better.</p>
+        <p class="keynote">
+          <span>${swatch('<span class="seg"><i style="height:78%"></i></span>')}
+            Filled to what it scored</span>
+          <span>${swatch('<span class="seg"><i style="height:2%"></i></span>')}
+            Scored zero, no advantage here</span>
+          <span>${swatch('<span class="seg" data-state="off"></span>')}
+            No data, left out of the score</span>
+        </p>
+        <div class="sigkey">${SIGNALS.map(sig => `
+          <div class="sigrow">
+            <div class="lbl">${esc(sig.label)}
+              <span class="wt">${sig.weight}% of the score</span></div>
+            <div>${esc(sig.asks)}<span class="full">${esc(sig.full)}</span></div>
+            <div class="gap">No data when: ${esc(sig.gap)}</div>
+          </div>`).join("")}
+        </div>
+      </div>
+    </details>`;
+}
+
+/* ----------------------------------------------------------- plain talk */
+function verdict(p) {
+  const s = p.scores, lines = [];
+  if (s.vs_apple != null && s.vs_apple > 0 && p.benchmark != null)
+    lines.push(`${pct(s.vs_apple)} under the ${pkr(p.benchmark)} it would cost to buy `
+             + "from Apple and land here.");
+  if (s.vs_peers === 100)
+    lines.push("No other listing of this exact configuration is cheaper.");
+  else if (s.vs_peers != null && s.vs_peers >= 60)
+    lines.push("Among the cheaper listings of this exact configuration.");
+  if (s.site_discount != null && s.site_discount > 0)
+    lines.push(`Marked down ${pct(s.site_discount)} from the shop's own previous price.`);
+  if (s.vs_history != null && s.vs_history > 1)
+    lines.push(`${pct(s.vs_history)} below its own 90-day median.`);
+  if (!lines.length)
+    lines.push({thin:true, text:"Ranks top on the signals available, but none of them "
+                              + "shows a clear saving today."});
+  return lines.slice(0, 3);
+}
+
+function confidenceLine(scores) {
+  const missing = SIGNALS.filter(s => scores[s.key] == null);
+  const scored = `Scored on <b>${scores.confidence} of 5</b> signals.`;
+  if (!missing.length) return scored + " Every signal had data.";
+  return scored + " No data for " +
+    missing.map(s => s.label.toLowerCase()).join(", ") + ".";
+}
+
+/* ----------------------------------------------------------------- boot */
 async function boot() {
   let payload = null;
   try {
@@ -118,100 +553,401 @@ async function boot() {
     try {
       payload = await (await fetch("data/latest.json", {cache:"no-store"})).json();
     } catch (e) {
-      document.getElementById("subtitle").textContent =
-        "No data yet. Run the scraper to populate the dashboard.";
+      document.getElementById("cards").innerHTML =
+        `<div class="empty" style="grid-column:1/-1">
+           <p>Nothing has been tracked yet.</p>
+           <p class="dash">Run <code>uv run python -m scraper.cli run</code>
+              to take the first snapshot.</p>
+         </div>`;
       return;
     }
   }
   state.products = payload.products || [];
   state.meta = payload.meta || {};
   document.getElementById("refresh").hidden = !state.live;
+  renderExplainer();
   render();
 }
 
-function ageWarning(generatedAt) {
-  if (!generatedAt) return "";
-  const days = (Date.now() - new Date(generatedAt)) / 86400000;
-  if (days < 3) return "";
-  return `<div class="stale">Data is ${Math.floor(days)} days old —
-          the last scheduled run may have failed.</div>`;
-}
-
+/* --------------------------------------------------------------- render */
 function render() {
   const m = state.meta;
-  document.getElementById("subtitle").innerHTML =
-    `${state.products.length} products · updated ${m.generated_at || "—"}
-     · USD→PKR ${m.fx_rate ?? "—"}${m.fx_stale ? " (stale)" : ""}
-     · duty ${m.duty_percent != null ? Math.round(m.duty_percent*100) + "%" : "—"}
-     <span class="muted">· “Est. Apple Landed” is an estimate, not an official price</span>`;
-  document.getElementById("staleWarning").innerHTML = ageWarning(m.generated_at);
+
+  document.getElementById("runmeta").innerHTML = `
+    <div><dt>Last checked</dt><dd>${esc(runDate(m.generated_at))}</dd></div>
+    <div><dt>Listings</dt><dd>${state.products.length}</dd></div>
+    <div><dt>USD to PKR</dt><dd class="${m.fx_stale ? "flag" : ""}">${
+      m.fx_rate != null ? m.fx_rate.toFixed(2) : "no data"
+    }${m.fx_stale ? " (cached)" : ""}</dd></div>
+    <div><dt>Duty assumed</dt><dd>${
+      m.duty_percent != null ? Math.round(m.duty_percent * 100) + "%" : "no data"
+    }</dd></div>`;
+
+  const notices = [];
+  const age = daysOld(m.generated_at);
+  if (age != null && age >= 3)
+    notices.push(`<b>These prices are ${Math.floor(age)} days old.</b> The scheduled
+      run has not completed since then, so treat every figure below as last known
+      rather than current.`);
+  if (m.fx_stale)
+    notices.push(`<b>The exchange rate is cached.</b> Live FX could not be fetched,
+      so “Est. Apple Landed” is built on the last known rate.`);
+  document.getElementById("notices").innerHTML =
+    notices.map(n => `<div class="notice">${n}</div>`).join("");
+
+  const families = document.getElementById("families");
+  families.innerHTML = FAMILIES.map(f =>
+    `<button type="button" data-family="${esc(f.value)}" aria-pressed="${
+      state.family === f.value}">${esc(f.label)}</button>`).join("");
+  families.querySelectorAll("button").forEach(b => b.onclick = () => {
+    state.family = b.dataset.family;
+    state.open = null;
+    render();
+  });
+
+  renderTopDeals();
 
   const head = document.getElementById("head");
-  head.innerHTML = COLUMNS.map(c =>
-    `<th class="${c.type === "text" ? "" : "num"}" data-key="${c.key}">${c.label}</th>`
-  ).join("");
-  head.querySelectorAll("th").forEach(th => th.onclick = () => {
+  head.innerHTML = COLUMNS.map(c => {
+    const active = state.sort === c.key;
+    const arrow = active ? `<span class="arrow">${state.dir < 0 ? "▼" : "▲"}</span>` : "";
+    return `<th class="${c.type === "text" ? "" : "num"}" data-key="${c.key}" scope="col"
+      title="${esc(c.hint)} Select to sort."
+      aria-sort="${active ? (state.dir < 0 ? "descending" : "ascending") : "none"}"
+      >${esc(c.label)} ${arrow}</th>`;
+  }).join("") + '<th scope="col"><span class="dash">Detail</span></th>';
+  head.querySelectorAll("th[data-key]").forEach(th => th.onclick = () => {
     const key = th.dataset.key;
     state.dir = state.sort === key ? -state.dir : -1;
     state.sort = key;
-    renderRows();
+    state.open = null;
+    render();
   });
 
-  const ranked = [...state.products]
-    .sort((a,b) => b.scores.deal_score - a.scores.deal_score).slice(0,6);
-  document.getElementById("cards").innerHTML = ranked.map(p => `
-    <div class="card">
+  renderRows();
+  renderFoot();
+}
+
+function renderTopDeals() {
+  rankScored(visible());
+  /* A product with zero available signals carries no evidence at all and is
+     never presented as a deal, however it happens to sort. */
+  const ranked = visible()
+    .filter(p => p.scores.confidence > 0)
+    .sort((a, b) => b.scores.deal_score - a.scores.deal_score)
+    .slice(0, 6);
+
+  const scope = (FAMILIES.find(f => f.value === state.family) || FAMILIES[0]).label;
+  document.getElementById("ledeNote").textContent = ranked.length
+    ? `Ranked across ${state.family ? scope.toLowerCase() : "all listings"} by the`
+      + " five signals shown."
+    : "";
+
+  if (!ranked.length) {
+    document.getElementById("cards").innerHTML = `
+      <div class="card card--hero" style="grid-column:1/-1;border-right:1px solid var(--rule);border-radius:4px">
+        <div class="rank">Nothing to rank</div>
+        <div class="name">No listing in this filter has a single usable signal.</div>
+        <p class="against" style="margin-top:12px">A deal needs evidence. Widen the
+           filter, or wait for the next run to build history.</p>
+      </div>`;
+    return;
+  }
+
+  const [top, ...rest] = ranked;
+  const hero = `
+    <div class="card card--hero">
+      <div class="rank">Best score of the ${state.scoredCount} listings with
+        evidence behind them</div>
+      <div class="name">${link(top.url, top.name)}</div>
+      <div class="price">${pkr(top.price)}</div>
+      <div class="against">${top.benchmark != null
+        ? "Est. Apple Landed " + pkr(top.benchmark)
+        : "No verified Apple price for this configuration"}</div>
+      <ul class="verdict">${verdict(top).map(l => typeof l === "string"
+        ? `<li>${esc(l)}</li>`
+        : `<li class="thin">${esc(l.text)}</li>`).join("")}</ul>
+      <div class="hero-meter">
+        ${meter(top.scores, true)}
+        ${meterLegend(top.scores)}
+        <div class="confline">${confidenceLine(top.scores)}</div>
+      </div>
+    </div>`;
+
+  const runners = rest.map((p, i) => `
+    <div class="card card--row">
       <div class="name">${link(p.url, p.name)}</div>
       <div class="price">${pkr(p.price)}</div>
-      <div class="muted" style="margin:6px 0;">
-        ${p.benchmark ? "Est. Apple Landed " + pkr(p.benchmark) : "No Apple benchmark"}
-      </div>
-      <span class="score">Deal ${p.scores.deal_score}</span>
-      <span class="muted"> · ${p.scores.confidence}/5 signals</span>
+      <div class="sub">${ordinal(i + 2)} best, on ${p.scores.confidence}
+        of 5 signals</div>
+      <div class="meterwrap">${meter(p.scores, false)}</div>
     </div>`).join("");
 
-  renderRows();
+  document.getElementById("cards").innerHTML =
+    hero + `<div class="contenders">${runners}</div>`;
+}
+
+function visible() {
+  return state.products
+    .filter(p => !state.family || p.family === state.family)
+    .filter(p => !state.benchOnly || p.benchmark != null)
+    .filter(p => {
+      if (!state.term) return true;
+      const hay = [p.name, p.chip, p.color].filter(Boolean).join(" ").toLowerCase();
+      return hay.includes(state.term);
+    });
+}
+
+const value = (p, key) => key === "deal" ? p.scores.deal_score : p[key];
+
+/* A score of 54 means nothing on its own - it is a blend of percentages and
+   rankings, so it is not "54% off" anything. What makes it readable is where
+   it sits among the listings in front of you right now, so rank them. Equal
+   scores share a rank. */
+function rankScored(rows) {
+  const scored = rows.filter(p => p.scores.confidence > 0)
+    .sort((a, b) => b.scores.deal_score - a.scores.deal_score);
+  const rank = {};
+  let place = 0, previous = null;
+  scored.forEach((p, i) => {
+    if (p.scores.deal_score !== previous) { place = i + 1; previous = p.scores.deal_score; }
+    rank[p.slug] = place;
+  });
+  state.rank = rank;
+  state.scoredCount = scored.length;
+}
+
+const ordinal = n => {
+  const tens = n % 100;
+  if (tens >= 11 && tens <= 13) return n + "th";
+  return n + ({1:"st", 2:"nd", 3:"rd"}[n % 10] || "th");
+};
+
+function rankLine(p) {
+  const place = state.rank[p.slug];
+  if (!place) return "Not ranked: no signal had any data for this listing.";
+  return `That is ${ordinal(place)} best of the ${state.scoredCount} listings in `
+       + "view that have any evidence behind them.";
 }
 
 function renderRows() {
-  const family = document.getElementById("family").value;
-  const term = document.getElementById("search").value.toLowerCase();
-  const value = (p, key) => key === "deal" ? p.scores.deal_score : p[key];
+  const rows = visible().sort((a, b) => {
+    const x = value(a, state.sort), y = value(b, state.sort);
+    if (x == null) return 1;
+    if (y == null) return -1;
+    return (x > y ? 1 : x < y ? -1 : 0) * state.dir;
+  });
 
-  const rows = state.products
-    .filter(p => !family || p.family === family)
-    .filter(p => !term || p.name.toLowerCase().includes(term))
-    .sort((a,b) => {
-      const x = value(a, state.sort), y = value(b, state.sort);
-      if (x == null) return 1;
-      if (y == null) return -1;
-      return (x > y ? 1 : x < y ? -1 : 0) * state.dir;
-    });
+  document.getElementById("tally").textContent =
+    rows.length === state.products.length
+      ? `All ${state.products.length} listings`
+      : `${rows.length} of ${state.products.length} listings`;
 
-  document.getElementById("rows").innerHTML = rows.map(p => `<tr>${
+  document.getElementById("rows").innerHTML = rows.map(p => `<tr data-slug="${
+    esc(p.slug)}">${
     COLUMNS.map(c => {
       const v = value(p, c.key);
-      if (c.type === "money") return `<td class="num">${pkr(v)}</td>`;
-      if (c.type === "delta") {
-        if (v == null || v === 0) return `<td class="num muted">—</td>`;
-        return `<td class="num ${v < 0 ? "down" : "up"}">
-                ${v < 0 ? "▼" : "▲"} ${pkr(Math.abs(v))}</td>`;
-      }
       if (c.key === "name")
-        return `<td>${link(p.url, p.name)}</td>`;
-      return `<td class="${c.type === "num" ? "num" : ""}">${esc(v ?? "—")}</td>`;
+        return `<td class="name">${link(p.url, p.name)}</td>`;
+      if (c.type === "money") return `<td class="num">${money(v)}</td>`;
+      if (c.type === "gb")
+        return `<td class="num">${v == null
+          ? '<span class="dash">—</span>' : esc(gb(v))}</td>`;
+      if (c.type === "delta") {
+        if (v == null) return '<td class="num dash">first run</td>';
+        if (v === 0) return '<td class="num dash">unchanged</td>';
+        return `<td class="num ${v < 0 ? "down" : "up"}">${v < 0 ? "▼" : "▲"} ${
+          pkr(Math.abs(v))}</td>`;
+      }
+      if (c.type === "deal")
+        return `<td class="num"><span class="dealcell">${meter(p.scores, false)}
+          <span class="n">${esc(score(v))}</span></span></td>`;
+      return `<td>${v == null ? '<span class="dash">—</span>' : esc(v)}</td>`;
     }).join("")
-  }</tr>`).join("");
+  }<td class="num"><button class="expander" type="button" aria-expanded="false"
+      aria-label="How ${esc(p.name)} was scored">+</button></td></tr>`).join("");
+
+  document.getElementById("emptyState").innerHTML = rows.length ? "" : `
+    <div class="empty">
+      <p>No listing matches these filters.</p>
+      <button class="grab" type="button" id="clearFilters">Clear the filters</button>
+    </div>`;
+  const clear = document.getElementById("clearFilters");
+  if (clear) clear.onclick = () => {
+    state.family = ""; state.term = ""; state.benchOnly = false;
+    document.getElementById("search").value = "";
+    document.getElementById("benchOnly").checked = false;
+    render();
+  };
+
+  document.getElementById("rows").querySelectorAll("tr[data-slug]").forEach(tr => {
+    tr.querySelector(".expander").onclick = () => toggle(tr);
+  });
+  if (state.open) {
+    const tr = document.querySelector(`#rows tr[data-slug="${CSS.escape(state.open)}"]`);
+    if (tr) openRow(tr); else state.open = null;
+  }
 }
 
-document.getElementById("family").onchange = renderRows;
-document.getElementById("search").oninput = renderRows;
+/* --------------------------------------------------------------- drawer */
+function toggle(tr) {
+  const slug = tr.dataset.slug;
+  const already = state.open === slug;
+  closeRow();
+  if (already) { state.open = null; return; }
+  state.open = slug;
+  openRow(tr);
+}
+
+function closeRow() {
+  document.querySelectorAll("tr.detail").forEach(r => r.remove());
+  document.querySelectorAll("tr.is-open").forEach(r => {
+    r.classList.remove("is-open");
+    const button = r.querySelector(".expander");
+    button.textContent = "+";
+    button.setAttribute("aria-expanded", "false");
+  });
+}
+
+function openRow(tr) {
+  const p = state.products.find(x => x.slug === tr.dataset.slug);
+  if (!p) return;
+  tr.classList.add("is-open");
+  const button = tr.querySelector(".expander");
+  button.textContent = "−";
+  button.setAttribute("aria-expanded", "true");
+
+  const detail = document.createElement("tr");
+  detail.className = "detail";
+  const cell = document.createElement("td");
+  cell.colSpan = COLUMNS.length + 1;
+  cell.innerHTML = `
+    <div class="detail-grid">
+      <div>
+        <h3>This listing</h3>
+        <dl class="facts">
+          <dt>Chip</dt><dd>${esc(p.chip || "not stated")}</dd>
+          <dt>Memory</dt><dd>${p.ram_gb ? esc(gb(p.ram_gb)) : "not stated"}</dd>
+          <dt>Storage</dt><dd>${p.storage_gb ? esc(gb(p.storage_gb)) : "not stated"}</dd>
+          <dt>Screen</dt><dd>${p.screen_size ? esc(p.screen_size) + " inch" : "not stated"}</dd>
+          <dt>Colour</dt><dd>${esc(p.color || "not stated")}</dd>
+          <dt>Shop's old price</dt><dd>${p.old_price && p.old_price > p.price
+            ? pkr(p.old_price) : "none shown"}</dd>
+          <dt>First tracked</dt><dd>${esc(runDate(p.first_seen))}</dd>
+        </dl>
+        <div class="spark" data-slug="${esc(p.slug)}"></div>
+      </div>
+      <div>
+        <h3>What the score of ${esc(score(p.scores.deal_score))} is telling you</h3>
+        <p class="verdictline">${esc(rankLine(p))}
+          <span class="caveat">It is a way of lining listings up against each
+          other, not a discount: ${esc(score(p.scores.deal_score))} does not mean
+          ${esc(String(Math.round(p.scores.deal_score)))}% off. For money saved,
+          compare the price against Est. Apple Landed.</span></p>
+        <table class="sigtable"><tbody>${SIGNALS.map(s => {
+          const v = p.scores[s.key];
+          return `<tr>
+            <td>${esc(s.label)}
+              <div class="asks">${esc(v == null ? "No data: " + s.gap : s.asks)}</div>
+              <div class="track${v == null ? " none" : ""}"><i style="width:${
+                v == null ? 0 : Math.round(v)}%"></i></div></td>
+            <td class="w">weight ${s.weight}%</td>
+            <td class="v ${v == null ? "none" : ""}">${
+              v == null ? "no data" : pct(v)}</td>
+          </tr>`;
+        }).join("")}</tbody></table>
+        <div class="confline">${confidenceLine(p.scores)} Weight is shared out over
+          the signals that had data, so a missing signal lowers confidence instead
+          of quietly dragging the score down.</div>
+      </div>
+    </div>`;
+  detail.appendChild(cell);
+  tr.after(detail);
+  drawSpark(p.slug);
+}
+
+async function drawSpark(slug) {
+  if (state.history === null) {
+    try {
+      state.history = await (await fetch("data/history.json", {cache:"no-store"})).json();
+    } catch (e) { state.history = {}; }
+  }
+  const box = document.querySelector(`.spark[data-slug="${CSS.escape(slug)}"]`);
+  if (!box) return;  // the row was closed while history was loading
+
+  const prices = (state.history[slug] || [])
+    .filter(point => typeof point[1] === "number" && point[1] > 0)
+    .map(point => point[1]);
+
+  if (prices.length < 3) {
+    box.innerHTML = `<div class="cfg">Price history: ${prices.length} ${
+      prices.length === 1 ? "run" : "runs"} recorded so far, not enough to chart.</div>`;
+    return;
+  }
+  const lo = Math.min(...prices), hi = Math.max(...prices);
+  if (lo === hi) {  // a flat line drawn across a chart says less than a sentence
+    box.innerHTML = `<div class="cfg">Held at ${pkr(lo)} across all ${
+      prices.length} runs so far.</div>`;
+    return;
+  }
+  const span = hi - lo;
+  const points = prices.map((v, i) => {
+    const x = (i / (prices.length - 1)) * 100;
+    const y = 46 - ((v - lo) / span) * 40;
+    return `${x.toFixed(2)},${y.toFixed(2)}`;
+  });
+  const caption = `Price across ${prices.length} runs, low ${pkr(lo)}, high ${pkr(hi)}`;
+  box.innerHTML = `
+    <div class="cfg">${esc(caption)}</div>
+    <svg viewBox="0 0 100 54" preserveAspectRatio="none" role="img"
+         aria-label="${esc(caption)}">
+      <path class="base" d="M0,50 L100,50" vector-effect="non-scaling-stroke"></path>
+      <path d="M${points.join(" L")}" vector-effect="non-scaling-stroke"></path>
+    </svg>`;
+}
+
+/* --------------------------------------------------------------- footer */
+function renderFoot() {
+  const notes = state.meta.notes || [];
+  const missing = state.meta.missing_msrp || [];
+  document.getElementById("foot").innerHTML = `
+    ${notes.length ? `<details>
+      <summary>What happened on this run (${notes.length})</summary>
+      <ul>${notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>
+    </details>` : ""}
+    ${missing.length ? `<details>
+      <summary>${missing.length} configurations have no verified Apple price</summary>
+      <p>These are scored without the Apple comparison rather than against a guessed
+         one. Only prices read directly from apple.com are ever used.</p>
+      <ul>${missing.map(k => `<li>${esc(k)}</li>`).join("")}</ul>
+    </details>` : ""}
+    <p class="note">“Est. Apple Landed” is this tracker's own estimate: Apple's US
+      price, converted at the rate shown above and marked up for duty. It is not an
+      official price and Apple does not sell at it. Everything else is read from
+      applemac.pk, which can itself be wrong or out of date.</p>`;
+}
+
+/* -------------------------------------------------------------- wire-up */
+document.getElementById("search").oninput = (e) => {
+  state.term = e.target.value.trim().toLowerCase();
+  state.open = null;
+  renderTopDeals();
+  renderRows();
+};
+document.getElementById("benchOnly").onchange = (e) => {
+  state.benchOnly = e.target.checked;
+  state.open = null;
+  renderTopDeals();
+  renderRows();
+};
+
 document.getElementById("refresh").onclick = async () => {
   const button = document.getElementById("refresh");
   const log = document.getElementById("log");
   button.disabled = true;
-  button.textContent = "Scraping… (about 30s)";
-  log.textContent = "";
+  button.textContent = "Checking, about 30 seconds";
+  log.className = "status";
+  log.textContent = "Fetching every category, 1.5 seconds apart.";
   try {
     const response = await fetch("api/refresh", {method:"POST"});
     const result = await response.json();
@@ -220,17 +956,18 @@ document.getElementById("refresh").onclick = async () => {
       error.historySaved = !!result.history_saved;
       throw error;
     }
-    log.textContent = `Done: ${result.product_count} products.`;
+    log.className = "status";
+    log.textContent = `Done. ${result.product_count} listings recorded.`;
     await boot();
   } catch (error) {
-    const followUp = error.historySaved
-      ? "\nThe price history WAS updated and saved. The workbook/JSON " +
-        "outputs may be stale until the next successful run."
-      : "\nPrevious data is intact.";
-    log.textContent = "FAILED: " + error.message + followUp;
+    log.className = "status err";
+    log.textContent = "Run failed: " + error.message + " " + (error.historySaved
+      ? "The price history was still written and saved. The workbook and the figures "
+        + "on this page stay as they were until the next run succeeds."
+      : "Nothing was written. Everything on this page is unchanged.");
   } finally {
     button.disabled = false;
-    button.textContent = "Refresh Prices";
+    button.textContent = "Check prices now";
   }
 };
 

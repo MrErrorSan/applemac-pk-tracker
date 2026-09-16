@@ -6,8 +6,7 @@ iPhones, keeps an append-only price history in git, ranks every listing by
 a deal score, and serves the result as a dashboard. It runs itself daily
 via GitHub Actions and publishes to GitHub Pages — no server to maintain.
 
-**Live dashboard:** `https://<your-username>.github.io/<repo>/` *(placeholder —
-no repository is published yet)*
+**Live dashboard:** <https://mrerrorsan.github.io/applemac-pk-tracker/>
 
 ## Why
 

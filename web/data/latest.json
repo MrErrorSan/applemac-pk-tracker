@@ -1,30 +1,11 @@
 {
  "meta": {
-  "run_id": "20260916T005414352292+0000",
-  "generated_at": "2026-09-16T00:54:14.352292+00:00",
+  "run_id": "20260916T030934206681+0000",
+  "generated_at": "2026-09-16T03:09:34.206681+00:00",
   "fx_rate": 277.720685,
   "fx_stale": false,
   "duty_percent": 0.55,
   "missing_msrp": [
-   "iphone_scr6_3_chipa19_pro_ram12_ssd1024",
-   "iphone_scr6_3_chipa19_pro_ram12_ssd256",
-   "iphone_scr6_3_chipa19_pro_ram12_ssd512",
-   "iphone_scr6_9_chipa19_pro_ram12_ssd1024",
-   "iphone_scr6_9_chipa19_pro_ram12_ssd2048",
-   "iphone_scr6_9_chipa19_pro_ram12_ssd256",
-   "iphone_scr6_9_chipa19_pro_ram12_ssd512",
-   "macbook_air_scr13_0_chipm4_ram16_ssd256",
-   "macbook_air_scr13_0_chipm4_ram16_ssd512",
-   "macbook_air_scr13_0_chipm4_ram24_ssd512",
-   "macbook_air_scr15_0_chipm4_ram16_ssd256",
-   "macbook_air_scr15_0_chipm4_ram16_ssd512",
-   "macbook_air_scr15_0_chipm4_ram24_ssd512",
-   "macbook_pro_scr14_0_chipm4_max_ram36_ssd1024",
-   "macbook_pro_scr14_0_chipm4_pro_ram24_ssd1024",
-   "macbook_pro_scr14_0_chipm4_pro_ram24_ssd512",
-   "macbook_pro_scr14_0_chipm4_ram16_ssd1024",
-   "macbook_pro_scr14_0_chipm4_ram16_ssd512",
-   "macbook_pro_scr14_0_chipm4_ram24_ssd1024",
    "macbook_pro_scr14_0_chipm5_pro_ram24_ssd1024",
    "macbook_pro_scr14_0_chipm5_pro_ram24_ssd2048",
    "macbook_pro_scr14_0_chipm5_pro_ram24_ssd4096",
@@ -32,11 +13,7 @@
    "macbook_pro_scr14_0_chipm5_pro_ram48_ssd2048",
    "macbook_pro_scr14_0_chipm5_pro_ram48_ssd4096",
    "macbook_pro_scr14_0_chipm5_ram16_ssd512",
-   "macbook_pro_scr14_0_chipm5_ram32_ssd512",
-   "macbook_pro_scr16_0_chipm4_max_ram36_ssd1024",
-   "macbook_pro_scr16_0_chipm4_max_ram48_ssd1024",
-   "macbook_pro_scr16_0_chipm4_pro_ram24_ssd512",
-   "macbook_pro_scr16_0_chipm4_pro_ram48_ssd512"
+   "macbook_pro_scr14_0_chipm5_ram32_ssd512"
   ],
   "product_count": 171,
   "notes": [
@@ -105,16 +82,16 @@
    "color": "Midnight",
    "model_group": "macbook_air_scr13_0_chipm4",
    "config_key": "macbook_air_scr13_0_chipm4_ram16_ssd256",
-   "benchmark": null,
+   "benchmark": 430037,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 27.913412101749387,
     "vs_history": 0.0,
     "vs_peers": 100.0,
     "spec_value": 29.717028571428507,
     "site_discount": null,
-    "deal_score": 40.8,
-    "confidence": 3
+    "deal_score": 36.5,
+    "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -136,16 +113,16 @@
    "color": "Sky Blue",
    "model_group": "macbook_air_scr13_0_chipm4",
    "config_key": "macbook_air_scr13_0_chipm4_ram16_ssd256",
-   "benchmark": null,
+   "benchmark": 430037,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 27.913412101749387,
     "vs_history": 0.0,
     "vs_peers": 100.0,
     "spec_value": 29.717028571428507,
     "site_discount": null,
-    "deal_score": 40.8,
-    "confidence": 3
+    "deal_score": 36.5,
+    "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -167,16 +144,16 @@
    "color": "Silver",
    "model_group": "macbook_air_scr13_0_chipm4",
    "config_key": "macbook_air_scr13_0_chipm4_ram16_ssd256",
-   "benchmark": null,
+   "benchmark": 430037,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 27.913179563618947,
     "vs_history": 0.0,
     "vs_peers": 0.0,
     "spec_value": 29.714285714285694,
     "site_discount": null,
-    "deal_score": 7.4,
-    "confidence": 3
+    "deal_score": 14.3,
+    "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -198,16 +175,16 @@
    "color": "Starlight",
    "model_group": "macbook_air_scr13_0_chipm4",
    "config_key": "macbook_air_scr13_0_chipm4_ram16_ssd256",
-   "benchmark": null,
+   "benchmark": 430037,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 27.913179563618947,
     "vs_history": 0.0,
     "vs_peers": 0.0,
     "spec_value": 29.714285714285694,
     "site_discount": null,
-    "deal_score": 7.4,
-    "confidence": 3
+    "deal_score": 14.3,
+    "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -260,16 +237,16 @@
    "color": "Midnight",
    "model_group": "macbook_air_scr15_0_chipm4",
    "config_key": "macbook_air_scr15_0_chipm4_ram16_ssd256",
-   "benchmark": null,
+   "benchmark": 516130,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 25.60013949973844,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 0.0,
     "site_discount": null,
-    "deal_score": 0.0,
-    "confidence": 2
+    "deal_score": 11.0,
+    "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -291,16 +268,16 @@
    "color": "Starlight",
    "model_group": "macbook_air_scr15_0_chipm4",
    "config_key": "macbook_air_scr15_0_chipm4_ram16_ssd256",
-   "benchmark": null,
+   "benchmark": 516130,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 25.60013949973844,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 0.0,
     "site_discount": null,
-    "deal_score": 0.0,
-    "confidence": 2
+    "deal_score": 11.0,
+    "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -322,16 +299,16 @@
    "color": "Silver",
    "model_group": "macbook_air_scr15_0_chipm4",
    "config_key": "macbook_air_scr15_0_chipm4_ram16_ssd256",
-   "benchmark": null,
+   "benchmark": 516130,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 25.60013949973844,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 0.0,
     "site_discount": null,
-    "deal_score": 0.0,
-    "confidence": 2
+    "deal_score": 11.0,
+    "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -353,16 +330,16 @@
    "color": "Sky Blue",
    "model_group": "macbook_air_scr15_0_chipm4",
    "config_key": "macbook_air_scr15_0_chipm4_ram16_ssd256",
-   "benchmark": null,
+   "benchmark": 516130,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 25.60013949973844,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 0.0,
     "site_discount": null,
-    "deal_score": 0.0,
-    "confidence": 2
+    "deal_score": 11.0,
+    "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -384,16 +361,16 @@
    "color": "Starlight",
    "model_group": "macbook_air_scr13_0_chipm4",
    "config_key": "macbook_air_scr13_0_chipm4_ram16_ssd512",
-   "benchmark": null,
+   "benchmark": 516130,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 25.406389863019008,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 0.0,
     "site_discount": null,
-    "deal_score": 0.0,
-    "confidence": 2
+    "deal_score": 10.9,
+    "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -415,16 +392,16 @@
    "color": "Silver",
    "model_group": "macbook_air_scr13_0_chipm4",
    "config_key": "macbook_air_scr13_0_chipm4_ram16_ssd512",
-   "benchmark": null,
+   "benchmark": 516130,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 25.406389863019008,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 0.0,
     "site_discount": null,
-    "deal_score": 0.0,
-    "confidence": 2
+    "deal_score": 10.9,
+    "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -446,16 +423,16 @@
    "color": "Sky Blue",
    "model_group": "macbook_air_scr13_0_chipm4",
    "config_key": "macbook_air_scr13_0_chipm4_ram16_ssd512",
-   "benchmark": null,
+   "benchmark": 516130,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 25.406389863019008,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 0.0,
     "site_discount": null,
-    "deal_score": 0.0,
-    "confidence": 2
+    "deal_score": 10.9,
+    "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -477,16 +454,16 @@
    "color": "Midnight",
    "model_group": "macbook_air_scr13_0_chipm4",
    "config_key": "macbook_air_scr13_0_chipm4_ram16_ssd512",
-   "benchmark": null,
+   "benchmark": 516130,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 25.406389863019008,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 0.0,
     "site_discount": null,
-    "deal_score": 0.0,
-    "confidence": 2
+    "deal_score": 10.9,
+    "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -632,16 +609,16 @@
    "color": "Silver",
    "model_group": "macbook_pro_scr14_0_chipm4",
    "config_key": "macbook_pro_scr14_0_chipm4_ram16_ssd512",
-   "benchmark": null,
+   "benchmark": 688317,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 35.349555510033895,
     "vs_history": 0.0,
     "vs_peers": 100.0,
     "spec_value": 9.365994236311199,
     "site_discount": 5.319148936170213,
-    "deal_score": 31.3,
-    "confidence": 4
+    "deal_score": 32.5,
+    "confidence": 5
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -756,16 +733,16 @@
    "color": "Midnight",
    "model_group": "macbook_air_scr15_0_chipm4",
    "config_key": "macbook_air_scr15_0_chipm4_ram16_ssd512",
-   "benchmark": null,
+   "benchmark": 602223,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 24.612643489205826,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 6.504065040650378,
     "site_discount": null,
-    "deal_score": 2.4,
-    "confidence": 2
+    "deal_score": 11.9,
+    "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -787,16 +764,16 @@
    "color": "Starlight",
    "model_group": "macbook_air_scr15_0_chipm4",
    "config_key": "macbook_air_scr15_0_chipm4_ram16_ssd512",
-   "benchmark": null,
+   "benchmark": 602223,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 24.612643489205826,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 6.504065040650378,
     "site_discount": null,
-    "deal_score": 2.4,
-    "confidence": 2
+    "deal_score": 11.9,
+    "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -818,16 +795,16 @@
    "color": "Silver",
    "model_group": "macbook_air_scr15_0_chipm4",
    "config_key": "macbook_air_scr15_0_chipm4_ram16_ssd512",
-   "benchmark": null,
+   "benchmark": 602223,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 24.612643489205826,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 6.504065040650378,
     "site_discount": null,
-    "deal_score": 2.4,
-    "confidence": 2
+    "deal_score": 11.9,
+    "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -849,16 +826,16 @@
    "color": "Sky Blue",
    "model_group": "macbook_air_scr15_0_chipm4",
    "config_key": "macbook_air_scr15_0_chipm4_ram16_ssd512",
-   "benchmark": null,
+   "benchmark": 602223,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 24.612643489205826,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 6.504065040650378,
     "site_discount": null,
-    "deal_score": 2.4,
-    "confidence": 2
+    "deal_score": 11.9,
+    "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -880,16 +857,16 @@
    "color": "Midnight",
    "model_group": "macbook_air_scr13_0_chipm4",
    "config_key": "macbook_air_scr13_0_chipm4_ram24_ssd512",
-   "benchmark": null,
+   "benchmark": 602223,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 24.446592043146808,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 100.0,
     "site_discount": null,
-    "deal_score": 37.5,
-    "confidence": 2
+    "deal_score": 31.9,
+    "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -911,16 +888,16 @@
    "color": "Starlight",
    "model_group": "macbook_air_scr13_0_chipm4",
    "config_key": "macbook_air_scr13_0_chipm4_ram24_ssd512",
-   "benchmark": null,
+   "benchmark": 602223,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 24.446592043146808,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 100.0,
     "site_discount": null,
-    "deal_score": 37.5,
-    "confidence": 2
+    "deal_score": 31.9,
+    "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -942,16 +919,16 @@
    "color": "Silver",
    "model_group": "macbook_air_scr13_0_chipm4",
    "config_key": "macbook_air_scr13_0_chipm4_ram24_ssd512",
-   "benchmark": null,
+   "benchmark": 602223,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 24.446592043146808,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 100.0,
     "site_discount": null,
-    "deal_score": 37.5,
-    "confidence": 2
+    "deal_score": 31.9,
+    "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -973,16 +950,16 @@
    "color": "Sky Blue",
    "model_group": "macbook_air_scr13_0_chipm4",
    "config_key": "macbook_air_scr13_0_chipm4_ram24_ssd512",
-   "benchmark": null,
+   "benchmark": 602223,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 24.446592043146808,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 100.0,
     "site_discount": null,
-    "deal_score": 37.5,
-    "confidence": 2
+    "deal_score": 31.9,
+    "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -1004,16 +981,16 @@
    "color": "Space Black",
    "model_group": "macbook_pro_scr14_0_chipm4",
    "config_key": "macbook_pro_scr14_0_chipm4_ram16_ssd512",
-   "benchmark": null,
+   "benchmark": 688317,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 33.460890839540504,
     "vs_history": 0.0,
     "vs_peers": 0.0,
     "spec_value": 0.0,
     "site_discount": 1.5053763440860215,
-    "deal_score": 0.2,
-    "confidence": 4
+    "deal_score": 10.2,
+    "confidence": 5
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -1035,16 +1012,16 @@
    "color": "Silver, Cosmic Orange, Deep Blue",
    "model_group": "iphone_scr6_9_chipa19_pro",
    "config_key": "iphone_scr6_9_chipa19_pro_ram12_ssd256",
-   "benchmark": null,
+   "benchmark": 516130,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 8.93767074186736,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 0.0,
     "site_discount": 6.0,
-    "deal_score": 1.2,
-    "confidence": 3
+    "deal_score": 4.1,
+    "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -1066,16 +1043,16 @@
    "color": "Midnight",
    "model_group": "macbook_air_scr15_0_chipm4",
    "config_key": "macbook_air_scr15_0_chipm4_ram24_ssd512",
-   "benchmark": null,
+   "benchmark": 688317,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 30.99109857812607,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 100.0,
     "site_discount": null,
-    "deal_score": 37.5,
-    "confidence": 2
+    "deal_score": 34.7,
+    "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -1097,16 +1074,16 @@
    "color": "Starlight",
    "model_group": "macbook_air_scr15_0_chipm4",
    "config_key": "macbook_air_scr15_0_chipm4_ram24_ssd512",
-   "benchmark": null,
+   "benchmark": 688317,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 30.99109857812607,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 100.0,
     "site_discount": null,
-    "deal_score": 37.5,
-    "confidence": 2
+    "deal_score": 34.7,
+    "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -1128,16 +1105,16 @@
    "color": "Silver",
    "model_group": "macbook_air_scr15_0_chipm4",
    "config_key": "macbook_air_scr15_0_chipm4_ram24_ssd512",
-   "benchmark": null,
+   "benchmark": 688317,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 30.99109857812607,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 100.0,
     "site_discount": null,
-    "deal_score": 37.5,
-    "confidence": 2
+    "deal_score": 34.7,
+    "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -1159,16 +1136,16 @@
    "color": "Sky Blue",
    "model_group": "macbook_air_scr15_0_chipm4",
    "config_key": "macbook_air_scr15_0_chipm4_ram24_ssd512",
-   "benchmark": null,
+   "benchmark": 688317,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 30.99109857812607,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 100.0,
     "site_discount": null,
-    "deal_score": 37.5,
-    "confidence": 2
+    "deal_score": 34.7,
+    "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -1438,16 +1415,16 @@
    "color": "Silver",
    "model_group": "macbook_pro_scr14_0_chipm4",
    "config_key": "macbook_pro_scr14_0_chipm4_ram16_ssd1024",
-   "benchmark": null,
+   "benchmark": 774410,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 35.43484717397761,
     "vs_history": 0.0,
     "vs_peers": 100.0,
     "spec_value": 59.79881123919307,
     "site_discount": 9.09109090909091,
-    "deal_score": 42.7,
-    "confidence": 4
+    "deal_score": 40.5,
+    "confidence": 5
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -1500,16 +1477,16 @@
    "color": "Space Black",
    "model_group": "macbook_pro_scr14_0_chipm4",
    "config_key": "macbook_pro_scr14_0_chipm4_ram16_ssd1024",
-   "benchmark": null,
+   "benchmark": 774410,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 32.85223589571415,
     "vs_history": 0.0,
     "vs_peers": 0.0,
     "spec_value": 48.9918948126801,
     "site_discount": 5.454727272727273,
-    "deal_score": 11.3,
-    "confidence": 4
+    "deal_score": 17.7,
+    "confidence": 5
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -1562,16 +1539,16 @@
    "color": "Silver, Cosmic Orange, Deep Blue",
    "model_group": "iphone_scr6_3_chipa19_pro",
    "config_key": "iphone_scr6_3_chipa19_pro_ram12_ssd256",
-   "benchmark": null,
+   "benchmark": 473083,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 0.0,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 0.0,
     "site_discount": 0.8490566037735849,
-    "deal_score": 0.2,
-    "confidence": 3
+    "deal_score": 0.1,
+    "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -1593,16 +1570,16 @@
    "color": "Silver",
    "model_group": "macbook_pro_scr14_0_chipm4",
    "config_key": "macbook_pro_scr14_0_chipm4_ram24_ssd1024",
-   "benchmark": null,
+   "benchmark": 860504,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 38.17576675994533,
     "vs_history": 0.0,
     "vs_peers": 100.0,
     "spec_value": 100.0,
     "site_discount": null,
-    "deal_score": 58.3,
-    "confidence": 3
+    "deal_score": 51.6,
+    "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -1624,16 +1601,16 @@
    "color": "Silver, Cosmic Orange, Deep Blue",
    "model_group": "iphone_scr6_9_chipa19_pro",
    "config_key": "iphone_scr6_9_chipa19_pro_ram12_ssd512",
-   "benchmark": null,
+   "benchmark": 602223,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 8.671704667540098,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 20.650761825377163,
     "site_discount": 8.333333333333332,
-    "deal_score": 7.9,
-    "confidence": 3
+    "deal_score": 8.2,
+    "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -1965,16 +1942,16 @@
    "color": "Space Black",
    "model_group": "macbook_pro_scr14_0_chipm4",
    "config_key": "macbook_pro_scr14_0_chipm4_ram24_ssd1024",
-   "benchmark": null,
+   "benchmark": 860504,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 34.34080492362616,
     "vs_history": 0.0,
     "vs_peers": 0.0,
     "spec_value": 85.73487031700287,
     "site_discount": null,
-    "deal_score": 21.4,
-    "confidence": 3
+    "deal_score": 25.7,
+    "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -2151,16 +2128,16 @@
    "color": "Silver, Cosmic Orange, Deep Blue",
    "model_group": "iphone_scr6_3_chipa19_pro",
    "config_key": "iphone_scr6_3_chipa19_pro_ram12_ssd512",
-   "benchmark": null,
+   "benchmark": 559177,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 0.0,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 29.687671232876717,
     "site_discount": 1.056910569105691,
-    "deal_score": 9.1,
-    "confidence": 3
+    "deal_score": 5.7,
+    "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -2399,16 +2376,16 @@
    "color": "Silver",
    "model_group": "macbook_pro_scr14_0_chipm4_pro",
    "config_key": "macbook_pro_scr14_0_chipm4_pro_ram24_ssd512",
-   "benchmark": null,
+   "benchmark": 860504,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 24.46287292098584,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 0.0,
     "site_discount": null,
-    "deal_score": 0.0,
-    "confidence": 2
+    "deal_score": 10.5,
+    "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -2430,16 +2407,16 @@
    "color": "Space Black",
    "model_group": "macbook_pro_scr14_0_chipm4_pro",
    "config_key": "macbook_pro_scr14_0_chipm4_pro_ram24_ssd512",
-   "benchmark": null,
+   "benchmark": 860504,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 24.46287292098584,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 0.0,
     "site_discount": null,
-    "deal_score": 0.0,
-    "confidence": 2
+    "deal_score": 10.5,
+    "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -2523,16 +2500,16 @@
    "color": "Silver, Cosmic Orange, Deep Blue",
    "model_group": "iphone_scr6_3_chipa19_pro",
    "config_key": "iphone_scr6_3_chipa19_pro_ram12_ssd1024",
-   "benchmark": null,
+   "benchmark": 645270,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 0.0,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 100.0,
     "site_discount": 1.2142857142857142,
-    "deal_score": 30.2,
-    "confidence": 3
+    "deal_score": 18.9,
+    "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -2554,16 +2531,16 @@
    "color": "Space Black",
    "model_group": "macbook_pro_scr14_0_chipm4_pro",
    "config_key": "macbook_pro_scr14_0_chipm4_pro_ram24_ssd1024",
-   "benchmark": null,
+   "benchmark": 1032690,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 32.21586342464825,
     "vs_history": 0.0,
     "vs_peers": 100.0,
     "spec_value": 100.0,
     "site_discount": null,
-    "deal_score": 58.3,
-    "confidence": 3
+    "deal_score": 49.6,
+    "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -2616,16 +2593,16 @@
    "color": "Space Black",
    "model_group": "macbook_pro_scr16_0_chipm4_pro",
    "config_key": "macbook_pro_scr16_0_chipm4_pro_ram24_ssd512",
-   "benchmark": null,
+   "benchmark": 1075737,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 34.18474961816875,
     "vs_history": 0.0,
     "vs_peers": 100.0,
     "spec_value": 12.49398266190719,
     "site_discount": null,
-    "deal_score": 36.5,
-    "confidence": 3
+    "deal_score": 35.7,
+    "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -2678,16 +2655,16 @@
    "color": "Silver",
    "model_group": "macbook_pro_scr14_0_chipm4_pro",
    "config_key": "macbook_pro_scr14_0_chipm4_pro_ram24_ssd1024",
-   "benchmark": null,
+   "benchmark": 1032690,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 30.279173808209624,
     "vs_history": 0.0,
     "vs_peers": 0.0,
     "spec_value": 82.22222222222221,
     "site_discount": null,
-    "deal_score": 20.6,
-    "confidence": 3
+    "deal_score": 23.8,
+    "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -2771,16 +2748,16 @@
    "color": "Silver, Cosmic Orange, Deep Blue",
    "model_group": "iphone_scr6_9_chipa19_pro",
    "config_key": "iphone_scr6_9_chipa19_pro_ram12_ssd1024",
-   "benchmark": null,
+   "benchmark": 688317,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 0.0,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 32.45119715416413,
     "site_discount": 0.6711409395973155,
-    "deal_score": 9.9,
-    "confidence": 3
+    "deal_score": 6.2,
+    "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -2802,16 +2779,16 @@
    "color": "Silver",
    "model_group": "macbook_pro_scr16_0_chipm4_pro",
    "config_key": "macbook_pro_scr16_0_chipm4_pro_ram24_ssd512",
-   "benchmark": null,
+   "benchmark": 1075737,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 30.93107330137385,
     "vs_history": 0.0,
     "vs_peers": 0.0,
     "spec_value": 0.0,
     "site_discount": null,
-    "deal_score": 0.0,
-    "confidence": 3
+    "deal_score": 10.3,
+    "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -3019,16 +2996,16 @@
    "color": "Silver",
    "model_group": "macbook_pro_scr16_0_chipm4_pro",
    "config_key": "macbook_pro_scr16_0_chipm4_pro_ram48_ssd512",
-   "benchmark": null,
+   "benchmark": 1247924,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 35.09220112763277,
     "vs_history": 0.0,
     "vs_peers": 100.0,
     "spec_value": 100.0,
     "site_discount": null,
-    "deal_score": 58.3,
-    "confidence": 3
+    "deal_score": 50.6,
+    "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -3205,16 +3182,16 @@
    "color": "Space Black",
    "model_group": "macbook_pro_scr14_0_chipm4_max",
    "config_key": "macbook_pro_scr14_0_chipm4_max_ram36_ssd1024",
-   "benchmark": null,
+   "benchmark": 1377064,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 38.419782958526255,
     "vs_history": 0.0,
     "vs_peers": 100.0,
     "spec_value": 100.0,
     "site_discount": 8.817311827956988,
-    "deal_score": 51.3,
-    "confidence": 4
+    "deal_score": 47.4,
+    "confidence": 5
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -3236,16 +3213,16 @@
    "color": "Silver",
    "model_group": "macbook_pro_scr14_0_chipm4_max",
    "config_key": "macbook_pro_scr14_0_chipm4_max_ram36_ssd1024",
-   "benchmark": null,
+   "benchmark": 1377064,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 38.27454642630988,
     "vs_history": 0.0,
     "vs_peers": 0.0,
     "spec_value": 0.0,
     "site_discount": 8.602258064516128,
-    "deal_score": 1.2,
-    "confidence": 4
+    "deal_score": 12.3,
+    "confidence": 5
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -3267,16 +3244,16 @@
    "color": "Space Black",
    "model_group": "macbook_pro_scr16_0_chipm4_pro",
    "config_key": "macbook_pro_scr16_0_chipm4_pro_ram48_ssd512",
-   "benchmark": null,
+   "benchmark": 1247924,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 31.085546876252078,
     "vs_history": 0.0,
     "vs_peers": 0.0,
     "spec_value": 89.80112187659357,
     "site_discount": null,
-    "deal_score": 22.5,
-    "confidence": 3
+    "deal_score": 25.3,
+    "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -3484,16 +3461,16 @@
    "color": "Silver, Cosmic Orange, Deep Blue",
    "model_group": "iphone_scr6_9_chipa19_pro",
    "config_key": "iphone_scr6_9_chipa19_pro_ram12_ssd2048",
-   "benchmark": null,
+   "benchmark": 860504,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 0.0,
     "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 100.0,
     "site_discount": 3.9786021505376343,
-    "deal_score": 30.8,
-    "confidence": 3
+    "deal_score": 19.2,
+    "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -3546,16 +3523,16 @@
    "color": "Space Black",
    "model_group": "macbook_pro_scr16_0_chipm4_max",
    "config_key": "macbook_pro_scr16_0_chipm4_max_ram36_ssd1024",
-   "benchmark": null,
+   "benchmark": 1506204,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 35.59969300307262,
     "vs_history": 0.0,
     "vs_peers": 100.0,
     "spec_value": 54.87506124448805,
     "site_discount": null,
-    "deal_score": 47.1,
-    "confidence": 3
+    "deal_score": 43.2,
+    "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -3639,16 +3616,16 @@
    "color": "Silver",
    "model_group": "macbook_pro_scr16_0_chipm4_max",
    "config_key": "macbook_pro_scr16_0_chipm4_max_ram36_ssd1024",
-   "benchmark": null,
+   "benchmark": 1506204,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 32.147305411484766,
     "vs_history": 0.0,
     "vs_peers": 0.0,
     "spec_value": 14.11073003429697,
     "site_discount": null,
-    "deal_score": 3.5,
-    "confidence": 3
+    "deal_score": 13.1,
+    "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -3887,16 +3864,16 @@
    "color": "Silver",
    "model_group": "macbook_pro_scr16_0_chipm4_max",
    "config_key": "macbook_pro_scr16_0_chipm4_max_ram48_ssd1024",
-   "benchmark": null,
+   "benchmark": 1721438,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 34.76384278725113,
     "vs_history": 0.0,
     "vs_peers": 100.0,
     "spec_value": 100.0,
     "site_discount": null,
-    "deal_score": 58.3,
-    "confidence": 3
+    "deal_score": 50.5,
+    "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -4290,16 +4267,16 @@
    "color": "Space Black",
    "model_group": "macbook_pro_scr16_0_chipm4_max",
    "config_key": "macbook_pro_scr16_0_chipm4_max_ram48_ssd1024",
-   "benchmark": null,
+   "benchmark": 1721438,
    "delta": 0,
    "scores": {
-    "vs_apple": null,
+    "vs_apple": 25.64356079045542,
     "vs_history": 0.0,
     "vs_peers": 0.0,
     "spec_value": 0.0,
     "site_discount": null,
-    "deal_score": 0.0,
-    "confidence": 3
+    "deal_score": 8.5,
+    "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },

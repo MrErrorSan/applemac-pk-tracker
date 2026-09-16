@@ -2,11 +2,14 @@
   "_meta": {
     "source": "Apple US online store",
     "currency": "USD",
-    "checked": "2026-09-15",
-    "note": "Keys are config_key values produced by normalize.py. Run 'python -m scraper.cli msrp-gaps' after a scrape to list the exact keys to add. Verify every price against apple.com before entering it."
+    "checked": "2026-09-16",
+    "note": "Keys are config_key values produced by normalize.py. Run 'python -m scraper.cli msrp-gaps' after a scrape to list the exact keys to add. Verify every price against apple.com before entering it. Entries sourced from Internet Archive snapshots of apple.com are listed in _sources with the snapshot URL and date."
   },
   "iphone_scr6_1_chipapple_a19_ram8_ssd256": 699,
   "iphone_scr6_1_chipapple_a19_ram8_ssd512": 899,
+  "iphone_scr6_3_chipa19_pro_ram12_ssd1024": 1499,
+  "iphone_scr6_3_chipa19_pro_ram12_ssd256": 1099,
+  "iphone_scr6_3_chipa19_pro_ram12_ssd512": 1299,
   "iphone_scr6_3_chipa19_ram8_ssd256": 899,
   "iphone_scr6_3_chipa19_ram8_ssd512": 1099,
   "iphone_scr6_3_chipa20_pro_chip_ram12_ssd1024": 1799,
@@ -16,6 +19,10 @@
   "iphone_scr6_5_chipapple_a19_pro_ram12_ssd1024": 1699,
   "iphone_scr6_5_chipapple_a19_pro_ram12_ssd256": 1099,
   "iphone_scr6_5_chipapple_a19_pro_ram12_ssd512": 1299,
+  "iphone_scr6_9_chipa19_pro_ram12_ssd1024": 1599,
+  "iphone_scr6_9_chipa19_pro_ram12_ssd2048": 1999,
+  "iphone_scr6_9_chipa19_pro_ram12_ssd256": 1199,
+  "iphone_scr6_9_chipa19_pro_ram12_ssd512": 1399,
   "iphone_scr6_9_chipa20_pro_chip_ram12_ssd1024": 1899,
   "iphone_scr6_9_chipa20_pro_chip_ram12_ssd2048": 2499,
   "iphone_scr6_9_chipa20_pro_chip_ram12_ssd256": 1299,
@@ -24,6 +31,9 @@
   "iphone_scr7_6_chipa20_pro_chip_ram12_ssd2048": 3199,
   "iphone_scr7_6_chipa20_pro_chip_ram12_ssd256": 1999,
   "iphone_scr7_6_chipa20_pro_chip_ram12_ssd512": 2199,
+  "macbook_air_scr13_0_chipm4_ram16_ssd256": 999,
+  "macbook_air_scr13_0_chipm4_ram16_ssd512": 1199,
+  "macbook_air_scr13_0_chipm4_ram24_ssd512": 1399,
   "macbook_air_scr13_0_chipm5_ram16_ssd1024": 1599,
   "macbook_air_scr13_0_chipm5_ram16_ssd2048": 2099,
   "macbook_air_scr13_0_chipm5_ram16_ssd4096": 3099,
@@ -36,6 +46,9 @@
   "macbook_air_scr13_0_chipm5_ram32_ssd2048": 2499,
   "macbook_air_scr13_0_chipm5_ram32_ssd4096": 3499,
   "macbook_air_scr13_0_chipm5_ram32_ssd512": 1699,
+  "macbook_air_scr15_0_chipm4_ram16_ssd256": 1199,
+  "macbook_air_scr15_0_chipm4_ram16_ssd512": 1399,
+  "macbook_air_scr15_0_chipm4_ram24_ssd512": 1599,
   "macbook_air_scr15_0_chipm5_ram16_ssd1024": 1799,
   "macbook_air_scr15_0_chipm5_ram16_ssd2048": 2299,
   "macbook_air_scr15_0_chipm5_ram16_ssd4096": 3299,
@@ -48,6 +61,12 @@
   "macbook_air_scr15_0_chipm5_ram32_ssd2048": 2699,
   "macbook_air_scr15_0_chipm5_ram32_ssd4096": 3699,
   "macbook_air_scr15_0_chipm5_ram32_ssd512": 1899,
+  "macbook_pro_scr14_0_chipm4_max_ram36_ssd1024": 3199,
+  "macbook_pro_scr14_0_chipm4_pro_ram24_ssd1024": 2399,
+  "macbook_pro_scr14_0_chipm4_pro_ram24_ssd512": 1999,
+  "macbook_pro_scr14_0_chipm4_ram16_ssd1024": 1799,
+  "macbook_pro_scr14_0_chipm4_ram16_ssd512": 1599,
+  "macbook_pro_scr14_0_chipm4_ram24_ssd1024": 1999,
   "macbook_pro_scr14_0_chipm5_max_ram128_ssd2048": 6699,
   "macbook_pro_scr14_0_chipm5_max_ram128_ssd4096": 7699,
   "macbook_pro_scr14_0_chipm5_max_ram128_ssd8192": 9699,
@@ -72,6 +91,10 @@
   "macbook_pro_scr14_0_chipm5_ram32_ssd1024": 2399,
   "macbook_pro_scr14_0_chipm5_ram32_ssd2048": 2899,
   "macbook_pro_scr14_0_chipm5_ram32_ssd4096": 3899,
+  "macbook_pro_scr16_0_chipm4_max_ram36_ssd1024": 3499,
+  "macbook_pro_scr16_0_chipm4_max_ram48_ssd1024": 3999,
+  "macbook_pro_scr16_0_chipm4_pro_ram24_ssd512": 2499,
+  "macbook_pro_scr16_0_chipm4_pro_ram48_ssd512": 2899,
   "macbook_pro_scr16_0_chipm5_max_ram128_ssd2048": 6999,
   "macbook_pro_scr16_0_chipm5_max_ram128_ssd4096": 7999,
   "macbook_pro_scr16_0_chipm5_max_ram128_ssd8192": 9999,
@@ -92,5 +115,151 @@
   "macbook_pro_scr16_0_chipm5_pro_ram48_ssd4096": 5099,
   "macbook_pro_scr16_0_chipm5_pro_ram64_ssd1024": 3999,
   "macbook_pro_scr16_0_chipm5_pro_ram64_ssd2048": 4499,
-  "macbook_pro_scr16_0_chipm5_pro_ram64_ssd4096": 5499
+  "macbook_pro_scr16_0_chipm5_pro_ram64_ssd4096": 5499,
+  "_sources": {
+    "iphone_scr6_3_chipa19_pro_ram12_ssd1024": {
+      "spec": "iPhone 17 Pro 1TB",
+      "observed_on": "2025-11-01",
+      "source": "https://web.archive.org/web/20251101024201/https://www.apple.com/shop/buy-iphone/iphone-17-pro",
+      "note": "Archived apple.com US buy page; price read from the page's own product JSON (partNumber + fullPrice). Model no longer sold new by Apple."
+    },
+    "iphone_scr6_3_chipa19_pro_ram12_ssd256": {
+      "spec": "iPhone 17 Pro 256GB",
+      "observed_on": "2025-11-01",
+      "source": "https://web.archive.org/web/20251101024201/https://www.apple.com/shop/buy-iphone/iphone-17-pro",
+      "note": "Archived apple.com US buy page; price read from the page's own product JSON (partNumber + fullPrice). Model no longer sold new by Apple."
+    },
+    "iphone_scr6_3_chipa19_pro_ram12_ssd512": {
+      "spec": "iPhone 17 Pro 512GB",
+      "observed_on": "2025-11-01",
+      "source": "https://web.archive.org/web/20251101024201/https://www.apple.com/shop/buy-iphone/iphone-17-pro",
+      "note": "Archived apple.com US buy page; price read from the page's own product JSON (partNumber + fullPrice). Model no longer sold new by Apple."
+    },
+    "iphone_scr6_9_chipa19_pro_ram12_ssd1024": {
+      "spec": "iPhone 17 Pro Max 1TB",
+      "observed_on": "2025-11-01",
+      "source": "https://web.archive.org/web/20251101024201/https://www.apple.com/shop/buy-iphone/iphone-17-pro",
+      "note": "Archived apple.com US buy page; price read from the page's own product JSON (partNumber + fullPrice). Model no longer sold new by Apple."
+    },
+    "iphone_scr6_9_chipa19_pro_ram12_ssd2048": {
+      "spec": "iPhone 17 Pro Max 2TB",
+      "observed_on": "2025-11-01",
+      "source": "https://web.archive.org/web/20251101024201/https://www.apple.com/shop/buy-iphone/iphone-17-pro",
+      "note": "Archived apple.com US buy page; price read from the page's own product JSON (partNumber + fullPrice). Model no longer sold new by Apple."
+    },
+    "iphone_scr6_9_chipa19_pro_ram12_ssd256": {
+      "spec": "iPhone 17 Pro Max 256GB",
+      "observed_on": "2025-11-01",
+      "source": "https://web.archive.org/web/20251101024201/https://www.apple.com/shop/buy-iphone/iphone-17-pro",
+      "note": "Archived apple.com US buy page; price read from the page's own product JSON (partNumber + fullPrice). Model no longer sold new by Apple."
+    },
+    "iphone_scr6_9_chipa19_pro_ram12_ssd512": {
+      "spec": "iPhone 17 Pro Max 512GB",
+      "observed_on": "2025-11-01",
+      "source": "https://web.archive.org/web/20251101024201/https://www.apple.com/shop/buy-iphone/iphone-17-pro",
+      "note": "Archived apple.com US buy page; price read from the page's own product JSON (partNumber + fullPrice). Model no longer sold new by Apple."
+    },
+    "macbook_air_scr13_0_chipm4_ram16_ssd256": {
+      "spec": "MBA 13in M4 10c/8c 16GB/256GB",
+      "observed_on": "2025-03-08",
+      "source": "https://web.archive.org/web/20250308065934/https://www.apple.com/shop/buy-mac/macbook-air/13-inch-silver-m4-chip-with-10-core-cpu-8-core-gpu-16gb-memory-256gb",
+      "note": "Archived apple.com US per-configuration buy page; total read from the page's own price element with memory and storage shown as selected with an empty priceDelta. Model no longer sold new by Apple."
+    },
+    "macbook_air_scr13_0_chipm4_ram16_ssd512": {
+      "spec": "MBA 13in M4 10c/10c 16GB/512GB",
+      "observed_on": "2025-03-23",
+      "source": "https://web.archive.org/web/20250323033255/https://www.apple.com/shop/buy-mac/macbook-air/13-inch-silver-m4-chip-with-10-core-cpu-10-core-gpu-16gb-memory-512gb",
+      "note": "Archived apple.com US per-configuration buy page; total read from the page's own price element with memory and storage shown as selected with an empty priceDelta. Model no longer sold new by Apple."
+    },
+    "macbook_air_scr13_0_chipm4_ram24_ssd512": {
+      "spec": "MBA 13in M4 10c/10c 24GB/512GB",
+      "observed_on": "2025-09-30",
+      "source": "https://web.archive.org/web/20250930034202/https://www.apple.com/shop/buy-mac/macbook-air/13-inch-silver-m4-chip-with-10-core-cpu-10-core-gpu-24gb-memory-512gb",
+      "note": "Archived apple.com US per-configuration buy page; total read from the page's own price element with memory and storage shown as selected with an empty priceDelta. Model no longer sold new by Apple."
+    },
+    "macbook_air_scr15_0_chipm4_ram16_ssd256": {
+      "spec": "MBA 15in M4 10c/10c 16GB/256GB",
+      "observed_on": "2025-05-14",
+      "source": "https://web.archive.org/web/20250514114712/https://www.apple.com/shop/buy-mac/macbook-air/15-inch-silver-m4-chip-with-10-core-cpu-10-core-gpu-16gb-memory-256gb",
+      "note": "Archived apple.com US per-configuration buy page; total read from the page's own price element with memory and storage shown as selected with an empty priceDelta. Model no longer sold new by Apple."
+    },
+    "macbook_air_scr15_0_chipm4_ram16_ssd512": {
+      "spec": "MBA 15in M4 10c/10c 16GB/512GB",
+      "observed_on": "2025-05-10",
+      "source": "https://web.archive.org/web/20250510204951/https://www.apple.com/shop/buy-mac/macbook-air/15-inch-silver-m4-chip-with-10-core-cpu-10-core-gpu-16gb-memory-512gb",
+      "note": "Archived apple.com US per-configuration buy page; total read from the page's own price element with memory and storage shown as selected with an empty priceDelta. Model no longer sold new by Apple."
+    },
+    "macbook_air_scr15_0_chipm4_ram24_ssd512": {
+      "spec": "MBA 15in M4 10c/10c 24GB/512GB",
+      "observed_on": "2025-06-20",
+      "source": "https://web.archive.org/web/20250620161041/https://www.apple.com/shop/buy-mac/macbook-air/15-inch-starlight-m4-chip-with-10-core-cpu-10-core-gpu-24gb-memory-512gb",
+      "note": "Archived apple.com US per-configuration buy page; total read from the page's own price element with memory and storage shown as selected with an empty priceDelta. Model no longer sold new by Apple."
+    },
+    "macbook_pro_scr14_0_chipm4_max_ram36_ssd1024": {
+      "spec": "MBP 14in M4 Max 14c/32c 36GB/1TB",
+      "observed_on": "2025-01-11",
+      "source": "https://web.archive.org/web/20250111191016/https://www.apple.com/shop/buy-mac/macbook-pro/14-inch-silver-standard-display-apple-m4-max-with-14-core-cpu-and-32-core-gpu-36gb-memory-1tb",
+      "note": "Archived apple.com US per-configuration buy page; price read from the page's JSON-LD Product offer. Model no longer sold new by Apple."
+    },
+    "macbook_pro_scr14_0_chipm4_pro_ram24_ssd1024": {
+      "spec": "MBP 14in M4 Pro 14c/20c 24GB/1TB",
+      "observed_on": "2025-05-07",
+      "source": "https://web.archive.org/web/20250507221222/https://www.apple.com/shop/buy-mac/macbook-pro/14-inch-silver-standard-display-apple-m4-pro-with-14-core-cpu-and-20-core-gpu-24gb-memory-1tb",
+      "note": "Archived apple.com US per-configuration buy page; price read from the page's JSON-LD Product offer. Model no longer sold new by Apple."
+    },
+    "macbook_pro_scr14_0_chipm4_pro_ram24_ssd512": {
+      "spec": "MBP 14in M4 Pro 12c/16c 24GB/512GB",
+      "observed_on": "2025-01-04",
+      "source": "https://web.archive.org/web/20250104173949/https://www.apple.com/shop/buy-mac/macbook-pro/14-inch-space-black-standard-display-apple-m4-pro-chip-with-12-core-cpu-16-core-gpu-24gb-memory-512gb",
+      "note": "Archived apple.com US per-configuration buy page; price read from the page's JSON-LD Product offer. Model no longer sold new by Apple."
+    },
+    "macbook_pro_scr14_0_chipm4_ram16_ssd1024": {
+      "spec": "MBP 14in M4 10c/10c 16GB/1TB",
+      "observed_on": "2025-01-12",
+      "source": "https://web.archive.org/web/20250112132343/https://www.apple.com/shop/buy-mac/macbook-pro/14-inch-silver-standard-display-apple-m4-chip-with-10-core-cpu-and-10-core-gpu-16gb-memory-1tb",
+      "note": "Archived apple.com US per-configuration buy page; price read from the page's JSON-LD Product offer. Model no longer sold new by Apple."
+    },
+    "macbook_pro_scr14_0_chipm4_ram16_ssd512": {
+      "spec": "MBP 14in M4 10c/10c 16GB/512GB",
+      "observed_on": "2025-01-12",
+      "source": "https://web.archive.org/web/20250112072807/https://www.apple.com/shop/buy-mac/macbook-pro/14-inch-silver-standard-display-apple-m4-chip-with-10-core-cpu-and-10-core-gpu-16gb-memory-512gb",
+      "note": "Archived apple.com US per-configuration buy page; price read from the page's JSON-LD Product offer. Model no longer sold new by Apple."
+    },
+    "macbook_pro_scr14_0_chipm4_ram24_ssd1024": {
+      "spec": "MBP 14in M4 10c/10c 24GB/1TB",
+      "observed_on": "2025-01-12",
+      "source": "https://web.archive.org/web/20250112084340/https://www.apple.com/shop/buy-mac/macbook-pro/14-inch-silver-standard-display-apple-m4-chip-with-10-core-cpu-and-10-core-gpu-24gb-memory-1tb",
+      "note": "Archived apple.com US per-configuration buy page; price read from the page's JSON-LD Product offer. Model no longer sold new by Apple."
+    },
+    "macbook_pro_scr16_0_chipm4_max_ram36_ssd1024": {
+      "spec": "MBP 16in M4 Max 14c/32c 36GB/1TB",
+      "observed_on": "2025-03-07",
+      "source": "https://web.archive.org/web/20250307192232/https://www.apple.com/shop/buy-mac/macbook-pro/16-inch-space-black-standard-display-apple-m4-max-with-14-core-cpu-and-32-core-gpu-36gb-memory-1tb",
+      "note": "Archived apple.com US per-configuration buy page; price read from the page's JSON-LD Product offer. Model no longer sold new by Apple."
+    },
+    "macbook_pro_scr16_0_chipm4_max_ram48_ssd1024": {
+      "spec": "MBP 16in M4 Max 16c/40c 48GB/1TB",
+      "observed_on": "2025-02-16",
+      "source": "https://web.archive.org/web/20250216153335/https://www.apple.com/shop/buy-mac/macbook-pro/16-inch-silver-standard-display-apple-m4-max-with-16-core-cpu-and-40-core-gpu-48gb-memory-1tb",
+      "note": "Archived apple.com US per-configuration buy page; price read from the page's JSON-LD Product offer. Model no longer sold new by Apple."
+    },
+    "macbook_pro_scr16_0_chipm4_pro_ram24_ssd512": {
+      "spec": "MBP 16in M4 Pro 14c/20c 24GB/512GB",
+      "observed_on": "2025-02-09",
+      "source": "https://web.archive.org/web/20250209100322/https://www.apple.com/shop/buy-mac/macbook-pro/16-inch-silver-standard-display-apple-m4-pro-with-14-core-cpu-and-20-core-gpu-24gb-memory-512gb",
+      "note": "Archived apple.com US per-configuration buy page; price read from the page's JSON-LD Product offer. Model no longer sold new by Apple."
+    },
+    "macbook_pro_scr16_0_chipm4_pro_ram48_ssd512": {
+      "spec": "MBP 16in M4 Pro 14c/20c 48GB/512GB",
+      "observed_on": "2025-05-12",
+      "source": "https://web.archive.org/web/20250512224455/https://www.apple.com/shop/buy-mac/macbook-pro/16-inch-silver-standard-display-apple-m4-pro-with-14-core-cpu-and-20-core-gpu-48gb-memory-512gb",
+      "note": "Archived apple.com US per-configuration buy page; price read from the page's JSON-LD Product offer. Model no longer sold new by Apple."
+    }
+  },
+  "_unavailable": {
+    "_note": "Investigated 2026-09-16 against live apple.com. Deliberately left without a price. Do not fill these in without resolving the reason.",
+    "macbook_pro_scr14_0_chipm5_ram16_ssd512": "Apple does not sell a 512GB SSD on the M5 14-inch MacBook Pro; storage starts at 1TB. Verified on https://www.apple.com/shop/buy-mac/macbook-pro/14-inch (no occurrence of 512GB). The shop lists such a machine (parts MDE04, MDE44) but Apple publishes no US price for that configuration.",
+    "macbook_pro_scr14_0_chipm5_ram32_ssd512": "Same: no 512GB option exists in the M5 generation.",
+    "_m5_pro_core_tiers": "The six macbook_pro_scr14_0_chipm5_pro_* keys are AMBIGUOUS and must stay empty until config_key distinguishes CPU/GPU cores. Apple sells the 14-inch M5 Pro in two tiers at different prices - 15-core CPU/16-core GPU 24GB/1TB is $2499 (sku MGDR4LL/A) while 18-core CPU/20-core GPU of the same memory and storage is $2699, both verified on apple.com on 2026-09-16. Every one of those six keys currently contains listings of BOTH tiers, so any single price would be wrong for some of the products it is applied to."
+  }
 }

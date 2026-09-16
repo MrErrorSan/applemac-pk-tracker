@@ -30,5 +30,6 @@ packages = ["scraper"]
 testpaths = ["tests"]
 markers = [
     "live: hits the real network; deselected by default",
+    "smoke: launches a real browser against a local server; deselected by default",
 ]
-addopts = "-m \"not live\""
+addopts = "-m \"not live and not smoke\""

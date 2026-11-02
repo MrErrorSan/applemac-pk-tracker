@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en" data-variant="a">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>applemac.pk price ledger — design mock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&family=Inter:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* ======================================================= shared tokens */
+:root{
+  --radius:4px;
+  --sans:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --figure:"IBM Plex Serif",Georgia,serif;
+  --display:"IBM Plex Serif",Georgia,serif;
+  --rowpad:14px 18px;
+  --tablebg:var(--panel);
+}
+
+/* ---------------------------------------------------- A — Ledger */
+:root[data-variant="a"]{
+  --ground:#e7ebec; --panel:#ffffff; --panel-2:#f2f5f6; --rail:#eef2f3;
+  --ink:#12303a; --ink-soft:#4e6b74; --ink-faint:#7b939a;
+  --rule:#c6d2d6; --rule-soft:#dde5e7;
+  --good:#0b4d32; --bad:#9c3b21; --accent:#12303a;
+  --sans:"IBM Plex Sans",sans-serif; --figure:"IBM Plex Serif",Georgia,serif;
+  --display:"IBM Plex Serif",Georgia,serif;
+}
+/* -------------------------------- E — Ledger palette, Counter's rail */
+:root[data-variant="e"]{
+  --ground:#e7ebec; --panel:#ffffff; --panel-2:#f2f5f6; --rail:transparent;
+  --ink:#12303a; --ink-soft:#4e6b74; --ink-faint:#7b939a;
+  --rule:#c6d2d6; --rule-soft:#dde5e7;
+  --good:#0b4d32; --bad:#9c3b21; --accent:#12303a;
+  --sans:"IBM Plex Sans",sans-serif; --figure:"IBM Plex Serif",Georgia,serif;
+  --display:"IBM Plex Serif",Georgia,serif;
+  --rowpad:13px 18px;
+}
+/* ---------------------------------------------------- B — Broadside */
+:root[data-variant="b"]{
+  --ground:#16191b; --panel:#1e2325; --panel-2:#252b2e; --rail:#1e2325;
+  --ink:#ece8e1; --ink-soft:#a5aeb0; --ink-faint:#798386;
+  --rule:#333b3e; --rule-soft:#2a3134;
+  --good:#8fd8a8; --bad:#e8977a; --accent:#e8b64a;
+  --sans:"Inter",sans-serif; --figure:"Fraunces",Georgia,serif;
+  --display:"Fraunces",Georgia,serif;
+  --rowpad:20px 22px;
+}
+/* ---------------------------------------------------- C — Counter */
+:root[data-variant="c"]{
+  --ground:#f4f2ee; --panel:#ffffff; --panel-2:#faf9f7; --rail:#f4f2ee;
+  --ink:#232120; --ink-soft:#5f5b57; --ink-faint:#928d87;
+  --rule:#d9d4cd; --rule-soft:#e8e4dd;
+  --good:#1d5f3f; --bad:#a03d22; --accent:#232120;
+  --sans:"IBM Plex Sans",sans-serif; --figure:"IBM Plex Mono",monospace;
+  --display:"IBM Plex Sans",sans-serif;
+  --radius:2px; --rowpad:7px 14px;
+}
+/* ---------------------------------------------------- D — Shelf */
+:root[data-variant="d"]{
+  --ground:#eef0f3; --panel:#ffffff; --panel-2:#f6f7f9; --rail:#ffffff;
+  --ink:#1b2028; --ink-soft:#5a6472; --ink-faint:#8c95a2;
+  --rule:#dde1e7; --rule-soft:#e9ecf1;
+  --good:#0f6b45; --bad:#a8402a; --accent:#1b2028;
+  --sans:"Manrope",sans-serif; --figure:"Manrope",sans-serif;
+  --display:"Manrope",sans-serif;
+  --radius:10px;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;padding:0 20px 90px;background:var(--ground);color:var(--ink);
+  font:400 15px/1.55 var(--sans);font-variant-numeric:tabular-nums;
+}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
+.page{max-width:1280px;margin:0 auto}
+a{color:inherit}
+
+/* ------------------------------------------------------------ switcher */
+#switcher{
+  position:sticky;top:0;z-index:60;margin:0 -20px;padding:9px 20px;
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+  background:var(--panel);border-bottom:1px solid var(--rule);
+}
+.sw-label{font:500 12px/1 var(--sans);color:var(--ink-faint);margin-right:4px}
+#switcher button{
+  appearance:none;border:1px solid var(--rule);background:var(--ground);
+  color:var(--ink-soft);border-radius:var(--radius);padding:6px 13px;cursor:pointer;
+  font:500 13px/1 var(--sans);
+}
+#switcher button:hover{color:var(--ink);border-color:var(--ink)}
+#switcher button[aria-pressed="true"]{
+  background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.sw-blurb{font-size:12.5px;color:var(--ink-faint);margin-left:10px}
+
+/* ------------------------------------------------------------ masthead */
+.masthead{
+  display:flex;flex-wrap:wrap;gap:14px 32px;align-items:baseline;
+  justify-content:space-between;padding:34px 0 14px;border-bottom:2px solid var(--ink);
+}
+.wordmark{font:600 28px/1 var(--display);letter-spacing:-.012em;margin:0}
+.wordmark span{color:var(--ink-soft);font-weight:400}
+.runmeta{display:flex;flex-wrap:wrap;margin:0}
+.runmeta div{padding:0 16px;border-left:1px solid var(--rule)}
+.runmeta div:first-child{padding-left:0;border-left:0}
+.runmeta dt{font-size:12.5px;color:var(--ink-faint);margin:0 0 1px}
+.runmeta dd{margin:0;font-size:14px;font-weight:500}
+
+/* ---------------------------------------------------------------- tabs */
+#tabs{display:flex;margin:24px 0 0;border-bottom:1px solid var(--rule)}
+#tabs button{
+  appearance:none;background:none;border:0;border-bottom:2px solid transparent;
+  margin-bottom:-1px;padding:10px 18px 11px;cursor:pointer;
+  font:500 15px/1 var(--sans);color:var(--ink-soft);
+}
+#tabs button:hover{color:var(--ink)}
+#tabs button[aria-selected="true"]{color:var(--ink);font-weight:600;border-bottom-color:var(--ink)}
+#tabs .n{color:var(--ink-faint);font-weight:400;font-size:12.5px;margin-left:7px}
+
+/* --------------------------------------------------------------- shell */
+.shell{display:block}
+body[data-filters="rail"] .shell{display:grid;grid-template-columns:212px minmax(0,1fr);gap:0}
+body[data-filters="rail"] #filters{
+  border-right:1px solid var(--rule);padding:18px 20px 40px 0;background:var(--rail)}
+body[data-filters="rail"] .main{padding-left:24px;min-width:0}
+
+/* ------------------------------------------------------------- filters */
+#filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:16px 0 0}
+body[data-filters="rail"] #filters{display:block}
+
+.dd{position:relative}
+.dd>button{
+  display:inline-flex;align-items:center;gap:9px;cursor:pointer;
+  background:var(--panel);border:1px solid var(--rule);border-radius:var(--radius);
+  padding:8px 13px;font:400 14px/1 var(--sans);color:var(--ink);
+}
+.dd>button:hover,.dd>button[aria-expanded="true"]{border-color:var(--ink)}
+.dd[data-dead]>button{opacity:.4;cursor:not-allowed}
+.dd .cnt{background:var(--ink);color:var(--panel);border-radius:9px;padding:2px 7px;
+  font:600 11.5px/1.35 var(--sans)}
+.dd .car{color:var(--ink-faint);font-size:11px}
+.pop{
+  position:absolute;z-index:50;top:calc(100% + 6px);left:0;min-width:240px;max-height:340px;
+  overflow:auto;background:var(--panel);border:1px solid var(--ink);
+  border-radius:var(--radius);box-shadow:0 14px 34px rgba(0,0,0,.18);padding:6px;
+}
+.pop label,.railgroup label{
+  display:flex;align-items:center;gap:10px;padding:7px 9px;border-radius:3px;
+  cursor:pointer;font-size:14px;
+}
+.pop label:hover,.railgroup label:hover{background:var(--panel-2)}
+.pop label.off,.railgroup label.off{color:var(--ink-faint)}
+.pop .c,.railgroup .c{margin-left:auto;font-size:12.5px;color:var(--ink-faint)}
+.pop input,.railgroup input{accent-color:var(--accent);width:15px;height:15px;flex:none}
+.railgroup{margin-bottom:18px}
+.railgroup h4{font:600 12px/1 var(--sans);color:var(--ink-faint);margin:0 0 6px;padding:0 9px}
+.railgroup label{padding:5px 9px;font-size:13.5px}
+.search{
+  flex:1 1 220px;min-width:180px;padding:8px 13px;border:1px solid var(--rule);
+  border-radius:var(--radius);background:var(--panel);color:var(--ink);
+  font:400 14px var(--sans);
+}
+body[data-filters="rail"] .search{width:100%;margin-bottom:20px}
+
+/* ------------------------------------------------------- applied chips */
+#applied{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:14px 0 0}
+#applied .count{font-size:13.5px;color:var(--ink-faint);margin-right:4px}
+.chip{
+  display:inline-flex;align-items:center;gap:7px;background:var(--panel);
+  border:1px solid var(--rule);border-radius:14px;padding:4px 5px 4px 12px;font-size:13px;
+}
+.chip b{font-weight:600;color:var(--ink-faint);font-size:11.5px}
+.chip button{
+  appearance:none;border:0;background:none;cursor:pointer;color:var(--ink-faint);
+  font:400 16px/1 var(--sans);padding:1px 6px;border-radius:50%;
+}
+.chip button:hover{color:var(--bad);background:var(--panel-2)}
+.clearall{
+  appearance:none;border:0;background:none;cursor:pointer;color:var(--ink-soft);
+  font:400 13.5px var(--sans);text-decoration:underline;text-underline-offset:3px;padding:4px;
+}
+.clearall:hover{color:var(--ink)}
+
+/* --------------------------------------------------------------- table */
+.tablewrap{
+  margin-top:18px;background:var(--tablebg);border:1px solid var(--rule);
+  border-radius:var(--radius);overflow:hidden;
+}
+table{width:100%;border-collapse:collapse}
+th{
+  text-align:left;padding:12px 18px;background:var(--panel-2);white-space:nowrap;
+  border-bottom:1px solid var(--rule);cursor:pointer;
+  font:500 12.5px/1.3 var(--sans);color:var(--ink-faint);
+}
+th:hover{color:var(--ink)}
+th.num{text-align:right}
+th .arrow{font-size:9px;margin-left:6px}
+td{padding:var(--rowpad);border-bottom:1px solid var(--rule-soft);vertical-align:top}
+td.num{text-align:right}
+tbody tr:last-child td{border-bottom:0}
+tr.is-open td{background:var(--panel-2)}
+.pname{font:500 15.5px/1.35 var(--sans)}
+.pname a{text-decoration:none}
+.pname a:hover{text-decoration:underline;text-underline-offset:4px}
+.psub{color:var(--ink-faint);font-size:12.5px;margin-top:3px}
+.spec{font:500 14px/1.4 var(--sans)}
+.spec span{display:block;font-weight:400;font-size:13px;color:var(--ink-soft);margin-top:2px}
+.money{font:400 15px/1.4 var(--figure)}
+.est{color:var(--ink-soft)}
+.nodata{color:var(--ink-faint);font-size:13px;line-height:1.35}
+
+/* the one loud thing on the page */
+.diff{display:inline-block;font:600 21px/1.05 var(--figure);letter-spacing:-.01em;white-space:nowrap}
+.diff.below{color:var(--good)}
+.diff.above{color:var(--bad)}
+.diff small{
+  display:block;font:400 12px/1.3 var(--sans);color:var(--ink-faint);
+  margin-top:4px;letter-spacing:0;
+}
+.expander{
+  appearance:none;background:var(--panel);border:1px solid var(--rule);
+  border-radius:var(--radius);min-width:27px;height:27px;padding:0 8px;cursor:pointer;
+  color:var(--ink-soft);font:400 15px/1 var(--sans);
+}
+.expander:hover{border-color:var(--ink);color:var(--ink)}
+
+/* ---------------------------------------------- B — Broadside accents */
+:root[data-variant="b"] .diff{font-size:30px;font-weight:700}
+:root[data-variant="b"] .wordmark{font-size:38px;font-weight:700}
+:root[data-variant="b"] th{background:transparent;border-bottom:1px solid var(--rule)}
+:root[data-variant="b"] .tablewrap{background:var(--panel)}
+:root[data-variant="b"] .money{font-size:16px}
+
+/* ------------------------------------------------ C — Counter density */
+:root[data-variant="c"] .diff{font-size:15px;font-weight:600}
+:root[data-variant="c"] .diff small{font-size:11px;margin-top:1px}
+:root[data-variant="c"] .pname{font-size:13.5px}
+:root[data-variant="c"] .psub{font-size:11.5px;margin-top:1px}
+:root[data-variant="c"] .spec{font-size:12.5px}
+:root[data-variant="c"] .spec span{display:inline;margin-left:8px;font-size:12.5px}
+:root[data-variant="c"] .money{font-size:13px}
+:root[data-variant="c"] th{padding:8px 14px;font-size:11.5px}
+:root[data-variant="c"] .expander{height:22px;min-width:22px;font-size:13px}
+:root[data-variant="c"] .masthead{padding-top:24px}
+
+/* --------------------------------------------------------- D — cards */
+.cards{display:flex;flex-direction:column;gap:12px;margin-top:18px}
+.pcard{
+  display:flex;gap:18px;align-items:stretch;background:var(--panel);
+  border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;
+}
+.pcard-main{flex:1 1 auto;padding:18px 20px;min-width:0}
+.pcard-main h3{margin:0;font:600 17px/1.3 var(--display)}
+.pcard-main h3 a{text-decoration:none}
+.pcard-main h3 a:hover{text-decoration:underline;text-underline-offset:4px}
+.pcard-spec{margin:7px 0 0;font:500 14px/1.4 var(--sans);color:var(--ink)}
+.pcard-spec span{color:var(--ink-soft);font-weight:400;margin-left:10px}
+.pcard-prices{margin:12px 0 0;font-size:15px}
+.pcard-prices b{font:600 19px/1 var(--figure)}
+.pcard-prices span{color:var(--ink-soft);font-size:13.5px;margin-left:12px}
+.pcard-diff{
+  flex:0 0 232px;display:flex;flex-direction:column;align-items:flex-end;
+  justify-content:center;gap:12px;padding:18px 20px;background:var(--panel-2);
+  border-left:1px solid var(--rule-soft);text-align:right;
+}
+:root[data-variant="d"] .diff{font-size:26px;font-weight:700}
+.detail{grid-column:1/-1}
+div.detail{
+  background:var(--panel-2);border:1px solid var(--rule);border-top:0;
+  border-radius:0 0 var(--radius) var(--radius);padding:22px 20px 26px;margin-top:-12px;
+}
+
+/* -------------------------------------------------------------- drawer */
+tr.detail td{background:var(--panel-2);padding:24px 18px 28px}
+.dgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:36px}
+.dgrid h4{font:600 12.5px/1.3 var(--sans);color:var(--ink-faint);margin:0 0 12px}
+.facts{margin:0;display:grid;grid-template-columns:auto 1fr;gap:8px 22px;font-size:14px}
+.facts dt{color:var(--ink-soft)}
+.facts dd{margin:0;font-weight:500}
+.cmp{margin:0 0 20px;padding:0 0 18px;border-bottom:1px solid var(--rule)}
+.cmp:last-child{margin-bottom:0;padding-bottom:0;border-bottom:0}
+.cmp p{margin:0;font-size:14.5px;line-height:1.55}
+.cmp .quiet{color:var(--ink-faint);font-size:13.5px}
+/* Specificity has to clear `tr.detail td`, which sets the drawer's own padding. */
+.ladder{width:100%;margin-top:10px;font-size:13.5px}
+.detail .ladder td{padding:5px 0;border:0;vertical-align:baseline}
+.detail .ladder td.r{text-align:right;font-family:var(--figure);font-weight:500}
+.detail .ladder tr.self td{color:var(--good);font-weight:600}
+.chart svg{width:100%;height:92px;display:block;margin-top:10px}
+.chart path{fill:none;stroke:var(--ink);stroke-width:1.6px;stroke-linejoin:round}
+.chart .axis{stroke:var(--rule);stroke-width:1px}
+.chart .ends{display:flex;justify-content:space-between;gap:12px;font-size:12px;
+  color:var(--ink-faint);margin-top:5px}
+.preview{margin-top:16px;padding:12px 14px;border:1px dashed var(--ink-faint);
+  border-radius:var(--radius);background:var(--panel)}
+.preview .tag{margin:0 0 2px;font:600 12px/1.4 var(--sans);color:var(--bad)}
+.empty{padding:44px 18px;text-align:center;color:var(--ink-soft)}
+.empty p{margin:0 0 12px}
+
+.foot{margin-top:28px;font-size:13.5px;line-height:1.6;color:var(--ink-faint);max-width:78ch}
+
+@media (max-width:900px){
+  .dgrid{grid-template-columns:1fr;gap:26px}
+  body[data-filters="rail"] .shell{display:block}
+  body[data-filters="rail"] #filters{border-right:0;padding:16px 0 0}
+  body[data-filters="rail"] .main{padding-left:0}
+  .pcard{flex-direction:column;gap:0}
+  .pcard-diff{flex:none;flex-direction:row;align-items:center;justify-content:space-between;
+    border-left:0;border-top:1px solid var(--rule-soft);text-align:left}
+  th:nth-child(2),td:nth-child(2){display:none}
+}
+</style>
+</head>
+<body data-filters="dropdown">
+
+<div id="switcher"></div>
+
+<div class="page">
+  <header class="masthead">
+    <h1 class="wordmark">applemac.pk <span>price ledger</span></h1>
+    <dl class="runmeta" id="runmeta"></dl>
+  </header>
+
+  <div id="tabs" role="tablist" aria-label="Product family"></div>
+
+  <div class="shell">
+    <div id="filters"></div>
+    <div class="main">
+      <div id="applied"></div>
+      <div id="listing"></div>
+    </div>
+  </div>
+
+  <p class="foot">“Est. Apple landed” is this tracker's own estimate: Apple's US price,
+    converted at the rate above and marked up for duty. Apple does not sell at it. Where
+    Apple publishes no verified price for a configuration, the column stays empty rather
+    than carrying a guess.</p>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

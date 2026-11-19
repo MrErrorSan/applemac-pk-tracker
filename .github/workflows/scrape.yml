@@ -4,6 +4,14 @@ on:
   schedule:
     - cron: "17 3 * * *"   # 08:17 PKT daily; off-the-hour to avoid peak queueing
   workflow_dispatch:
+    inputs:
+      force:
+        description: >-
+          Accept a product-count drop >20% (only after checking the RUN FAILED
+          message against the live site — a failed run keeps the old baseline,
+          so every scheduled run fails until this is used once)
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -31,7 +39,7 @@ jobs:
         run: uv run pytest -q
 
       - name: Scrape
-        run: uv run python -m scraper.cli run
+        run: uv run python -m scraper.cli run ${{ inputs.force && '--force' || '' }}
 
       - name: Commit updated data
         run: |

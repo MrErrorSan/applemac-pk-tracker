@@ -1,7 +1,7 @@
 {
  "meta": {
-  "run_id": "20261120T114724438596+0000",
-  "generated_at": "2026-11-20T11:47:24.438596+00:00",
+  "run_id": "20261121T111305806624+0000",
+  "generated_at": "2026-11-21T11:13:05.806624+00:00",
   "fx_rate": 276.460596,
   "fx_stale": false,
   "duty_percent": 0.55,
@@ -1916,7 +1916,7 @@
    "model_group": "macbook_pro_scr14_0_chipm6",
    "config_key": "macbook_pro_scr14_0_chipm6_ram24_ssd1024",
    "benchmark": null,
-   "delta": 6000,
+   "delta": 0,
    "scores": {
     "vs_apple": null,
     "vs_history": 0.0,
@@ -1947,7 +1947,7 @@
    "model_group": "macbook_pro_scr14_0_chipm6",
    "config_key": "macbook_pro_scr14_0_chipm6_ram24_ssd1024",
    "benchmark": null,
-   "delta": 2000,
+   "delta": 0,
    "scores": {
     "vs_apple": null,
     "vs_history": 0.0,

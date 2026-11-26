@@ -1,7 +1,7 @@
 {
  "meta": {
-  "run_id": "20261125T130325652972+0000",
-  "generated_at": "2026-11-25T13:03:25.652972+00:00",
+  "run_id": "20261126T124330942796+0000",
+  "generated_at": "2026-11-26T12:43:30.942796+00:00",
   "fx_rate": 276.39191,
   "fx_stale": false,
   "duty_percent": 0.55,
@@ -86,7 +86,7 @@
    "model_group": "macbook_air_scr13_0_chipm5",
    "config_key": "macbook_air_scr13_0_chipm5_ram16_ssd512",
    "benchmark": 556501,
-   "delta": -1999,
+   "delta": 0,
    "scores": {
     "vs_apple": 33.513147325880816,
     "vs_history": 10.843373493975903,
@@ -117,7 +117,7 @@
    "model_group": "macbook_air_scr13_0_chipm5",
    "config_key": "macbook_air_scr13_0_chipm5_ram16_ssd512",
    "benchmark": 556501,
-   "delta": -1999,
+   "delta": 0,
    "scores": {
     "vs_apple": 33.513147325880816,
     "vs_history": 10.843373493975903,
@@ -148,7 +148,7 @@
    "model_group": "macbook_air_scr13_0_chipm5",
    "config_key": "macbook_air_scr13_0_chipm5_ram16_ssd512",
    "benchmark": 556501,
-   "delta": -1999,
+   "delta": 0,
    "scores": {
     "vs_apple": 33.513147325880816,
     "vs_history": 10.843373493975903,
@@ -427,7 +427,7 @@
    "model_group": "macbook_air_scr15_0_chipm5",
    "config_key": "macbook_air_scr15_0_chipm5_ram16_ssd512",
    "benchmark": 642183,
-   "delta": -2000,
+   "delta": 0,
    "scores": {
     "vs_apple": 31.48386051950924,
     "vs_history": 7.757023060796646,
@@ -458,7 +458,7 @@
    "model_group": "macbook_air_scr15_0_chipm5",
    "config_key": "macbook_air_scr15_0_chipm5_ram16_ssd512",
    "benchmark": 642183,
-   "delta": -2000,
+   "delta": 0,
    "scores": {
     "vs_apple": 31.48386051950924,
     "vs_history": 7.757023060796646,
@@ -489,7 +489,7 @@
    "model_group": "macbook_air_scr15_0_chipm5",
    "config_key": "macbook_air_scr15_0_chipm5_ram16_ssd512",
    "benchmark": 642183,
-   "delta": -2000,
+   "delta": 0,
    "scores": {
     "vs_apple": 31.48386051950924,
     "vs_history": 7.757023060796646,
@@ -551,7 +551,7 @@
    "model_group": "macbook_air_scr15_0_chipm5",
    "config_key": "macbook_air_scr15_0_chipm5_ram16_ssd512",
    "benchmark": 642183,
-   "delta": 8000,
+   "delta": 0,
    "scores": {
     "vs_apple": 29.92667199225143,
     "vs_history": 6.250013020860461,
@@ -874,37 +874,6 @@
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
   {
-   "slug": "apple-macbook-air-13-mdhg4-m5-10c-cpu-10c-gpu-24gb-1tb-midnight",
-   "url": "https://applemac.pk/product/apple-macbook-air-13-mdhg4-m5-10c-cpu-10c-gpu-24gb-1tb-midnight",
-   "name": "Apple MacBook Air 13 MDHG4 M5 10C CPU 10C GPU 24GB 1TB Midnight",
-   "family": "macbook_air",
-   "category_slug": "macbook-air-13",
-   "image_url": "https://applemac.pk/public/uploads/products/1772703340.webp",
-   "price": 520000,
-   "old_price": 520000,
-   "ram_gb": 24,
-   "storage_gb": 1024,
-   "chip": "M5",
-   "cpu_cores": 10,
-   "gpu_cores": 10,
-   "screen_size": 13.0,
-   "color": "Midnight",
-   "model_group": "macbook_air_scr13_0_chipm5",
-   "config_key": "macbook_air_scr13_0_chipm5_ram24_ssd1024",
-   "benchmark": 770705,
-   "delta": -5999,
-   "scores": {
-    "vs_apple": 32.529307582019065,
-    "vs_history": 4.586980893542924,
-    "vs_peers": 100.0,
-    "spec_value": 71.07692307692308,
-    "site_discount": null,
-    "deal_score": 46.2,
-    "confidence": 4
-   },
-   "first_seen": "2026-09-16T00:22:18.878661+00:00"
-  },
-  {
    "slug": "apple-iphone-air-512gb",
    "url": "https://applemac.pk/product/apple-iphone-air-512gb",
    "name": "Apple Iphone Air 512GB",
@@ -931,99 +900,6 @@
     "spec_value": 25.453600546669147,
     "site_discount": 5.454545454545454,
     "deal_score": 7.9,
-    "confidence": 4
-   },
-   "first_seen": "2026-09-16T00:22:18.878661+00:00"
-  },
-  {
-   "slug": "apple-macbook-air-13-mdhk4-m5-10c-cpu-10c-gpu-24gb-1tb-sky-blue",
-   "url": "https://applemac.pk/product/apple-macbook-air-13-mdhk4-m5-10c-cpu-10c-gpu-24gb-1tb-sky-blue",
-   "name": "Apple MacBook Air 13 MDHK4 M5 10C CPU 10C GPU 24GB 1TB Sky Blue",
-   "family": "macbook_air",
-   "category_slug": "macbook-air-13",
-   "image_url": "https://applemac.pk/public/uploads/products/1772695739.webp",
-   "price": 523999,
-   "old_price": 523999,
-   "ram_gb": 24,
-   "storage_gb": 1024,
-   "chip": "M5",
-   "cpu_cores": 10,
-   "gpu_cores": 10,
-   "screen_size": 13.0,
-   "color": "Sky Blue",
-   "model_group": "macbook_air_scr13_0_chipm5",
-   "config_key": "macbook_air_scr13_0_chipm5_ram24_ssd1024",
-   "benchmark": 770705,
-   "delta": -2000,
-   "scores": {
-    "vs_apple": 32.01043200705847,
-    "vs_history": 3.853218079299228,
-    "vs_peers": 0.0,
-    "spec_value": 68.36990769230769,
-    "site_discount": null,
-    "deal_score": 23.1,
-    "confidence": 4
-   },
-   "first_seen": "2026-09-16T00:22:18.878661+00:00"
-  },
-  {
-   "slug": "apple-macbook-air-13-mdh94-m5-10c-cpu-10c-gpu-24gb-1tb-silver",
-   "url": "https://applemac.pk/product/apple-macbook-air-13-mdh94-m5-10c-cpu-10c-gpu-24gb-1tb-silver",
-   "name": "Apple MacBook Air 13 MDH94 M5 10C CPU 10C GPU 24GB 1TB Silver",
-   "family": "macbook_air",
-   "category_slug": "macbook-air-13",
-   "image_url": "https://applemac.pk/public/uploads/products/1772695420.webp",
-   "price": 523999,
-   "old_price": 523999,
-   "ram_gb": 24,
-   "storage_gb": 1024,
-   "chip": "M5",
-   "cpu_cores": 10,
-   "gpu_cores": 10,
-   "screen_size": 13.0,
-   "color": "Silver",
-   "model_group": "macbook_air_scr13_0_chipm5",
-   "config_key": "macbook_air_scr13_0_chipm5_ram24_ssd1024",
-   "benchmark": 770705,
-   "delta": -2000,
-   "scores": {
-    "vs_apple": 32.01043200705847,
-    "vs_history": 3.853218079299228,
-    "vs_peers": 0.0,
-    "spec_value": 68.36990769230769,
-    "site_discount": null,
-    "deal_score": 23.1,
-    "confidence": 4
-   },
-   "first_seen": "2026-09-16T00:22:18.878661+00:00"
-  },
-  {
-   "slug": "apple-macbook-air-13-mdhd4-m5-10c-cpu-10c-gpu-24gb-1tb-starlight",
-   "url": "https://applemac.pk/product/apple-macbook-air-13-mdhd4-m5-10c-cpu-10c-gpu-24gb-1tb-starlight",
-   "name": "Apple MacBook Air 13 MDHD4 M5 10C CPU 10C GPU 24GB 1TB Starlight",
-   "family": "macbook_air",
-   "category_slug": "macbook-air-13",
-   "image_url": "https://applemac.pk/public/uploads/products/1772695219.webp",
-   "price": 523999,
-   "old_price": 523999,
-   "ram_gb": 24,
-   "storage_gb": 1024,
-   "chip": "M5",
-   "cpu_cores": 10,
-   "gpu_cores": 10,
-   "screen_size": 13.0,
-   "color": "Starlight",
-   "model_group": "macbook_air_scr13_0_chipm5",
-   "config_key": "macbook_air_scr13_0_chipm5_ram24_ssd1024",
-   "benchmark": 770705,
-   "delta": -2000,
-   "scores": {
-    "vs_apple": 32.01043200705847,
-    "vs_history": 3.853218079299228,
-    "vs_peers": 0.0,
-    "spec_value": 68.36990769230769,
-    "site_discount": null,
-    "deal_score": 23.1,
     "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
@@ -1060,6 +936,130 @@
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
   {
+   "slug": "apple-macbook-air-13-mdhg4-m5-10c-cpu-10c-gpu-24gb-1tb-midnight",
+   "url": "https://applemac.pk/product/apple-macbook-air-13-mdhg4-m5-10c-cpu-10c-gpu-24gb-1tb-midnight",
+   "name": "Apple MacBook Air 13 MDHG4 M5 10C CPU 10C GPU 24GB 1TB Midnight",
+   "family": "macbook_air",
+   "category_slug": "macbook-air-13",
+   "image_url": "https://applemac.pk/public/uploads/products/1772703340.webp",
+   "price": 525999,
+   "old_price": 525999,
+   "ram_gb": 24,
+   "storage_gb": 1024,
+   "chip": "M5",
+   "cpu_cores": 10,
+   "gpu_cores": 10,
+   "screen_size": 13.0,
+   "color": "Midnight",
+   "model_group": "macbook_air_scr13_0_chipm5",
+   "config_key": "macbook_air_scr13_0_chipm5_ram24_ssd1024",
+   "benchmark": 770705,
+   "delta": 5999,
+   "scores": {
+    "vs_apple": 31.750929343912393,
+    "vs_history": 3.4862449288897777,
+    "vs_peers": null,
+    "spec_value": 67.01606153846154,
+    "site_discount": null,
+    "deal_score": 29.2,
+    "confidence": 3
+   },
+   "first_seen": "2026-09-16T00:22:18.878661+00:00"
+  },
+  {
+   "slug": "apple-macbook-air-13-mdhk4-m5-10c-cpu-10c-gpu-24gb-1tb-sky-blue",
+   "url": "https://applemac.pk/product/apple-macbook-air-13-mdhk4-m5-10c-cpu-10c-gpu-24gb-1tb-sky-blue",
+   "name": "Apple MacBook Air 13 MDHK4 M5 10C CPU 10C GPU 24GB 1TB Sky Blue",
+   "family": "macbook_air",
+   "category_slug": "macbook-air-13",
+   "image_url": "https://applemac.pk/public/uploads/products/1772695739.webp",
+   "price": 525999,
+   "old_price": 525999,
+   "ram_gb": 24,
+   "storage_gb": 1024,
+   "chip": "M5",
+   "cpu_cores": 10,
+   "gpu_cores": 10,
+   "screen_size": 13.0,
+   "color": "Sky Blue",
+   "model_group": "macbook_air_scr13_0_chipm5",
+   "config_key": "macbook_air_scr13_0_chipm5_ram24_ssd1024",
+   "benchmark": 770705,
+   "delta": 2000,
+   "scores": {
+    "vs_apple": 31.750929343912393,
+    "vs_history": 3.4862449288897777,
+    "vs_peers": null,
+    "spec_value": 67.01606153846154,
+    "site_discount": null,
+    "deal_score": 29.2,
+    "confidence": 3
+   },
+   "first_seen": "2026-09-16T00:22:18.878661+00:00"
+  },
+  {
+   "slug": "apple-macbook-air-13-mdh94-m5-10c-cpu-10c-gpu-24gb-1tb-silver",
+   "url": "https://applemac.pk/product/apple-macbook-air-13-mdh94-m5-10c-cpu-10c-gpu-24gb-1tb-silver",
+   "name": "Apple MacBook Air 13 MDH94 M5 10C CPU 10C GPU 24GB 1TB Silver",
+   "family": "macbook_air",
+   "category_slug": "macbook-air-13",
+   "image_url": "https://applemac.pk/public/uploads/products/1772695420.webp",
+   "price": 525999,
+   "old_price": 525999,
+   "ram_gb": 24,
+   "storage_gb": 1024,
+   "chip": "M5",
+   "cpu_cores": 10,
+   "gpu_cores": 10,
+   "screen_size": 13.0,
+   "color": "Silver",
+   "model_group": "macbook_air_scr13_0_chipm5",
+   "config_key": "macbook_air_scr13_0_chipm5_ram24_ssd1024",
+   "benchmark": 770705,
+   "delta": 2000,
+   "scores": {
+    "vs_apple": 31.750929343912393,
+    "vs_history": 3.4862449288897777,
+    "vs_peers": null,
+    "spec_value": 67.01606153846154,
+    "site_discount": null,
+    "deal_score": 29.2,
+    "confidence": 3
+   },
+   "first_seen": "2026-09-16T00:22:18.878661+00:00"
+  },
+  {
+   "slug": "apple-macbook-air-13-mdhd4-m5-10c-cpu-10c-gpu-24gb-1tb-starlight",
+   "url": "https://applemac.pk/product/apple-macbook-air-13-mdhd4-m5-10c-cpu-10c-gpu-24gb-1tb-starlight",
+   "name": "Apple MacBook Air 13 MDHD4 M5 10C CPU 10C GPU 24GB 1TB Starlight",
+   "family": "macbook_air",
+   "category_slug": "macbook-air-13",
+   "image_url": "https://applemac.pk/public/uploads/products/1772695219.webp",
+   "price": 525999,
+   "old_price": 525999,
+   "ram_gb": 24,
+   "storage_gb": 1024,
+   "chip": "M5",
+   "cpu_cores": 10,
+   "gpu_cores": 10,
+   "screen_size": 13.0,
+   "color": "Starlight",
+   "model_group": "macbook_air_scr13_0_chipm5",
+   "config_key": "macbook_air_scr13_0_chipm5_ram24_ssd1024",
+   "benchmark": 770705,
+   "delta": 2000,
+   "scores": {
+    "vs_apple": 31.750929343912393,
+    "vs_history": 3.4862449288897777,
+    "vs_peers": null,
+    "spec_value": 67.01606153846154,
+    "site_discount": null,
+    "deal_score": 29.2,
+    "confidence": 3
+   },
+   "first_seen": "2026-09-16T00:22:18.878661+00:00"
+  },
+  {
    "slug": "apple-macbook-air-15-mdvk4-m5-10c-cpu-10c-gpu-16gb-1tb-midnight",
    "url": "https://applemac.pk/product/apple-macbook-air-15-mdvk4-m5-10c-cpu-10c-gpu-16gb-1tb-midnight",
    "name": "Apple MacBook Air 15 MDVK4 M5 10C CPU 10C GPU 16GB 1TB Midnight",
@@ -1078,7 +1078,7 @@
    "model_group": "macbook_air_scr15_0_chipm5",
    "config_key": "macbook_air_scr15_0_chipm5_ram16_ssd1024",
    "benchmark": 770705,
-   "delta": -4000,
+   "delta": 0,
    "scores": {
     "vs_apple": 31.62104826100778,
     "vs_history": 4.181643966625394,
@@ -1109,7 +1109,7 @@
    "model_group": "macbook_air_scr15_0_chipm5",
    "config_key": "macbook_air_scr15_0_chipm5_ram16_ssd1024",
    "benchmark": 770705,
-   "delta": -8000,
+   "delta": 0,
    "scores": {
     "vs_apple": 31.62104826100778,
     "vs_history": 4.181643966625394,
@@ -1140,7 +1140,7 @@
    "model_group": "macbook_air_scr15_0_chipm5",
    "config_key": "macbook_air_scr15_0_chipm5_ram16_ssd1024",
    "benchmark": 770705,
-   "delta": -4000,
+   "delta": 0,
    "scores": {
     "vs_apple": 31.62104826100778,
     "vs_history": 4.181643966625394,
@@ -1171,7 +1171,7 @@
    "model_group": "macbook_air_scr15_0_chipm5",
    "config_key": "macbook_air_scr15_0_chipm5_ram16_ssd1024",
    "benchmark": 770705,
-   "delta": -1000,
+   "delta": 0,
    "scores": {
     "vs_apple": 31.23179426628866,
     "vs_history": 3.636188429433508,
@@ -1190,8 +1190,8 @@
    "family": "macbook_pro",
    "category_slug": "macbook-pro-14",
    "image_url": "https://applemac.pk/public/uploads/products/1771318920.webp",
-   "price": 545000,
-   "old_price": 545000,
+   "price": 542000,
+   "old_price": 542000,
    "ram_gb": 16,
    "storage_gb": 1024,
    "chip": "M5",
@@ -1202,14 +1202,14 @@
    "model_group": "macbook_pro_scr14_0_chipm5",
    "config_key": "macbook_pro_scr14_0_chipm5_ram16_ssd1024",
    "benchmark": 856387,
-   "delta": 0,
+   "delta": -3000,
    "scores": {
-    "vs_apple": 36.360547275939496,
-    "vs_history": 6.837447585380488,
+    "vs_apple": 36.71085619001689,
+    "vs_history": 7.350268974818761,
     "vs_peers": null,
-    "spec_value": 60.499999999999986,
+    "spec_value": 58.405172413793096,
     "site_discount": null,
-    "deal_score": 31.0,
+    "deal_score": 30.9,
     "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
@@ -1221,8 +1221,8 @@
    "family": "macbook_pro",
    "category_slug": "macbook-pro-14",
    "image_url": "https://applemac.pk/public/uploads/products/1771319041.webp",
-   "price": 545000,
-   "old_price": 545000,
+   "price": 542000,
+   "old_price": 542000,
    "ram_gb": 16,
    "storage_gb": 1024,
    "chip": "M5",
@@ -1233,15 +1233,77 @@
    "model_group": "macbook_pro_scr14_0_chipm5",
    "config_key": "macbook_pro_scr14_0_chipm5_ram16_ssd1024",
    "benchmark": 856387,
-   "delta": 0,
+   "delta": -3000,
    "scores": {
-    "vs_apple": 36.360547275939496,
-    "vs_history": 5.872030867065401,
+    "vs_apple": 36.71085619001689,
+    "vs_history": 6.390166476971462,
     "vs_peers": null,
-    "spec_value": 60.499999999999986,
+    "spec_value": 58.405172413793096,
     "site_discount": null,
-    "deal_score": 30.6,
+    "deal_score": 30.5,
     "confidence": 3
+   },
+   "first_seen": "2026-09-16T00:22:18.878661+00:00"
+  },
+  {
+   "slug": "macbook-pro-14-m5-mde44-10-core-cpu-10-core-gpu-16gb-512gb-silver",
+   "url": "https://applemac.pk/product/macbook-pro-14-m5-mde44-10-core-cpu-10-core-gpu-16gb-512gb-silver",
+   "name": "Macbook Pro 14 M5 MDE44 10 Core CPU 10 Core GPU 16GB 512GB Silver",
+   "family": "macbook_pro",
+   "category_slug": "macbook-pro-14",
+   "image_url": "https://applemac.pk/public/uploads/products/1771319048.webp",
+   "price": 542000,
+   "old_price": 542000,
+   "ram_gb": 16,
+   "storage_gb": 512,
+   "chip": "M5",
+   "cpu_cores": 10,
+   "gpu_cores": 10,
+   "screen_size": 14.0,
+   "color": "Silver",
+   "model_group": "macbook_pro_scr14_0_chipm5",
+   "config_key": "macbook_pro_scr14_0_chipm5_ram16_ssd512",
+   "benchmark": null,
+   "delta": -13000,
+   "scores": {
+    "vs_apple": null,
+    "vs_history": 2.3423423423423424,
+    "vs_peers": null,
+    "spec_value": 0.0,
+    "site_discount": null,
+    "deal_score": 1.5,
+    "confidence": 2
+   },
+   "first_seen": "2026-09-16T00:22:18.878661+00:00"
+  },
+  {
+   "slug": "macbook-pro-14-m5-mde04-10-core-cpu-10-core-gpu-16gb-512gb-space-black",
+   "url": "https://applemac.pk/product/macbook-pro-14-m5-mde04-10-core-cpu-10-core-gpu-16gb-512gb-space-black",
+   "name": "Macbook Pro 14 M5 MDE04 10 Core CPU 10 Core GPU 16GB 512GB Space Black",
+   "family": "macbook_pro",
+   "category_slug": "macbook-pro-14",
+   "image_url": "https://applemac.pk/public/uploads/products/1771319060.webp",
+   "price": 542000,
+   "old_price": 542000,
+   "ram_gb": 16,
+   "storage_gb": 512,
+   "chip": "M5",
+   "cpu_cores": 10,
+   "gpu_cores": 10,
+   "screen_size": 14.0,
+   "color": "Space Black",
+   "model_group": "macbook_pro_scr14_0_chipm5",
+   "config_key": "macbook_pro_scr14_0_chipm5_ram16_ssd512",
+   "benchmark": null,
+   "delta": -18000,
+   "scores": {
+    "vs_apple": null,
+    "vs_history": 3.214285714285714,
+    "vs_peers": null,
+    "spec_value": 0.0,
+    "site_discount": null,
+    "deal_score": 2.0,
+    "confidence": 2
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -1273,68 +1335,6 @@
     "site_discount": 8.333333333333332,
     "deal_score": 9.8,
     "confidence": 4
-   },
-   "first_seen": "2026-09-16T00:22:18.878661+00:00"
-  },
-  {
-   "slug": "macbook-pro-14-m5-mde44-10-core-cpu-10-core-gpu-16gb-512gb-silver",
-   "url": "https://applemac.pk/product/macbook-pro-14-m5-mde44-10-core-cpu-10-core-gpu-16gb-512gb-silver",
-   "name": "Macbook Pro 14 M5 MDE44 10 Core CPU 10 Core GPU 16GB 512GB Silver",
-   "family": "macbook_pro",
-   "category_slug": "macbook-pro-14",
-   "image_url": "https://applemac.pk/public/uploads/products/1771319048.webp",
-   "price": 555000,
-   "old_price": 555000,
-   "ram_gb": 16,
-   "storage_gb": 512,
-   "chip": "M5",
-   "cpu_cores": 10,
-   "gpu_cores": 10,
-   "screen_size": 14.0,
-   "color": "Silver",
-   "model_group": "macbook_pro_scr14_0_chipm5",
-   "config_key": "macbook_pro_scr14_0_chipm5_ram16_ssd512",
-   "benchmark": null,
-   "delta": 0,
-   "scores": {
-    "vs_apple": null,
-    "vs_history": 0.0,
-    "vs_peers": 100.0,
-    "spec_value": 1.9999999999999887,
-    "site_discount": null,
-    "deal_score": 33.8,
-    "confidence": 3
-   },
-   "first_seen": "2026-09-16T00:22:18.878661+00:00"
-  },
-  {
-   "slug": "macbook-pro-14-m5-mde04-10-core-cpu-10-core-gpu-16gb-512gb-space-black",
-   "url": "https://applemac.pk/product/macbook-pro-14-m5-mde04-10-core-cpu-10-core-gpu-16gb-512gb-space-black",
-   "name": "Macbook Pro 14 M5 MDE04 10 Core CPU 10 Core GPU 16GB 512GB Space Black",
-   "family": "macbook_pro",
-   "category_slug": "macbook-pro-14",
-   "image_url": "https://applemac.pk/public/uploads/products/1771319060.webp",
-   "price": 560000,
-   "old_price": 560000,
-   "ram_gb": 16,
-   "storage_gb": 512,
-   "chip": "M5",
-   "cpu_cores": 10,
-   "gpu_cores": 10,
-   "screen_size": 14.0,
-   "color": "Space Black",
-   "model_group": "macbook_pro_scr14_0_chipm5",
-   "config_key": "macbook_pro_scr14_0_chipm5_ram16_ssd512",
-   "benchmark": null,
-   "delta": 0,
-   "scores": {
-    "vs_apple": null,
-    "vs_history": 0.0,
-    "vs_peers": 0.0,
-    "spec_value": 0.0,
-    "site_discount": null,
-    "deal_score": 0.0,
-    "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
   },
@@ -1450,7 +1450,7 @@
    "model_group": "macbook_air_scr15_0_chipm5",
    "config_key": "macbook_air_scr15_0_chipm5_ram24_ssd1024",
    "benchmark": 856387,
-   "delta": -5000,
+   "delta": 0,
    "scores": {
     "vs_apple": 30.522065374649543,
     "vs_history": 3.2518752063011482,
@@ -1481,7 +1481,7 @@
    "model_group": "macbook_air_scr15_0_chipm5",
    "config_key": "macbook_air_scr15_0_chipm5_ram24_ssd1024",
    "benchmark": 856387,
-   "delta": -5000,
+   "delta": 0,
    "scores": {
     "vs_apple": 30.522065374649543,
     "vs_history": 3.2518752063011482,
@@ -1512,7 +1512,7 @@
    "model_group": "macbook_air_scr15_0_chipm5",
    "config_key": "macbook_air_scr15_0_chipm5_ram24_ssd1024",
    "benchmark": 856387,
-   "delta": -10000,
+   "delta": 0,
    "scores": {
     "vs_apple": 30.522065374649543,
     "vs_history": 3.2518752063011482,
@@ -1543,7 +1543,7 @@
    "model_group": "macbook_air_scr15_0_chipm5",
    "config_key": "macbook_air_scr15_0_chipm5_ram24_ssd1024",
    "benchmark": 856387,
-   "delta": -5000,
+   "delta": 0,
    "scores": {
     "vs_apple": 30.522065374649543,
     "vs_history": 3.2518752063011482,
@@ -1639,11 +1639,11 @@
    "delta": 0,
    "scores": {
     "vs_apple": null,
-    "vs_history": 0.0811031323651782,
+    "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 0.0,
     "site_discount": null,
-    "deal_score": 0.1,
+    "deal_score": 0.0,
     "confidence": 2
    },
    "first_seen": "2026-11-19T12:42:16.777940+00:00"
@@ -1670,11 +1670,11 @@
    "delta": 0,
    "scores": {
     "vs_apple": null,
-    "vs_history": 0.0811031323651782,
+    "vs_history": 0.0,
     "vs_peers": null,
     "spec_value": 0.0,
     "site_discount": null,
-    "deal_score": 0.1,
+    "deal_score": 0.0,
     "confidence": 2
    },
    "first_seen": "2026-11-19T12:42:16.777940+00:00"
@@ -1765,9 +1765,9 @@
     "vs_apple": 31.746009842177,
     "vs_history": 0.0,
     "vs_peers": 100.0,
-    "spec_value": 69.68024,
+    "spec_value": 67.32784482758619,
     "site_discount": null,
-    "deal_score": 44.4,
+    "deal_score": 44.0,
     "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
@@ -1796,9 +1796,9 @@
     "vs_apple": 31.21515644305931,
     "vs_history": 0.3076923076923077,
     "vs_peers": 0.0,
-    "spec_value": 68.47999999999999,
+    "spec_value": 66.03448275862068,
     "site_discount": null,
-    "deal_score": 21.9,
+    "deal_score": 21.5,
     "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
@@ -1827,9 +1827,9 @@
     "vs_apple": null,
     "vs_history": 0.0,
     "vs_peers": null,
-    "spec_value": 68.0,
+    "spec_value": 65.51724137931033,
     "site_discount": null,
-    "deal_score": 25.5,
+    "deal_score": 24.6,
     "confidence": 2
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
@@ -2137,9 +2137,9 @@
     "vs_apple": 28.97098416052947,
     "vs_history": 3.947242035844784,
     "vs_peers": 100.0,
-    "spec_value": 77.99999999999999,
+    "spec_value": 76.29310344827584,
     "site_discount": null,
-    "deal_score": 46.0,
+    "deal_score": 45.7,
     "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
@@ -2168,9 +2168,9 @@
     "vs_apple": 28.97098416052947,
     "vs_history": 3.947242035844784,
     "vs_peers": 100.0,
-    "spec_value": 77.99999999999999,
+    "spec_value": 76.29310344827584,
     "site_discount": null,
-    "deal_score": 46.0,
+    "deal_score": 45.7,
     "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
@@ -2287,7 +2287,7 @@
    "model_group": "macbook_pro_scr14_0_chipm6",
    "config_key": "macbook_pro_scr14_0_chipm6_ram32_ssd1024",
    "benchmark": null,
-   "delta": 34999,
+   "delta": 0,
    "scores": {
     "vs_apple": null,
     "vs_history": 0.0,
@@ -2318,7 +2318,7 @@
    "model_group": "macbook_pro_scr14_0_chipm6",
    "config_key": "macbook_pro_scr14_0_chipm6_ram32_ssd1024",
    "benchmark": null,
-   "delta": 34999,
+   "delta": 0,
    "scores": {
     "vs_apple": null,
     "vs_history": 0.0,
@@ -2416,9 +2416,9 @@
     "vs_apple": 24.884383249217464,
     "vs_history": 0.0,
     "vs_peers": 0.0,
-    "spec_value": 69.59999999999998,
+    "spec_value": 67.24137931034481,
     "site_discount": null,
-    "deal_score": 19.9,
+    "deal_score": 19.5,
     "confidence": 4
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
@@ -2447,9 +2447,9 @@
     "vs_apple": 24.34078405365266,
     "vs_history": 0.0,
     "vs_peers": null,
-    "spec_value": 61.999999999999986,
+    "spec_value": 59.051724137931025,
     "site_discount": null,
-    "deal_score": 23.7,
+    "deal_score": 23.1,
     "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
@@ -2664,9 +2664,9 @@
     "vs_apple": 23.89333997536912,
     "vs_history": 0.0,
     "vs_peers": null,
-    "spec_value": 73.14285714285714,
+    "spec_value": 71.0591133004926,
     "site_discount": null,
-    "deal_score": 25.9,
+    "deal_score": 25.5,
     "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
@@ -2724,11 +2724,11 @@
    "delta": 0,
    "scores": {
     "vs_apple": null,
-    "vs_history": 0.37776578521316784,
+    "vs_history": 0.0,
     "vs_peers": 0.0,
     "spec_value": 0.0,
     "site_discount": null,
-    "deal_score": 0.2,
+    "deal_score": 0.0,
     "confidence": 3
    },
    "first_seen": "2026-11-19T12:42:16.777940+00:00"
@@ -2755,11 +2755,11 @@
    "delta": 0,
    "scores": {
     "vs_apple": null,
-    "vs_history": 0.37776578521316784,
+    "vs_history": 0.0,
     "vs_peers": 0.0,
     "spec_value": 0.0,
     "site_discount": null,
-    "deal_score": 0.2,
+    "deal_score": 0.0,
     "confidence": 3
    },
    "first_seen": "2026-11-19T12:42:16.777940+00:00"
@@ -2788,9 +2788,9 @@
     "vs_apple": 24.312755796716946,
     "vs_history": 0.0,
     "vs_peers": null,
-    "spec_value": 83.0,
+    "spec_value": 81.68103448275862,
     "site_discount": null,
-    "deal_score": 28.2,
+    "deal_score": 27.9,
     "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
@@ -2938,7 +2938,7 @@
    "model_group": "macbook_pro_scr16_0_chipm5_pro",
    "config_key": "macbook_pro_scr16_0_chipm5_pro_ram48_ssd1024",
    "benchmark": 1541838,
-   "delta": 33000,
+   "delta": 0,
    "scores": {
     "vs_apple": 30.40773414587006,
     "vs_history": 0.0,
@@ -2969,7 +2969,7 @@
    "model_group": "macbook_pro_scr16_0_chipm5_pro",
    "config_key": "macbook_pro_scr16_0_chipm5_pro_ram48_ssd1024",
    "benchmark": 1541838,
-   "delta": 19000,
+   "delta": 0,
    "scores": {
     "vs_apple": 30.40773414587006,
     "vs_history": 0.0,
@@ -3003,11 +3003,11 @@
    "delta": 0,
    "scores": {
     "vs_apple": 15.939831599462636,
-    "vs_history": 0.23094688221709006,
+    "vs_history": 0.0,
     "vs_peers": 0.0,
     "spec_value": 0.0,
     "site_discount": null,
-    "deal_score": 5.4,
+    "deal_score": 5.3,
     "confidence": 4
    },
    "first_seen": "2026-11-19T12:42:16.777940+00:00"
@@ -3034,11 +3034,11 @@
    "delta": 0,
    "scores": {
     "vs_apple": 15.939831599462636,
-    "vs_history": 0.23094688221709006,
+    "vs_history": 0.0,
     "vs_peers": 0.0,
     "spec_value": 0.0,
     "site_discount": null,
-    "deal_score": 5.4,
+    "deal_score": 5.3,
     "confidence": 4
    },
    "first_seen": "2026-11-19T12:42:16.777940+00:00"
@@ -3160,9 +3160,9 @@
     "vs_apple": 24.616310361988475,
     "vs_history": 0.0,
     "vs_peers": null,
-    "spec_value": 88.39999999999999,
+    "spec_value": 87.49999999999999,
     "site_discount": null,
-    "deal_score": 29.5,
+    "deal_score": 29.3,
     "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
@@ -3470,9 +3470,9 @@
     "vs_apple": 25.221448634076683,
     "vs_history": 0.0,
     "vs_peers": null,
-    "spec_value": 94.72727272727272,
+    "spec_value": 94.31818181818183,
     "site_discount": null,
-    "deal_score": 31.1,
+    "deal_score": 31.0,
     "confidence": 3
    },
    "first_seen": "2026-09-16T00:22:18.878661+00:00"
@@ -3623,11 +3623,11 @@
    "delta": 0,
    "scores": {
     "vs_apple": 17.630775736491124,
-    "vs_history": 0.78125,
+    "vs_history": 0.0,
     "vs_peers": 0.0,
     "spec_value": 52.917388792605436,
     "site_discount": null,
-    "deal_score": 14.9,
+    "deal_score": 14.7,
     "confidence": 4
    },
    "first_seen": "2026-11-19T12:42:16.777940+00:00"
@@ -3654,11 +3654,11 @@
    "delta": 0,
    "scores": {
     "vs_apple": 17.630775736491124,
-    "vs_history": 0.78125,
+    "vs_history": 0.0,
     "vs_peers": 0.0,
     "spec_value": 52.917388792605436,
     "site_discount": null,
-    "deal_score": 14.9,
+    "deal_score": 14.7,
     "confidence": 4
    },
    "first_seen": "2026-11-19T12:42:16.777940+00:00"
@@ -3840,11 +3840,11 @@
    "delta": 0,
    "scores": {
     "vs_apple": 20.275255375440906,
-    "vs_history": 1.7543859649122806,
+    "vs_history": 0.0,
     "vs_peers": 0.0,
     "spec_value": 0.0,
     "site_discount": null,
-    "deal_score": 7.2,
+    "deal_score": 6.8,
     "confidence": 4
    },
    "first_seen": "2026-11-19T12:42:16.777940+00:00"
@@ -3871,11 +3871,11 @@
    "delta": 0,
    "scores": {
     "vs_apple": 20.275255375440906,
-    "vs_history": 1.7543859649122806,
+    "vs_history": 0.0,
     "vs_peers": 0.0,
     "spec_value": 0.0,
     "site_discount": null,
-    "deal_score": 7.2,
+    "deal_score": 6.8,
     "confidence": 4
    },
    "first_seen": "2026-11-19T12:42:16.777940+00:00"
@@ -3995,11 +3995,11 @@
    "delta": 0,
    "scores": {
     "vs_apple": 19.875366397745047,
-    "vs_history": 1.3071895424836601,
+    "vs_history": 0.0,
     "vs_peers": 0.0,
     "spec_value": 0.0,
     "site_discount": null,
-    "deal_score": 7.0,
+    "deal_score": 6.6,
     "confidence": 4
    },
    "first_seen": "2026-11-19T12:42:16.777940+00:00"
@@ -4026,11 +4026,11 @@
    "delta": 0,
    "scores": {
     "vs_apple": 19.875366397745047,
-    "vs_history": 1.3071895424836601,
+    "vs_history": 0.0,
     "vs_peers": 0.0,
     "spec_value": 0.0,
     "site_discount": null,
-    "deal_score": 7.0,
+    "deal_score": 6.6,
     "confidence": 4
    },
    "first_seen": "2026-11-19T12:42:16.777940+00:00"
